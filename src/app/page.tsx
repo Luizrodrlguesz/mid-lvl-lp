@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion, useMotionValueEvent, useScroll } from "framer-motion"
 import { ArrowUpRight, Github, Linkedin, Mail, ExternalLink, FileDown } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
@@ -16,6 +17,7 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { LanguageSwitcher, type Locale } from "@/components/language-switcher"
 import { BackToTop } from "@/components/back-to-top"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 import {
   aboutCopy,
@@ -42,6 +44,8 @@ export default function Home() {
   const [skillsTab, setSkillsTab] = useState<"presentation" | "toolkit">("presentation")
   const [skillCategory, setSkillCategory] = useState<"front" | "back" | "outros">("front")
   const [activeProject, setActiveProject] = useState(0)
+  const [activeNav, setActiveNav] = useState("hero")
+  const [showFloatingNav, setShowFloatingNav] = useState(false)
 
   const { scrollYProgress } = useScroll()
 
@@ -78,6 +82,86 @@ export default function Home() {
     showcaseByCategory.front[0]?.id,
   )
 
+  const navSections = useMemo(
+    () => ["hero", "about", "skills", "projects", "contact"] as const,
+    [],
+  )
+
+  const highlightTargets = useMemo(
+    () => ["front-end", "typescript", "flutter/dart"],
+    [],
+  )
+  const [highlightIdx, setHighlightIdx] = useState(0)
+
+  useEffect(() => {
+    if (highlightTargets.length === 0) return
+    let timer: ReturnType<typeof setTimeout>
+
+    const schedule = (nextIdx: number, delay: number) => {
+      timer = setTimeout(() => {
+        setHighlightIdx(nextIdx)
+        const isLast = nextIdx === highlightTargets.length - 1
+        const upcoming = (nextIdx + 1) % highlightTargets.length
+        schedule(upcoming, isLast ? 10000 : 1700)
+      }, delay)
+    }
+
+    schedule(1 % highlightTargets.length, 1700)
+    return () => clearTimeout(timer)
+  }, [highlightTargets.length])
+
+  const renderHighlightedTitle = (text: string, activeIdx: number) => {
+    const regex = new RegExp(`(${highlightTargets.join("|")})`, "gi")
+    const parts = text.split(regex).filter(Boolean)
+    return parts.map((part, idx) => {
+      const matchIndex = highlightTargets.findIndex(
+        (target) => target.toLowerCase() === part.toLowerCase(),
+      )
+      const isHighlight = matchIndex !== -1
+      if (!isHighlight) {
+        return (
+          <span key={`${part}-${idx}`} className="inline-block">
+            {part}
+          </span>
+        )
+      }
+      const isActive = matchIndex === activeIdx
+      return (
+        <motion.span
+          key={`${part}-${idx}`}
+          animate={{ backgroundSize: isActive ? "100% 70%" : "0% 70%" }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="relative inline-block rounded-sm px-1 py-0.5 pt-2 text-foreground"
+          style={{
+            backgroundImage: "linear-gradient(120deg, rgba(59,130,246,0.35), rgba(59,130,246,0.35))",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "0 80%",
+            backgroundSize: "0% 70%",
+          }}
+        >
+          {part}
+        </motion.span>
+      )
+    })
+  }
+
+  useEffect(() => {
+    const handler = () => {
+      const offsets = navSections.map((id) => {
+        const el = document.getElementById(id)
+        if (!el) return { id, top: Infinity }
+        const rect = el.getBoundingClientRect()
+        return { id, top: Math.abs(rect.top - 160) }
+      })
+      const closest = offsets.sort((a, b) => a.top - b.top)[0]
+      if (closest) setActiveNav(closest.id)
+      setShowFloatingNav(window.scrollY > 140)
+    }
+    handler()
+    window.addEventListener("scroll", handler, { passive: true })
+    return () => window.removeEventListener("scroll", handler)
+  }, [navSections])
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <BackgroundCanvas scrollProgress={scrollProgress} />
@@ -88,6 +172,42 @@ export default function Home() {
         <SiteHeader locale={locale} />
 
         <main className="mx-auto w-full px-5 pb-24">
+          {showFloatingNav ? (
+            <div className="fixed top-4 right-4 z-40 hidden gap-2 lg:flex">
+              <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-card/80 px-2 py-1 shadow-md backdrop-blur">
+                <div className="flex items-center gap-1">
+                  {navSections.map((id) => (
+                    <Button
+                      key={id}
+                      asChild
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "rounded-full px-3 text-xs",
+                        activeNav === id
+                          ? "bg-foreground text-background"
+                          : "text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      <Link href={`#${id}`}>
+                        {id === "hero"
+                          ? "Início"
+                          : id === "about"
+                            ? "Sobre"
+                            : id === "skills"
+                              ? "Skills"
+                              : id === "projects"
+                                ? "Projetos"
+                                : "Contato"}
+                      </Link>
+                    </Button>
+                  ))}
+                </div>
+                <div className="h-6 w-px bg-border/70" />
+                <ThemeToggle />
+              </div>
+            </div>
+          ) : null}
           <section id="hero" className="flex flex-col gap-10 py-16">
             <motion.div
               className="section-card"
@@ -106,9 +226,14 @@ export default function Home() {
               </div>
               <div className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
                 <div className="space-y-6">
-                  <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
-                    {hero.title}
-          </h1>
+                  <motion.h1
+                    className="text-balance text-4xl font-semibold leading-tight tracking-tight md:text-5xl"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  >
+                    {renderHighlightedTitle(hero.title, highlightIdx)}
+                  </motion.h1>
                   <p className="text-lg text-muted-foreground">{hero.subtitle}</p>
                   <div className="flex flex-wrap gap-3">
                     <Button asChild size="lg" className="rounded-full">
@@ -133,24 +258,36 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="rounded-3xl border border-border/60 bg-card/70 p-6 shadow-lg">
-                  <p className="text-sm text-muted-foreground">Conexões</p>
-                  <div className="mt-4 grid gap-3 md:grid-cols-2">
-                    {socials.map((item) => (
-                      <a
-                        key={item.label}
-                        href={item.href}
-                        className="group flex items-center justify-between rounded-2xl border border-border/60 bg-background/60 px-4 py-3 text-sm transition hover:-translate-y-1 hover:border-foreground/60"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <span className="flex items-center gap-2">
-                          {item.icon}
-                          {item.label}
-                        </span>
-                        <ArrowUpRight className="h-4 w-4 opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
-                      </a>
-                    ))}
+                <div className="flex flex-col items-center gap-4 h-full">
+                  <div className="relative h-32 w-32 overflow-hidden h-full">
+                    <Image
+                      src="/assets/lh-logo.png"
+                      alt="Logo Luiz Rodrigues"
+                      fill
+                      className="object-contain"
+                      sizes="128px"
+                      priority
+                    />
+                  </div>
+                  <div className="w-full rounded-3xl border border-border/60 bg-card/70 p-6 shadow-lg">
+                    <p className="text-sm text-muted-foreground">Conexões</p>
+                    <div className="mt-4 grid gap-3 md:grid-cols-2">
+                      {socials.map((item) => (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          className="group flex items-center justify-between rounded-2xl border border-border/60 bg-background/60 px-4 py-3 text-sm transition hover:-translate-y-1 hover:border-foreground/60"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <span className="flex items-center gap-2">
+                            {item.icon}
+                            {item.label}
+                          </span>
+                          <ArrowUpRight className="h-4 w-4 opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -49,7 +49,7 @@ export type ShowcaseSkill = {
   },
   "en-us": {
     title:
-      "Junior Front-end Developer | React | Next.js | TypeScript | Node.js | Tailwind",
+      "Front-end Developer | React | Next.js | TypeScript | Node.js | Tailwind | Flutter/Dart",
     subtitle:
       "Hi, I'm Luiz Rodrigues, a Front-end Developer. I started in 2023 and have been applying modern JavaScript, web UI, and performance optimization in real projects. Also exploring Flutter/Dart (beginner) for mobile experiences.",
     cta: "Contact me",
@@ -57,7 +57,7 @@ export type ShowcaseSkill = {
   },
   "fr-fr": {
     title:
-      "Développeur Front-end | React | Next.js | TypeScript | Node.js | Tailwind",
+      "Développeur Front-end | React | Next.js | TypeScript | Node.js | Tailwind | Flutter/Dart",
     subtitle:
       "Salut, je suis Luiz Rodrigues, Développeur Front-end. J'ai commencé en 2023 et j'applique JavaScript moderne, interfaces web et optimisation des performances sur des projets réels. J'explore aussi Flutter/Dart (débutant) pour des expériences mobiles.",
     cta: "Parler avec moi",
