@@ -29,7 +29,7 @@ import { useEffect, useState } from "react"
        style={{ mixBlendMode: "screen" }}
      >
        <motion.div
-         className="h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25),rgba(0,0,0,0))]"
+        className="h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(231,239,255,0.9)_0%,rgba(231,239,255,0.55)_35%,rgba(231,239,255,0)_70%)]"
          animate={{ x: position.x - 128, y: position.y - 128 }}
          transition={{ type: "spring", damping: 40, stiffness: 240, mass: 0.8 }}
        />

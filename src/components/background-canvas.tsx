@@ -28,6 +28,37 @@ const pseudoRandom = (seed: number) => {
      return points
    }, [])
 
+  const starTexture = useMemo(() => {
+    const size = 64
+    const canvas = document.createElement("canvas")
+    canvas.width = size
+    canvas.height = size
+
+    const context = canvas.getContext("2d")
+    if (!context) return null
+
+    const gradient = context.createRadialGradient(
+      size / 2,
+      size / 2,
+      0,
+      size / 2,
+      size / 2,
+      size / 2
+    )
+    gradient.addColorStop(0, "rgba(255,255,255,0.95)")
+    gradient.addColorStop(0.45, "rgba(255,255,255,0.45)")
+    gradient.addColorStop(1, "rgba(255,255,255,0)")
+
+    context.fillStyle = gradient
+    context.fillRect(0, 0, size, size)
+
+    const texture = new THREE.Texture(canvas)
+    texture.needsUpdate = true
+    texture.minFilter = THREE.LinearFilter
+
+    return texture
+  }, [])
+
    useFrame((state) => {
      const t = state.clock.getElapsedTime()
      if (ref.current) {
@@ -40,11 +71,15 @@ const pseudoRandom = (seed: number) => {
      <Points ref={ref} positions={positions} stride={3}>
        <PointMaterial
          transparent
-         size={0.04}
-         color="#ffffff"
+        size={0.05}
+        color="#e7efff"
+        map={starTexture ?? undefined}
+        alphaMap={starTexture ?? undefined}
+        blending={THREE.AdditiveBlending}
          sizeAttenuation
          depthWrite={false}
-         opacity={0.3}
+        opacity={0.8}
+        toneMapped={false}
        />
      </Points>
    )
@@ -52,20 +87,46 @@ const pseudoRandom = (seed: number) => {
 
  export function BackgroundCanvas({ scrollProgress }: BackgroundCanvasProps) {
   const [mounted, setMounted] = useState(false)
+  const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true))
     return () => cancelAnimationFrame(id)
   }, [])
 
+  useEffect(() => {
+    const updateTheme = () => setIsDark(document.documentElement.classList.contains("dark"))
+    updateTheme()
+    const observer = new MutationObserver(updateTheme)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
+
   if (!mounted) return null
 
+  const lightBase = "#C5CBD4"
+  const lightOverlay =
+    "radial-gradient(circle at 20% 20%, rgba(140,170,210,0.20), transparent 45%), radial-gradient(circle at 80% 10%, rgba(150,180,220,0.12), transparent 35%), radial-gradient(circle at 50% 80%, rgba(130,160,200,0.16), transparent 42%)"
+  const darkOverlay =
+    "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 45%), radial-gradient(circle at 80% 10%, rgba(255,255,255,0.04), transparent 35%), radial-gradient(circle at 50% 80%, rgba(255,255,255,0.06), transparent 40%)"
+
    return (
-    <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_65%)]">
+    <div
+      className="pointer-events-none fixed inset-0 z-0"
+      style={{
+        backgroundColor: isDark ? "transparent" : lightBase,
+        backgroundImage: "radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 65%)",
+      }}
+    >
        <Canvas camera={{ position: [0, 0, 6], fov: 75 }}>
          <Stars scrollProgress={scrollProgress} />
        </Canvas>
-       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.04),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.06),transparent_40%)]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: isDark ? darkOverlay : lightOverlay,
+        }}
+      />
      </div>
    )
  }

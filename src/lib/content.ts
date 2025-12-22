@@ -41,7 +41,7 @@ export type ShowcaseSkill = {
  > = {
    "pt-br": {
     title:
-      "Dev Front-end | React | Next.js | TypeScript | Node.js | Tailwind | Flutter/Dart",
+      "Dev Front-end | React | Next.ts | TypeScript | Node.ts | Tailwind | Flutter/Dart",
     subtitle:
       "Olá, sou Luiz Rodrigues, Desenvolvedor Front-end. Comecei em 2023 e venho aplicando JavaScript moderno, interfaces web e otimização de performance em projetos reais. Também exploro Flutter/Dart para experiências mobile.",
     cta: "Fale comigo",
@@ -49,7 +49,7 @@ export type ShowcaseSkill = {
   },
   "en-us": {
     title:
-      "Front-end Developer | React | Next.js | TypeScript | Node.js | Tailwind | Flutter/Dart",
+      "Front-end Developer | React | Next.ts | TypeScript | Node.ts | Tailwind | Flutter/Dart",
     subtitle:
       "Hi, I'm Luiz Rodrigues, a Front-end Developer. I started in 2023 and have been applying modern JavaScript, web UI, and performance optimization in real projects. Also exploring Flutter/Dart (beginner) for mobile experiences.",
     cta: "Contact me",
@@ -57,7 +57,7 @@ export type ShowcaseSkill = {
   },
   "fr-fr": {
     title:
-      "Développeur Front-end | React | Next.js | TypeScript | Node.js | Tailwind | Flutter/Dart",
+      "Développeur Front-end | React | Next.ts | TypeScript | Node.js | Tailwind | Flutter/Dart",
     subtitle:
       "Salut, je suis Luiz Rodrigues, Développeur Front-end. J'ai commencé en 2023 et j'applique JavaScript moderne, interfaces web et optimisation des performances sur des projets réels. J'explore aussi Flutter/Dart (débutant) pour des expériences mobiles.",
     cta: "Parler avec moi",
@@ -144,15 +144,15 @@ export const qualifications: Qualification[] = [
 
 export const experiences: Experience[] = [
   {
-    role: "Desenvolvedor Front-end (Startup)",
-    period: "7 meses",
+    role: "Desenvolvedor Web/App — 360erp",
+    period: "Set/2025 - Atual",
     description: {
       "pt-br":
-        "Desenvolvimento de sites, manutenção e correção de bugs em interfaces. Também atuei com PHP/Laravel em formulários e validação de usuários, ampliando a visão de back-end.",
+        "Atuação em sistema interno e app da 360erp. ERP integra áreas como finanças, estoque, vendas e operações; trabalho em fluxos e telas que conectam esses módulos, garantindo consistência e usabilidade.",
       "en-us":
-        "Built websites, maintained and fixed UI bugs. Also worked with PHP/Laravel on forms and user validation, expanding back-end understanding.",
+        "Working on 360erp’s internal system and app. ERP ties finance, inventory, sales, and operations; I build flows and screens connecting these modules, ensuring consistency and usability.",
       "fr-fr":
-        "Création de sites, maintenance et correction de bugs d’interface. Travail avec PHP/Laravel sur formulaires et validation d’utilisateurs, élargissant la vision back-end.",
+        "Travail sur le système interne et l’app de 360erp. L’ERP relie finance, stock, ventes et opérations ; je conçois des flux et écrans reliant ces modules avec cohérence et ergonomie.",
     },
   },
   {
@@ -168,15 +168,15 @@ export const experiences: Experience[] = [
     },
   },
   {
-    role: "Desenvolvedor Web/App — 360erp",
-    period: "Set/2025 - Atual",
+    role: "Desenvolvedor Front-end (Startup)",
+    period: "Mar/2024 - Out/2024",
     description: {
       "pt-br":
-        "Atuação em sistema interno e app da 360erp. ERP integra áreas como finanças, estoque, vendas e operações; trabalho em fluxos e telas que conectam esses módulos, garantindo consistência e usabilidade.",
+        "Desenvolvimento de sites, manutenção e correção de bugs em interfaces. Também atuei com PHP/Laravel em formulários e validação de usuários, ampliando a visão de back-end.",
       "en-us":
-        "Working on 360erp’s internal system and app. ERP ties finance, inventory, sales, and operations; I build flows and screens connecting these modules, ensuring consistency and usability.",
+        "Built websites, maintained and fixed UI bugs. Also worked with PHP/Laravel on forms and user validation, expanding back-end understanding.",
       "fr-fr":
-        "Travail sur le système interne et l’app de 360erp. L’ERP relie finance, stock, ventes et opérations ; je conçois des flux et écrans reliant ces modules avec cohérence et ergonomie.",
+        "Création de sites, maintenance et correction de bugs d’interface. Travail avec PHP/Laravel sur formulaires et validation d’utilisateurs, élargissant la vision back-end.",
     },
   },
 ]
@@ -223,7 +223,7 @@ export const skillShowcase: ShowcaseSkill[] = [
   },
   {
     id: "bootstrap",
-    category: "front",
+    category: "outros",
     label: { "pt-br": "Bootstrap", "en-us": "Bootstrap", "fr-fr": "Bootstrap" },
     description: {
       "pt-br":
@@ -235,16 +235,29 @@ export const skillShowcase: ShowcaseSkill[] = [
     },
   },
   {
-    id: "antd",
-    category: "front",
-    label: { "pt-br": "Ant Design", "en-us": "Ant Design", "fr-fr": "Ant Design" },
+    id: "mui",
+    category: "outros",
+    label: { "pt-br": "MUI React", "en-us": "MUI React", "fr-fr": "MUI React" },
     description: {
       "pt-br":
-        "Biblioteca React corporativa com design consistente e componentes ricos.",
+        "Componentes React baseados em Material Design com theming pronto e acessibilidade.",
       "en-us":
-        "Enterprise React library with consistent design and rich components.",
+        "React components built on Material Design with ready theming and accessibility.",
       "fr-fr":
-        "Bibliothèque React d’entreprise avec design cohérent et composants riches.",
+        "Composants React Material Design avec thèmes prêts et accessibilité.",
+    },
+  },
+  {
+    id: "shadcn",
+    category: "outros",
+    label: { "pt-br": "shadcn/ui", "en-us": "shadcn/ui", "fr-fr": "shadcn/ui" },
+    description: {
+      "pt-br":
+        "Componentes React desacoplados (Radix + Tailwind) para montar UIs personalizadas.",
+      "en-us":
+        "Headless React components (Radix + Tailwind) to build custom UIs.",
+      "fr-fr":
+        "Composants React headless (Radix + Tailwind) pour créer des UIs sur mesure.",
     },
   },
   {
@@ -258,6 +271,19 @@ export const skillShowcase: ShowcaseSkill[] = [
         "ES6+, async/await, DOM. Core for front and back with readability focus.",
       "fr-fr":
         "ES6+, async/await, DOM. Base pour front et back avec focus lisibilité.",
+    },
+  },
+  {
+    id: "typescript",
+    category: "back",
+    label: { "pt-br": "TypeScript", "en-us": "TypeScript", "fr-fr": "TypeScript" },
+    description: {
+      "pt-br":
+        "TypeScript para tipagem estática e verificação de tipos em tempo real.",
+      "en-us":
+        "TypeScript for static typing and type checking in real time.",
+      "fr-fr":
+        "TypeScript pour la typage statique et la vérification de types en temps réel.",
     },
   },
   {
@@ -301,7 +327,7 @@ export const skillShowcase: ShowcaseSkill[] = [
   },
   {
     id: "flutter",
-    category: "outros",
+    category: "front",
     label: { "pt-br": "Flutter / Dart", "en-us": "Flutter / Dart", "fr-fr": "Flutter / Dart" },
     description: {
       "pt-br":
@@ -328,7 +354,7 @@ export const skillShowcase: ShowcaseSkill[] = [
   {
     id: "figma",
     category: "outros",
-    label: { "pt-br": "Figma (básico)", "en-us": "Figma (basic)", "fr-fr": "Figma (basique)" },
+    label: { "pt-br": "Figma Design", "en-us": "Figma Design", "fr-fr": "Figma Design" },
     description: {
       "pt-br":
         "Apoio em design, leitura de layouts e colaboração em protótipos.",
@@ -366,9 +392,35 @@ export const skillShowcase: ShowcaseSkill[] = [
   },
 ]
 
- export const projects: Project[] = [
-   {
+export const projects: Project[] = [
+  {
     id: 1,
+    title: { "pt-br": "350erp", "en-us": "350erp", "fr-fr": "350erp" },
+    subtitle: {
+      "pt-br": "ERP web e mobile para operações e finanças",
+      "en-us": "Web and mobile ERP for operations and finance",
+      "fr-fr": "ERP web et mobile pour opérations et finances",
+    },
+    description: {
+      "pt-br":
+        "ERP que integra finanças, estoque, vendas e operações em um painel web e app mobile. Dashboards, fluxos e controle de permissões para manter dados centralizados e equipes sincronizadas.",
+      "en-us":
+        "ERP connecting finance, inventory, sales, and operations across web dashboard and mobile app. Dashboards, workflows, and access control keep data centralized and teams aligned.",
+      "fr-fr":
+        "ERP reliant finances, stock, ventes et opérations via un tableau de bord web et une app mobile. Tableaux de bord, flux et contrôle d’accès pour centraliser les données et aligner les équipes.",
+    },
+    category: {
+      "pt-br": "Sistema e App",
+      "en-us": "System and App",
+      "fr-fr": "Système et App",
+    },
+    skills: ["React", "Next.js", "TypeScript", "Node.js", "Tailwind CSS", "Figma"],
+    liveLink: "#",
+    figmaLink: "#",
+    themeColor: "#2563eb",
+  },
+  {
+    id: 2,
     title: { "pt-br": "LunarBot.io", "en-us": "LunarBot.io", "fr-fr": "LunarBot.io" },
     subtitle: {
       "pt-br": "Dashboard Administrativo e Landing Page",
@@ -393,9 +445,9 @@ export const skillShowcase: ShowcaseSkill[] = [
     figmaLink:
       "https://www.figma.com/design/0gHgezIDrlEidd1cYQymAY/lunarbot?node-id=8-134&t=9CtnBgcuyuGNeN0I-0",
     themeColor: "#8b5cf6",
-   },
-   {
-    id: 2,
+  },
+  {
+    id: 3,
     title: { "pt-br": "Aprova Legal", "en-us": "Aprova Legal", "fr-fr": "Aprova Legal" },
     subtitle: {
       "pt-br": "Sistema de Seguro Imobiliário",
@@ -415,9 +467,9 @@ export const skillShowcase: ShowcaseSkill[] = [
     liveLink: "#",
     figmaLink: "https://www.figma.com/design/3RdM5hEbL9989k5AhNRTIe/Aprova-Legal?t=xAN2eKZc5v8n3KAc-0",
     themeColor: "#22c55e",
-   },
-   {
-    id: 3,
+  },
+  {
+    id: 4,
     title: { "pt-br": "Haber Contabilidade", "en-us": "Haber Accounting", "fr-fr": "Haber Comptabilité" },
     subtitle: {
       "pt-br": "Landing Page profissional e micro-sistema contábil",
@@ -441,8 +493,30 @@ export const skillShowcase: ShowcaseSkill[] = [
     liveLink: "https://haber.vercel.app",
     figmaLink: "#",
     themeColor: "#0ea5e9",
-   },
- ]
+  },
+  {
+    id: 5,
+    title: { "pt-br": "Newline Persianas", "en-us": "Newline Persianas", "fr-fr": "Newline Persianas" },
+    subtitle: {
+      "pt-br": "Landing page com catálogo e pedido de orçamento",
+      "en-us": "Landing page with catalog and quote request",
+      "fr-fr": "Landing page avec catalogue et demande de devis",
+    },
+    description: {
+      "pt-br":
+        "Landing page para fabricante de persianas com catálogo visual, destaques de materiais e CTA de orçamento. Conteúdo otimizado para gerar confiança e captar leads.",
+      "en-us":
+        "Landing page for a blinds manufacturer featuring visual catalog, material highlights, and quote CTA. Content optimized to build trust and capture leads.",
+      "fr-fr":
+        "Landing page pour un fabricant de stores avec catalogue visuel, mise en avant des matériaux et CTA de devis. Contenu optimisé pour inspirer confiance et générer des leads.",
+    },
+    category: { "pt-br": "Landing Page", "en-us": "Landing Page", "fr-fr": "Landing Page" },
+    skills: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel", "Figma"],
+    liveLink: "#",
+    figmaLink: "#",
+    themeColor: "#d97706",
+  },
+]
 
  export const contactCopy: Record<Locale, { title: string; subtitle: string }> = {
    "pt-br": {

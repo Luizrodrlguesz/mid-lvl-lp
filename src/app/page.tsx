@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useMemo, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion, useMotionValueEvent, useScroll } from "framer-motion"
-import { ArrowUpRight, Github, Linkedin, Mail, ExternalLink, FileDown } from "lucide-react"
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion"
+import { ArrowUpRight, Github, Linkedin, Mail, ExternalLink, FileDown, MessageCircle } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { LoadingScreen } from "@/components/loading-screen"
@@ -31,9 +31,10 @@ import {
 } from "@/lib/content"
 
 const socials = [
-  { label: "LinkedIn", href: "https://www.linkedin.com", icon: <Linkedin className="h-4 w-4" /> },
-  { label: "GitHub", href: "https://github.com", icon: <Github className="h-4 w-4" /> },
-  { label: "E-mail", href: "mailto:contato@luizhenrique.dev", icon: <Mail className="h-4 w-4" /> },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/luiz-rodrigues-372866256/", icon: <Linkedin className="h-4 w-4" /> },
+  { label: "GitHub", href: "https://github.com/Luizrodrlguesz", icon: <Github className="h-4 w-4" /> },
+  { label: "E-mail", href: "mailto:luizh4321@gmail.com", icon: <Mail className="h-4 w-4" /> },
+  { label: "WhatsApp", href: "https://wa.me/5541988657834", icon: <MessageCircle className="h-4 w-4" /> },
 ]
 
 export default function Home() {
@@ -92,6 +93,8 @@ export default function Home() {
     [],
   )
   const [highlightIdx, setHighlightIdx] = useState(0)
+  const categorySkills = showcaseByCategory[skillCategory]
+  const shouldSplitColumns = categorySkills.length > 5
 
   useEffect(() => {
     if (highlightTargets.length === 0) return
@@ -109,6 +112,19 @@ export default function Home() {
     schedule(1 % highlightTargets.length, 1700)
     return () => clearTimeout(timer)
   }, [highlightTargets.length])
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id)
+    if (!el) return
+    const offset = 80
+    const top = el.getBoundingClientRect().top + window.scrollY - offset
+    window.scrollTo({ top, behavior: "smooth" })
+  }
+
+  const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    event.preventDefault()
+    scrollToSection(id)
+  }
 
   const renderHighlightedTitle = (text: string, activeIdx: number) => {
     const regex = new RegExp(`(${highlightTargets.join("|")})`, "gi")
@@ -172,42 +188,50 @@ export default function Home() {
         <SiteHeader locale={locale} />
 
         <main className="mx-auto w-full px-5 pb-24">
-          {showFloatingNav ? (
-            <div className="fixed top-4 right-4 z-40 hidden gap-2 lg:flex">
-              <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-card/80 px-2 py-1 shadow-md backdrop-blur">
-                <div className="flex items-center gap-1">
-                  {navSections.map((id) => (
-                    <Button
-                      key={id}
-                      asChild
-                      variant="ghost"
-                      size="sm"
-                      className={cn(
-                        "rounded-full px-3 text-xs",
-                        activeNav === id
-                          ? "bg-foreground text-background"
-                          : "text-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      <Link href={`#${id}`}>
-                        {id === "hero"
-                          ? "Início"
-                          : id === "about"
-                            ? "Sobre"
-                            : id === "skills"
-                              ? "Skills"
-                              : id === "projects"
-                                ? "Projetos"
-                                : "Contato"}
-                      </Link>
-                    </Button>
-                  ))}
+          <AnimatePresence>
+            {showFloatingNav ? (
+              <motion.div
+                className="fixed top-4 right-4 z-40 hidden gap-2 lg:flex"
+                initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+              >
+                <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-card/80 px-1 py-1 shadow-md backdrop-blur">
+                  <div className="flex items-center gap-1">
+                    {navSections.map((id) => (
+                      <Button
+                        key={id}
+                        asChild
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                          "rounded-full px-3 text-xs",
+                          activeNav === id
+                            ? "bg-foreground text-background"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        <Link href={`#${id}`} onClick={(e) => handleAnchorClick(e, id)}>
+                          {id === "hero"
+                            ? "Início"
+                            : id === "about"
+                              ? "Sobre"
+                              : id === "skills"
+                                ? "Skills"
+                                : id === "projects"
+                                  ? "Projetos"
+                                  : "Contato"}
+                        </Link>
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="h-6 w-px bg-border/70" />
+                  <ThemeToggle />
                 </div>
-                <div className="h-6 w-px bg-border/70" />
-                <ThemeToggle />
-              </div>
-            </div>
-          ) : null}
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
           <section id="hero" className="flex flex-col gap-10 py-16">
             <motion.div
               className="section-card"
@@ -237,23 +261,29 @@ export default function Home() {
                   <p className="text-lg text-muted-foreground">{hero.subtitle}</p>
                   <div className="flex flex-wrap gap-3">
                     <Button asChild size="lg" className="rounded-full">
-                      <Link href="#contact" className="flex items-center gap-2">
+                      <Link
+                        href="#contact"
+                        className="flex items-center gap-2"
+                        onClick={(e) => handleAnchorClick(e, "contact")}
+                      >
                         {hero.cta} <ArrowUpRight className="h-4 w-4" />
                       </Link>
                     </Button>
                     <Button asChild variant="secondary" size="lg" className="rounded-full">
-                      <Link href="#projects">{hero.secondaryCta}</Link>
+                      <Link href="#projects" onClick={(e) => handleAnchorClick(e, "projects")}>
+                        {hero.secondaryCta}
+                      </Link>
                     </Button>
                   </div>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="rounded-2xl border border-border/60 bg-card/70 p-4">
                       <p className="text-xs text-muted-foreground">Experiência</p>
-                      <p className="text-2xl font-semibold">1+ ano</p>
+                      <p className="text-2xl font-semibold">2+ anos</p>
                       <p className="text-muted-foreground">Front-end & produto</p>
                     </div>
                     <div className="rounded-2xl border border-border/60 bg-card/70 p-4">
                       <p className="text-xs text-muted-foreground">Stack principal</p>
-                      <p className="text-2xl font-semibold">React · Node</p>
+                      <p className="text-2xl font-semibold text-blue-500">React · Node</p>
                       <p className="text-muted-foreground">TypeScript · Flutter</p>
                     </div>
                   </div>
@@ -261,7 +291,7 @@ export default function Home() {
                 <div className="flex flex-col items-center gap-4 h-full">
                   <div className="relative h-32 w-32 overflow-hidden h-full">
                     <Image
-                      src="/assets/lh-logo.png"
+                      src="/assets/lr-logo.png"
                       alt="Logo Luiz Rodrigues"
                       fill
                       className="object-contain"
@@ -307,7 +337,7 @@ export default function Home() {
                   <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
                     Sobre
                   </p>
-                  <h2 className="text-2xl font-semibold">Quem sou</h2>
+                  <h2 className="text-2xl font-semibold text-blue-500">Quem sou eu?</h2>  
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1 rounded-full border border-border/60 bg-card/60 p-1 text-xs shadow-sm">
@@ -386,7 +416,7 @@ export default function Home() {
                   <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
                     Skills
                   </p>
-                  <h2 className="text-2xl font-semibold">Toolkit principal</h2>
+                  <h2 className="text-2xl font-semibold text-blue-500">Toolkit principal</h2>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1 rounded-full border border-border/60 bg-card/60 p-1 text-xs shadow-sm">
@@ -465,8 +495,13 @@ export default function Home() {
                         ))}
                       </div>
                       <Separator />
-                      <div className="grid gap-2">
-                        {showcaseByCategory[skillCategory].map((skill) => (
+                      <div
+                        className={cn(
+                          "grid gap-2",
+                          shouldSplitColumns ? "grid-rows-5 grid-flow-col auto-cols-fr" : "grid-cols-1",
+                        )}
+                      >
+                        {categorySkills.map((skill) => (
                           <Button
                             key={skill.id}
                             variant={selectedSkillId === skill.id ? "secondary" : "ghost"}
@@ -484,15 +519,24 @@ export default function Home() {
                       </div>
                     </CardContent>
                   </Card>
-                  <Card className="border-border/60 bg-background/60">
-                    <CardHeader className="pb-2">
+                  <Card className="relative overflow-hidden border-border/60 bg-background/60">
+                    <div
+                      className="pointer-events-none absolute inset-0 opacity-10"
+                      style={{
+                        backgroundImage: "url('/assets/html-css.png')",
+                        backgroundSize: "60%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "right center",
+                      }}
+                    />
+                    <CardHeader className="relative pb-2">
                       <CardTitle className="text-base">
-                        {showcaseByCategory[skillCategory].find((s) => s.id === selectedSkillId)?.label[locale] ??
+                        {categorySkills.find((s) => s.id === selectedSkillId)?.label[locale] ??
                           "Selecione uma skill"}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      {showcaseByCategory[skillCategory].find((s) => s.id === selectedSkillId)?.description[locale] ??
+                    <CardContent className="relative text-sm text-muted-foreground">
+                      {categorySkills.find((s) => s.id === selectedSkillId)?.description[locale] ??
                         "Escolha uma skill para ver os detalhes."}
                     </CardContent>
                   </Card>
@@ -513,7 +557,7 @@ export default function Home() {
                 <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
                   Projetos
                 </p>
-                <h2 className="text-2xl font-semibold">Alguns destaques</h2>
+                <h2 className="text-2xl font-semibold text-blue-500">Alguns destaques</h2>
                 <div className="flex flex-wrap justify-center gap-2 rounded-full border border-border/60 bg-card/60 p-1 shadow-sm">
                   {projects.map((project, idx) => (
                     <button
@@ -613,7 +657,7 @@ export default function Home() {
                 <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
                   Contato
                 </p>
-                <h2 className="text-2xl font-semibold">{contact.title}</h2>
+                <h2 className="text-2xl font-semibold text-blue-500">{contact.title}</h2>
                 <p className="text-muted-foreground">{contact.subtitle}</p>
               </div>
 

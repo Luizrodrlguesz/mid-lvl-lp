@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   description:
     "Portfólio de Luiz Rodrigues, desenvolvedor front-end focado em experiências digitais com performance.",
   icons: {
-    icon: "/assets/lh-logo.png",
-    shortcut: "/assets/lh-logo.png",
-    apple: "/assets/lh-logo.png",
+    icon: "/assets/lr-logo.png",
+    shortcut: "/assets/lr-logo.png",
+    apple: "/assets/lr-logo.png",
   },
 }
 
