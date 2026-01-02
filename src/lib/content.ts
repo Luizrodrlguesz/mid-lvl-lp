@@ -8,7 +8,8 @@ export type Project = {
   category: Record<Locale, string>
   skills: string[]
   liveLink: string
-  figmaLink: string
+  figmaLink?: string
+  image?: string
   themeColor: string
 }
 
@@ -30,9 +31,10 @@ export type Experience = {
 
 export type ShowcaseSkill = {
   id: string
-  category: "front" | "back" | "outros"
+  category: "linguagens" | "front" | "back" | "outros"
   label: Record<Locale, string>
   description: Record<Locale, string>
+  image: string
 }
 
  export const heroCopy: Record<
@@ -75,13 +77,13 @@ export type ShowcaseSkill = {
  }
 
  export const skills: Skill[] = [
-   { name: "React / Next.js", level: 90 },
-   { name: "TypeScript", level: 88 },
-   { name: "Node.js / APIs", level: 82 },
-   { name: "UI / UX Systems", level: 80 },
-  { name: "Flutter / Dart", level: 45 },
-   { name: "Testes e Qualidade", level: 76 },
-   { name: "DevOps básico", level: 68 },
+   { name: "React / Next.js", level: 65 },
+   { name: "TypeScript", level: 55 },
+   { name: "Node.js / APIs", level: 50 },
+   { name: "UI / UX Systems", level: 75 },
+  { name: "Flutter / Dart", level: 35 },
+   { name: "Testes e Qualidade", level: 70 },
+   { name: "DevOps básico", level: 75 },
  ]
 
 export const qualifications: Qualification[] = [
@@ -168,15 +170,15 @@ export const experiences: Experience[] = [
     },
   },
   {
-    role: "Desenvolvedor Front-end (Startup)",
+    role: "Desenvolvedor Front-end - PallaceMakers",
     period: "Mar/2024 - Out/2024",
     description: {
       "pt-br":
-        "Desenvolvimento de sites, manutenção e correção de bugs em interfaces. Também atuei com PHP/Laravel em formulários e validação de usuários, ampliando a visão de back-end.",
+        "Desenvolvimento de sites, LPs e manutenção e correção de bugs em interfaces. Também atuei com PHP/Laravel em formulários e validação de usuários, ampliando a visão de back-end.",
       "en-us":
-        "Built websites, maintained and fixed UI bugs. Also worked with PHP/Laravel on forms and user validation, expanding back-end understanding.",
+        "Built websites, LPs and maintained and fixed UI bugs. Also worked with PHP/Laravel on forms and user validation, expanding back-end understanding.",
       "fr-fr":
-        "Création de sites, maintenance et correction de bugs d’interface. Travail avec PHP/Laravel sur formulaires et validation d’utilisateurs, élargissant la vision back-end.",
+        "Création de sites, LPs et maintenance et correction de bugs d’interface. Travail avec PHP/Laravel sur formulaires et validation d’utilisateurs, élargissant la vision back-end.",
     },
   },
 ]
@@ -194,6 +196,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Base pour créer des sites. HTML sémantique et CSS moderne, y compris le responsive.",
     },
+    image: "/assets/skills/htmlcss.png",
   },
   {
     id: "react",
@@ -207,10 +210,11 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Composants, hooks et intégration d’API pour des UI réactives. Focus sur état, routage et bonnes pratiques.",
     },
+    image: "/assets/skills/react.png",
   },
   {
     id: "tailwind",
-    category: "front",
+    category: "outros",
     label: { "pt-br": "Tailwind CSS", "en-us": "Tailwind CSS", "fr-fr": "Tailwind CSS" },
     description: {
       "pt-br":
@@ -220,6 +224,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "CSS utilitaire pour des mises en page rapides, accessibles et responsives directement dans le JSX.",
     },
+    image: "/assets/skills/tailwind.png",
   },
   {
     id: "bootstrap",
@@ -233,6 +238,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Composants prêts à l’emploi et grille responsive pour livrer rapidement.",
     },
+    image: "/assets/skills/bootstrap.png",
   },
   {
     id: "mui",
@@ -246,6 +252,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Composants React Material Design avec thèmes prêts et accessibilité.",
     },
+    image: "/assets/skills/mui.png",
   },
   {
     id: "shadcn",
@@ -259,10 +266,11 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Composants React headless (Radix + Tailwind) pour créer des UIs sur mesure.",
     },
+    image: "/assets/skills/shadcn.png",
   },
   {
     id: "javascript",
-    category: "back",
+    category: "linguagens",
     label: { "pt-br": "JavaScript (ES6+)", "en-us": "JavaScript (ES6+)", "fr-fr": "JavaScript (ES6+)" },
     description: {
       "pt-br":
@@ -272,10 +280,11 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "ES6+, async/await, DOM. Base pour front et back avec focus lisibilité.",
     },
+    image: "/assets/skills/js.png",
   },
   {
     id: "typescript",
-    category: "back",
+    category: "linguagens",
     label: { "pt-br": "TypeScript", "en-us": "TypeScript", "fr-fr": "TypeScript" },
     description: {
       "pt-br":
@@ -285,6 +294,18 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "TypeScript pour la typage statique et la vérification de types en temps réel.",
     },
+    image: "/assets/skills/ts.png",
+  },
+  {
+    id: "dart",
+    category: "linguagens",
+    label: { "pt-br": "Dart", "en-us": "Dart", "fr-fr": "Dart" },
+    description: {
+      "pt-br": "Linguagem base do Flutter, focada em apps reativos e multi-plataforma.",
+      "en-us": "Flutter’s core language, focused on reactive, multi-platform apps.",
+      "fr-fr": "Langage du Flutter, pensé pour des apps réactives multi-plateformes.",
+    },
+    image: "/assets/skills/dart.png",
   },
   {
     id: "node",
@@ -298,6 +319,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "APIs REST avec Express, intégration BD, middlewares d’authentification/validation.",
     },
+    image: "/assets/skills/node.png",
   },
   {
     id: "laravel",
@@ -311,10 +333,11 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Routes, auth, formulaires et sécurité. Expérience full-cycle en PHP/Laravel.",
     },
+    image: "/assets/skills/laravel.png",
   },
   {
     id: "next",
-    category: "back",
+    category: "front",
     label: { "pt-br": "Next.js", "en-us": "Next.js", "fr-fr": "Next.js" },
     description: {
       "pt-br":
@@ -324,11 +347,12 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "SSR/SSG, optimisations de performance et routage pour apps React modernes.",
     },
+    image: "/assets/skills/next.png",
   },
   {
     id: "flutter",
     category: "front",
-    label: { "pt-br": "Flutter / Dart", "en-us": "Flutter / Dart", "fr-fr": "Flutter / Dart" },
+    label: { "pt-br": "Flutter", "en-us": "Flutter", "fr-fr": "Flutter" },
     description: {
       "pt-br":
         "Explorando apps mobile com widgets, navegação e estado básico.",
@@ -337,6 +361,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Exploration d’apps mobiles avec widgets, navigation et état basique.",
     },
+    image: "/assets/skills/flutter.png",
   },
   {
     id: "git",
@@ -350,6 +375,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Flux avec branches, PRs et versioning pour équipes agiles.",
     },
+    image: "/assets/skills/git.png",
   },
   {
     id: "figma",
@@ -363,10 +389,11 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Support design, lecture de maquettes et collaboration sur prototypes.",
     },
+    image: "/assets/skills/figma.png",
   },
   {
     id: "postman",
-    category: "outros",
+    category: "back",
     label: { "pt-br": "Postman", "en-us": "Postman", "fr-fr": "Postman" },
     description: {
       "pt-br":
@@ -376,6 +403,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Tests et documentation d’API, collections et environnements pour validation rapide.",
     },
+    image: "/assets/skills/postman.png",
   },
   {
     id: "vercel",
@@ -389,6 +417,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Déploiement rapide pour apps front-end/Next.js avec prévisualisations et CI simplifiée.",
     },
+    image: "/assets/skills/vercel.png",
   },
 ]
 
@@ -416,7 +445,6 @@ export const projects: Project[] = [
     },
     skills: ["React", "Next.js", "TypeScript", "Node.js", "Tailwind CSS", "Figma"],
     liveLink: "#",
-    figmaLink: "#",
     themeColor: "#2563eb",
   },
   {
@@ -442,8 +470,8 @@ export const projects: Project[] = [
     },
     skills: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Postman", "Notion", "Figma"],
     liveLink: "https://lunarbot.com.br/",
-    figmaLink:
-      "https://www.figma.com/design/0gHgezIDrlEidd1cYQymAY/lunarbot?node-id=8-134&t=9CtnBgcuyuGNeN0I-0",
+    figmaLink: "https://www.figma.com/design/0gHgezIDrlEidd1cYQymAY/lunarbot?node-id=8-134&t=9CtnBgcuyuGNeN0I-0",
+    image: "/assets/projects/lunar.png",
     themeColor: "#8b5cf6",
   },
   {
@@ -465,7 +493,7 @@ export const projects: Project[] = [
     category: { "pt-br": "Sistema", "en-us": "System", "fr-fr": "Système" },
     skills: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Figma"],
     liveLink: "#",
-    figmaLink: "https://www.figma.com/design/3RdM5hEbL9989k5AhNRTIe/Aprova-Legal?t=xAN2eKZc5v8n3KAc-0",
+    image: "/assets/projects/aprova.png",
     themeColor: "#22c55e",
   },
   {
@@ -491,7 +519,6 @@ export const projects: Project[] = [
     },
     skills: ["React", "Tailwind CSS", "Vercel"],
     liveLink: "https://haber.vercel.app",
-    figmaLink: "#",
     themeColor: "#0ea5e9",
   },
   {

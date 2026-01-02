@@ -43,7 +43,7 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [aboutTab, setAboutTab] = useState<"capacitacoes" | "experiencia">("capacitacoes")
   const [skillsTab, setSkillsTab] = useState<"presentation" | "toolkit">("presentation")
-  const [skillCategory, setSkillCategory] = useState<"front" | "back" | "outros">("front")
+  const [skillCategory, setSkillCategory] = useState<"linguagens" | "front" | "back" | "outros">("linguagens")
   const [activeProject, setActiveProject] = useState(0)
   const [activeNav, setActiveNav] = useState("hero")
   const [showFloatingNav, setShowFloatingNav] = useState(false)
@@ -72,6 +72,7 @@ export default function Home() {
 
   const showcaseByCategory = useMemo(
     () => ({
+      linguagens: skillShowcase.filter((s) => s.category === "linguagens"),
       front: skillShowcase.filter((s) => s.category === "front"),
       back: skillShowcase.filter((s) => s.category === "back"),
       outros: skillShowcase.filter((s) => s.category === "outros"),
@@ -80,7 +81,7 @@ export default function Home() {
   )
 
   const [selectedSkillId, setSelectedSkillId] = useState<string | undefined>(
-    showcaseByCategory.front[0]?.id,
+    showcaseByCategory.linguagens[0]?.id,
   )
 
   const navSections = useMemo(
@@ -94,7 +95,28 @@ export default function Home() {
   )
   const [highlightIdx, setHighlightIdx] = useState(0)
   const categorySkills = showcaseByCategory[skillCategory]
+  const selectedSkill = categorySkills.find((s) => s.id === selectedSkillId)
+  const selectedSkillImage = selectedSkill?.image ?? "/assets/skills/htmlcss.png"
   const shouldSplitColumns = categorySkills.length > 5
+  const projectImage = projects[activeProject]?.image
+  const skillLogos: Record<string, string> = useMemo(
+    () => ({
+      React: "/assets/skills/react.png",
+      "Next.js": "/assets/skills/next.png",
+      TypeScript: "/assets/skills/ts.png",
+      "Tailwind CSS": "/assets/skills/tailwind.png",
+      Figma: "/assets/skills/figma.png",
+      "HTML5 & CSS3": "/assets/skills/htmlcss.png",
+      Bootstrap: "/assets/skills/bootstrap.png",
+      JavaScript: "/assets/skills/js.png",
+      "Laravel (PHP)": "/assets/skills/laravel.png",
+      Postman: "/assets/skills/postman.png",
+      Notion: "/assets/skills/notion.png",
+      "Node.js": "/assets/skills/node.png",
+      Vercel: "/assets/skills/vercel.png",
+    }),
+    [],
+  )
 
   useEffect(() => {
     if (highlightTargets.length === 0) return
@@ -473,7 +495,7 @@ export default function Home() {
                     </CardHeader>
                     <CardContent className="space-y-3 text-sm">
                       <div className="flex flex-wrap gap-2">
-                        {(["front", "back", "outros"] as const).map((cat) => (
+                        {(["linguagens", "front", "back", "outros"] as const).map((cat) => (
                           <Button
                             key={cat}
                             variant={skillCategory === cat ? "default" : "outline"}
@@ -490,7 +512,13 @@ export default function Home() {
                               if (first) setSelectedSkillId(first.id)
                             }}
                           >
-                            {cat === "front" ? "Front-end" : cat === "back" ? "Back-end" : "Outros"}
+                            {cat === "linguagens"
+                              ? "Linguagens"
+                              : cat === "front"
+                                ? "Front-end"
+                                : cat === "back"
+                                  ? "Back-end"
+                                  : "Outros"}
                           </Button>
                         ))}
                       </div>
@@ -523,7 +551,7 @@ export default function Home() {
                     <div
                       className="pointer-events-none absolute inset-0 opacity-10"
                       style={{
-                        backgroundImage: "url('/assets/html-css.png')",
+                        backgroundImage: `url('${selectedSkillImage}')`,
                         backgroundSize: "60%",
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "right center",
@@ -531,13 +559,11 @@ export default function Home() {
                     />
                     <CardHeader className="relative pb-2">
                       <CardTitle className="text-base">
-                        {categorySkills.find((s) => s.id === selectedSkillId)?.label[locale] ??
-                          "Selecione uma skill"}
+                        {selectedSkill?.label[locale] ?? "Selecione uma skill"}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="relative text-sm text-muted-foreground">
-                      {categorySkills.find((s) => s.id === selectedSkillId)?.description[locale] ??
-                        "Escolha uma skill para ver os detalhes."}
+                      {selectedSkill?.description[locale] ?? "Escolha uma skill para ver os detalhes."}
                     </CardContent>
                   </Card>
                 </div>
@@ -584,7 +610,18 @@ export default function Home() {
                       background: `radial-gradient(circle at 30% 20%, ${projects[activeProject].themeColor}40, transparent 45%), linear-gradient(135deg, ${projects[activeProject].themeColor}25, transparent 60%)`,
                     }}
                   />
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/40 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent_45%),linear-gradient(120deg,rgba(255,255,255,0.08),transparent_55%)] shadow-lg" />
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/40 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent_45%),linear-gradient(120deg,rgba(255,255,255,0.08),transparent_55%)] shadow-lg">
+                    {projectImage ? (
+                      <Image
+                        src={projectImage}
+                        alt={`Preview do projeto ${projects[activeProject].title[locale]}`}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 640px, 100vw"
+                        priority
+                      />
+                    ) : null}
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -610,11 +647,31 @@ export default function Home() {
                   <div className="space-y-2">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tecnologias</p>
                     <div className="flex flex-wrap gap-2">
-                      {projects[activeProject].skills.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="rounded-full px-3 py-1 text-xs">
-                          {tech}
-                        </Badge>
-                      ))}
+                      {projects[activeProject].skills.map((tech) => {
+                        const logo = skillLogos[tech]
+                        if (logo) {
+                          return (
+                            <div
+                              key={tech}
+                              className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-card/70 p-1.5 shadow-sm"
+                              title={tech}
+                            >
+                              <Image
+                                src={logo}
+                                alt={tech}
+                                width={40}
+                                height={40}
+                                className="object-contain"
+                              />
+                            </div>
+                          )
+                        }
+                        return (
+                          <Badge key={tech} variant="secondary" className="rounded-full px-3 py-1 text-xs">
+                            {tech}
+                          </Badge>
+                        )
+                      })}
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-3">
@@ -628,17 +685,19 @@ export default function Home() {
                         Visitar
                       </Link>
                     </Button>
-                    <Button
-                      variant="outline"
-                      asChild
-                      className="rounded-full border-border/70"
-                      style={{ borderColor: projects[activeProject].themeColor + "80" }}
-                    >
-                      <Link href={projects[activeProject].figmaLink} target="_blank" rel="noreferrer">
-                        <ArrowUpRight className="mr-2 h-4 w-4" />
-                        Figma
-                      </Link>
-                    </Button>
+                    {projects[activeProject].figmaLink ? (
+                      <Button
+                        variant="outline"
+                        asChild
+                        className="rounded-full border-border/70"
+                        style={{ borderColor: projects[activeProject].themeColor + "80" }}
+                      >
+                        <Link href={projects[activeProject].figmaLink!} target="_blank" rel="noreferrer">
+                          <ArrowUpRight className="mr-2 h-4 w-4" />
+                          Figma
+                        </Link>
+                      </Button>
+                    ) : null}
                   </div>
                 </div>
               </div>

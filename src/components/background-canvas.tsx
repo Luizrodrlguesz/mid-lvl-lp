@@ -104,7 +104,7 @@ const pseudoRandom = (seed: number) => {
 
   if (!mounted) return null
 
-  const lightBase = "#C5CBD4"
+  const lightBase = "#818199"
   const lightOverlay =
     "radial-gradient(circle at 20% 20%, rgba(140,170,210,0.20), transparent 45%), radial-gradient(circle at 80% 10%, rgba(150,180,220,0.12), transparent 35%), radial-gradient(circle at 50% 80%, rgba(130,160,200,0.16), transparent 42%)"
   const darkOverlay =
