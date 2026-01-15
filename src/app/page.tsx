@@ -55,7 +55,7 @@ export default function Home() {
   })
 
   useEffect(() => {
-    const timeout = setTimeout(() => setLoading(false), 1000)
+    const timeout = setTimeout(() => setLoading(false), 3000)
     return () => clearTimeout(timeout)
   }, [])
 
@@ -436,7 +436,12 @@ export default function Home() {
       <CursorGlow />
       <LoadingScreen show={loading} />
 
-      <div className="relative z-10 flex min-h-screen flex-col">
+      <div
+        className={cn(
+          "relative z-10 flex min-h-screen flex-col transition-opacity duration-300",
+          loading ? "opacity-0 pointer-events-none" : "opacity-100",
+        )}
+      >
         <SiteHeader locale={locale} />
 
         <main className="mx-auto w-full px-5 pb-24">
