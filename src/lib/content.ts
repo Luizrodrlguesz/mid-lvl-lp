@@ -19,13 +19,13 @@ export type Project = {
  }
 
 export type Qualification = {
-  title: string
+  title: Record<Locale, string>
   description: Record<Locale, string>
 }
 
 export type Experience = {
-  role: string
-  period: string
+  role: Record<Locale, string>
+  period: Record<Locale, string>
   description: Record<Locale, string>
 }
 
@@ -88,7 +88,7 @@ export type ShowcaseSkill = {
 
 export const qualifications: Qualification[] = [
   {
-    title: "Front-end",
+    title: { "pt-br": "Front-end", "en-us": "Front-end", "fr-fr": "Front-end" },
     description: {
       "pt-br":
         "Proficiente em HTML, CSS, JavaScript, TypeScript, Tailwind CSS e React. Criação de interfaces responsivas e interativas com foco em UX e performance.",
@@ -99,7 +99,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
-    title: "Back-end",
+    title: { "pt-br": "Back-end", "en-us": "Back-end", "fr-fr": "Back-end" },
     description: {
       "pt-br":
         "Conhecimento em Node.js e PHP (Laravel). Experiência em integrações, formulários e segurança, cobrindo etapas do ciclo de desenvolvimento.",
@@ -110,7 +110,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
-    title: "Flutter / Dart",
+    title: { "pt-br": "Flutter / Dart", "en-us": "Flutter / Dart", "fr-fr": "Flutter / Dart" },
     description: {
       "pt-br":
         "Explorando Flutter/Dart para experiências mobile, prototipando telas e entendendo o fluxo de estado e navegação.",
@@ -121,7 +121,11 @@ export const qualifications: Qualification[] = [
     },
   },
   {
-    title: "Controle de versão e colaboração",
+    title: {
+      "pt-br": "Controle de versão e colaboração",
+      "en-us": "Version control & collaboration",
+      "fr-fr": "Contrôle de version et collaboration",
+    },
     description: {
       "pt-br":
         "Experiência com Git e metodologias ágeis, facilitando colaboração efetiva em equipes de desenvolvimento.",
@@ -132,7 +136,11 @@ export const qualifications: Qualification[] = [
     },
   },
   {
-    title: "Comunicação global",
+    title: {
+      "pt-br": "Comunicação global",
+      "en-us": "Global communication",
+      "fr-fr": "Communication globale",
+    },
     description: {
       "pt-br":
         "Certificado em curso de inglês, permitindo colaboração eficiente em projetos internacionais.",
@@ -146,8 +154,16 @@ export const qualifications: Qualification[] = [
 
 export const experiences: Experience[] = [
   {
-    role: "Desenvolvedor Web/App — 360erp",
-    period: "Set/2025 - Atual",
+    role: {
+      "pt-br": "Desenvolvedor Web/App — 360erp",
+      "en-us": "Web/App Developer — 360erp",
+      "fr-fr": "Développeur Web/App — 360erp",
+    },
+    period: {
+      "pt-br": "Set/2025 - Presente",
+      "en-us": "Sep/2025 - Present",
+      "fr-fr": "Sep/2025 - Présent",
+    },
     description: {
       "pt-br":
         "Atuação em sistema interno e app da 360erp. ERP integra áreas como finanças, estoque, vendas e operações; trabalho em fluxos e telas que conectam esses módulos, garantindo consistência e usabilidade.",
@@ -158,8 +174,16 @@ export const experiences: Experience[] = [
     },
   },
   {
-    role: "Desenvolvedor Front-end — BuskTraffic",
-    period: "Fev/2025 - Set/2025",
+    role: {
+      "pt-br": "Desenvolvedor Front-end — BuskTraffic",
+      "en-us": "Front-end Developer — BuskTraffic",
+      "fr-fr": "Développeur Front-end — BuskTraffic",
+    },
+    period: {
+      "pt-br": "Fev/2025 - Set/2025",
+      "en-us": "Feb/2025 - Sep/2025",
+      "fr-fr": "Fév/2025 - Sep/2025",
+    },
     description: {
       "pt-br":
         "Front-end com HTML, CSS, JavaScript, React. Apoio em design e ocasionalmente back-end com PHP/Laravel. Foquei em estruturar código e criar interfaces alinhadas ao design.",
@@ -170,8 +194,16 @@ export const experiences: Experience[] = [
     },
   },
   {
-    role: "Desenvolvedor Front-end - PallaceMakers",
-    period: "Mar/2024 - Out/2024",
+    role: {
+      "pt-br": "Desenvolvedor Front-end - PallaceMakers",
+      "en-us": "Front-end Developer - PallaceMakers",
+      "fr-fr": "Développeur Front-end - PallaceMakers",
+    },
+    period: {
+      "pt-br": "Mar/2024 - Out/2024",
+      "en-us": "Mar/2024 - Oct/2024",
+      "fr-fr": "Mar/2024 - Oct/2024",
+    },
     description: {
       "pt-br":
         "Desenvolvimento de sites, LPs e manutenção e correção de bugs em interfaces. Também atuei com PHP/Laravel em formulários e validação de usuários, ampliando a visão de back-end.",
