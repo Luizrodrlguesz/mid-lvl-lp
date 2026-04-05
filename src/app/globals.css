@@ -79,6 +79,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Aurora background custom properties */
+  --aurora-primary: #7c3aed;
+  --aurora-secondary: #2563eb;
+  --aurora-tertiary: #db2777;
+  --aurora-quaternary: #059669;
+  --aurora-glow: 0.4;
+  --aurora-speed: 1;
 }
 
 .dark {
@@ -146,4 +154,203 @@ body:not(.dark) .section-card {
 
 .grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   AURORA BACKGROUND ANIMATIONS
+   ============================================ */
+
+@keyframes aurora-drift-1 {
+  0%, 100% {
+    transform: translate3d(-10%, 0, 0) scale3d(1, 1, 1);
+  }
+  50% {
+    transform: translate3d(10%, -5%, 0) scale3d(1.1, 0.95, 1);
+  }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% {
+    transform: translate3d(5%, -10%, 0) scale3d(1, 1, 1);
+  }
+  50% {
+    transform: translate3d(-15%, 5%, 0) scale3d(0.95, 1.05, 1);
+  }
+}
+
+@keyframes aurora-pulse {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    opacity: 0.5;
+  }
+  33% {
+    transform: translate3d(5%, -5%, 0) scale3d(1.15, 1.1, 1);
+    opacity: 0.6;
+  }
+  66% {
+    transform: translate3d(-5%, 5%, 0) scale3d(0.95, 0.9, 1);
+    opacity: 0.4;
+  }
+}
+
+@keyframes aurora-rotate {
+  0% {
+    transform: translate3d(-20%, 10%, 0) rotate(0deg) scale3d(1, 1, 1);
+  }
+  50% {
+    transform: translate3d(10%, -10%, 0) rotate(180deg) scale3d(1.1, 0.9, 1);
+  }
+  100% {
+    transform: translate3d(-20%, 10%, 0) rotate(360deg) scale3d(1, 1, 1);
+  }
+}
+
+/* Reduced motion support for Aurora */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-layer-1,
+  .aurora-layer-2,
+  .aurora-layer-3,
+  .aurora-layer-4 {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   SCROLL ZOOM HERO ANIMATIONS
+   ============================================ */
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -2%); }
+  20% { transform: translate(2%, 2%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-2%, 2%); }
+  60% { transform: translate(2%, -2%); }
+  70% { transform: translate(-1%, -1%); }
+  80% { transform: translate(1%, 1%); }
+  90% { transform: translate(-2%, -1%); }
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* GPU acceleration hints */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Text gradient utility */
+.text-gradient {
+  background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 
+    0 0 20px rgba(124, 58, 237, 0.3),
+    0 0 40px rgba(37, 99, 235, 0.2),
+    0 0 60px rgba(219, 39, 119, 0.1);
+}
+
+/* Animated gradient border */
+@keyframes gradient-rotate {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.gradient-border {
+  position: relative;
+  background: var(--background);
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--angle), 
+    var(--aurora-primary), 
+    var(--aurora-secondary), 
+    var(--aurora-tertiary), 
+    var(--aurora-quaternary), 
+    var(--aurora-primary)
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: gradient-rotate 4s linear infinite;
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
