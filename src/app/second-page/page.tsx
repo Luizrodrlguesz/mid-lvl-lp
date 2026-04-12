@@ -14,6 +14,7 @@ import Link from "next/link"
 import { BackgroundCanvas } from "@/components/background-canvas"
 import { Button } from "@/components/ui/button"
 import { Aurora, DEFAULT_COLOR_STOPS } from "@/components/aurora"
+import { HorizontalScrollGallery } from "@/components/horizontal-scroll-gallery"
 
 /** Fração do zoom total só com wheel (portão fechado); o resto vem do scroll no trilho do hero. */
 const ZOOM_FIRST_PHASE_RATIO = 0.35
@@ -307,81 +308,9 @@ export default function SecondPage() {
       <section
         id="variacoes"
         aria-labelledby="heading-variacoes"
-        className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
+        className="relative z-10 border-t border-border/60 bg-transparent"
       >
-        <div className="mx-auto max-w-6xl space-y-6">
-          <h2 id="heading-variacoes" className="text-3xl font-bold">
-            Variações
-          </h2>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              
-              {/* Exemplo: Container 300px */}
-              <div className="space-y-3">
-                <p className="text-sm font-medium">Container 300px height</p>
-                <div className="h-[300px] w-full rounded-2xl overflow-hidden relative border border-border">
-                  <Aurora
-                    colorStops={[...DEFAULT_COLOR_STOPS]}
-                    amplitude={0.4}
-                    blend={0.5}
-                    speed={0.8}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-medium drop-shadow-lg">300px container</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Exemplo: Container 200px */}
-              <div className="space-y-3">
-                <p className="text-sm font-medium">Container 200px height</p>
-                <div className="h-[200px] w-full rounded-2xl overflow-hidden relative border border-border">
-                  <Aurora
-                    colorStops={["#0ea5e9", "#06b6d4", "#3b82f6"]}
-                    amplitude={0.5}
-                    blend={0.6}
-                    speed={1}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-medium drop-shadow-lg">200px container</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Exemplo: Ocean colors */}
-              <div className="space-y-3">
-                <p className="text-sm font-medium">Ocean Theme</p>
-                <div className="h-[250px] w-full rounded-2xl overflow-hidden relative border border-border">
-                  <Aurora
-                    colorStops={["#0ea5e9", "#06b6d4", "#14b8a6"]}
-                    amplitude={0.45}
-                    blend={0.55}
-                    speed={0.9}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-medium drop-shadow-lg">Ocean</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Exemplo: Sunset colors */}
-              <div className="space-y-3">
-                <p className="text-sm font-medium">Sunset Theme</p>
-                <div className="h-[250px] w-full rounded-2xl overflow-hidden relative border border-border">
-                  <Aurora
-                    colorStops={["#f59e0b", "#ef4444", "#ec4899"]}
-                    amplitude={0.4}
-                    blend={0.5}
-                    speed={0.7}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-medium drop-shadow-lg">Sunset</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-        </div>
+        <HorizontalScrollGallery />
       </section>
       </div>
 
