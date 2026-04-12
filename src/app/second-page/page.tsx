@@ -21,7 +21,7 @@ const ZOOM_MIN = 1
 const ZOOM_MAX = 1.58
 const ZOOM_WHEEL_SENS = 0.0022
 /** Altura do trilho de scroll: mais alto = mais rolagem para completar o zoom (evita “sumir” no scroll rápido / seta). */
-const HERO_SCROLL_TRACK_VH = 280
+const HERO_SCROLL_TRACK_VH = 160
 
 export default function SecondPage() {
   const containerRef = useRef<HTMLDivElement>(null)
