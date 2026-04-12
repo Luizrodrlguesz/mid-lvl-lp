@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion"
 import { ArrowUpRight, Github, Linkedin, Mail, ExternalLink, FileDown, MessageCircle } from "lucide-react"
-import { SiteHeader } from "@/components/site-header"
+import { PortfolioHeader } from "@/components/portfolio-header"
 import { SiteFooter } from "@/components/site-footer"
 import { LoadingScreen } from "@/components/loading-screen"
 import { CursorGlow } from "@/components/cursor-glow"
@@ -17,7 +17,6 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { LanguageSwitcher, type Locale } from "@/components/language-switcher"
 import { BackToTop } from "@/components/back-to-top"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 import {
   aboutCopy,
@@ -45,8 +44,6 @@ export default function Home() {
   const [skillsTab, setSkillsTab] = useState<"presentation" | "toolkit">("presentation")
   const [skillCategory, setSkillCategory] = useState<"linguagens" | "front" | "back" | "outros">("linguagens")
   const [activeProject, setActiveProject] = useState(0)
-  const [activeNav, setActiveNav] = useState("hero")
-  const [showFloatingNav, setShowFloatingNav] = useState(false)
 
   const { scrollYProgress } = useScroll()
 
@@ -309,11 +306,6 @@ export default function Home() {
     showcaseByCategory.linguagens[0]?.id,
   )
 
-  const navSections = useMemo(
-    () => ["hero", "about", "skills", "projects", "contact"] as const,
-    [],
-  )
-
   const highlightTargets = useMemo(
     () => ["front-end", "typescript", "flutter/dart"],
     [],
@@ -413,23 +405,6 @@ export default function Home() {
     })
   }
 
-  useEffect(() => {
-    const handler = () => {
-      const offsets = navSections.map((id) => {
-        const el = document.getElementById(id)
-        if (!el) return { id, top: Infinity }
-        const rect = el.getBoundingClientRect()
-        return { id, top: Math.abs(rect.top - 160) }
-      })
-      const closest = offsets.sort((a, b) => a.top - b.top)[0]
-      if (closest) setActiveNav(closest.id)
-      setShowFloatingNav(window.scrollY > 140)
-    }
-    handler()
-    window.addEventListener("scroll", handler, { passive: true })
-    return () => window.removeEventListener("scroll", handler)
-  }, [navSections])
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <BackgroundCanvas scrollProgress={scrollProgress} />
@@ -442,54 +417,10 @@ export default function Home() {
           loading ? "opacity-0 pointer-events-none" : "opacity-100",
         )}
       >
-        <SiteHeader locale={locale} />
+        <PortfolioHeader locale={locale} />
 
         <main className="mx-auto w-full px-5 pb-24">
-          <AnimatePresence>
-            {showFloatingNav ? (
-              <motion.div
-                className="fixed top-4 right-4 z-40 hidden gap-2 lg:flex"
-                initial={{ opacity: 0, y: -10, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                transition={{ duration: 0.16, ease: "easeOut" }}
-              >
-                <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-card/80 px-1 py-1 shadow-md backdrop-blur">
-                  <div className="flex items-center gap-1">
-                    {navSections.map((id) => (
-                      <Button
-                        key={id}
-                        asChild
-                        variant="ghost"
-                        size="sm"
-                        className={cn(
-                          "rounded-full px-3 text-xs",
-                          activeNav === id
-                            ? "bg-foreground text-background"
-                            : "text-muted-foreground hover:text-foreground",
-                        )}
-                      >
-                        <Link href={`#${id}`} onClick={(e) => handleAnchorClick(e, id)}>
-                          {id === "hero"
-                            ? tabsLabels.home
-                            : id === "about"
-                              ? sectionLabels.aboutLabel
-                              : id === "skills"
-                                ? sectionLabels.skillsLabel
-                                : id === "projects"
-                                  ? sectionLabels.projectsLabel
-                                  : sectionLabels.contactLabel}
-                        </Link>
-                      </Button>
-                    ))}
-                  </div>
-                  <div className="h-6 w-px bg-border/70" />
-                  <ThemeToggle />
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-          <section id="hero" className="flex flex-col gap-10 py-16">
+          <section id="hero" className="flex flex-col gap-10 pb-16 pt-24">
             <motion.div
               className="section-card"
               initial={{ opacity: 0, y: 30 }}

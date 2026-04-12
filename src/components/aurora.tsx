@@ -95,8 +95,10 @@ void main() {
   colors[3] = ColorStop(uColorStops[3], 1.0);
   
   vec3 rampColor;
-  COLOR_RAMP(colors, uv.x, rampColor);
-  
+  float rampX = 1.0 - uv.x;
+  COLOR_RAMP(colors, rampX, rampColor);
+  rampColor *= 0.9;
+
   float height = snoise(vec2(uv.x * 1.35 + uTime * 0.16, uTime * 0.38)) * 0.82 * uAmplitude;
   height = exp(height);
   height = (uv.y * 2.0 - height + 0.2);
@@ -112,9 +114,9 @@ void main() {
 `
 
 export const DEFAULT_COLOR_STOPS: readonly string[] = [
-  "#008594",
+  "#2544F5",
   "#0264DB",
-  "#00C497",
+  "#009CBF",
   "#0A368A",
 ]
 

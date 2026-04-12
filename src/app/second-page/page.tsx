@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   motion,
   useMotionValue,
@@ -9,12 +9,14 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion"
-import { ArrowDown, ArrowLeft } from "lucide-react"
-import Link from "next/link"
+import { ArrowDown } from "lucide-react"
 import { BackgroundCanvas } from "@/components/background-canvas"
-import { Button } from "@/components/ui/button"
 import { Aurora, DEFAULT_COLOR_STOPS } from "@/components/aurora"
 import { HorizontalScrollGallery } from "@/components/horizontal-scroll-gallery"
+import { PortfolioHeader } from "@/components/portfolio-header"
+import { PortfolioHeroAvatar } from "@/components/portfolio-hero-avatar"
+import { PortfolioHeroIntro } from "@/components/portfolio-hero-intro"
+import type { Locale } from "@/components/language-switcher"
 
 /** Fração do zoom total só com wheel (portão fechado); o resto vem do scroll no trilho do hero. */
 const ZOOM_FIRST_PHASE_RATIO = 0.35
@@ -22,7 +24,7 @@ const ZOOM_MIN = 1
 const ZOOM_MAX = 1.58
 const ZOOM_WHEEL_SENS = 0.0022
 /** Altura do trilho de scroll: mais alto = mais rolagem para completar o zoom (evita “sumir” no scroll rápido / seta). */
-const HERO_SCROLL_TRACK_VH = 160
+const HERO_SCROLL_TRACK_VH = 140
 
 export default function SecondPage() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -32,6 +34,16 @@ export default function SecondPage() {
 
   const zoomLockProgress = useMotionValue(0)
   const zoomGateOpen = useMotionValue(0)
+  const locale: Locale = "pt-br"
+  const headerItems = useMemo(
+    () => [
+      { id: "hero", label: "Início" },
+      { id: "como-usar", label: "Sobre" },
+      { id: "variacoes", label: "Projetos" },
+      { id: "props", label: "Contato" },
+    ],
+    [],
+  )
 
   const { scrollYProgress: pageScrollProgress } = useScroll()
   useMotionValueEvent(pageScrollProgress, "change", (latest) => {
@@ -125,22 +137,30 @@ export default function SecondPage() {
     return () => window.removeEventListener("wheel", onWheel)
   }, [zoomGateOpen, zoomLockProgress])
 
-  const scrollToNextSection = useCallback(() => {
-    zoomLockProgress.set(1)
-    zoomGateOpen.set(1)
-    requestAnimationFrame(() => {
+  const unlockScrollAndGoTo = useCallback(
+    (sectionId: string) => {
+      zoomLockProgress.set(1)
+      zoomGateOpen.set(1)
       requestAnimationFrame(() => {
-        const el = document.getElementById("como-usar")
-        if (!el) return
-        const top = el.getBoundingClientRect().top + window.scrollY - 8
-        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" })
+        requestAnimationFrame(() => {
+          const el = document.getElementById(sectionId)
+          if (!el) return
+          const top = el.getBoundingClientRect().top + window.scrollY - 8
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" })
+        })
       })
-    })
-  }, [zoomGateOpen, zoomLockProgress])
+    },
+    [zoomGateOpen, zoomLockProgress],
+  )
+
+  const scrollToNextSection = useCallback(() => {
+    unlockScrollAndGoTo("como-usar")
+  }, [unlockScrollAndGoTo])
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <BackgroundCanvas scrollProgress={particleScroll} />
+      <PortfolioHeader locale={locale} items={headerItems} />
 
       {/* 
         ========================================
@@ -148,6 +168,7 @@ export default function SecondPage() {
         ========================================
       */}
       <div
+        id="hero"
         ref={containerRef}
         className="relative z-10 bg-black"
         style={{ height: `${HERO_SCROLL_TRACK_VH}vh` }}
@@ -163,62 +184,16 @@ export default function SecondPage() {
           </div>
 
           <motion.div
-            className="relative z-10 w-full max-w-4xl mx-auto px-6"
+            className="relative z-10 mx-auto w-full max-w-5xl px-6 lg:max-w-6xl"
             style={{
               scale,
               opacity,
               willChange: "transform, opacity",
             }}
           >
-            {/* Card com glassmorphism */}
-            <div className="rounded-3xl border border-white/10 bg-black/60 backdrop-blur-xl p-8 md:p-12 shadow-2xl">
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="mb-6"
-              >
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20">
-                  React Bits Style
-                </span>
-              </motion.div>
-
-              <motion.h1
-                className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-white"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <span className="block">Aurora</span>
-                <span className="block mt-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-sky-700 bg-clip-text text-transparent">
-                  Full viewport
-                </span>
-              </motion.h1>
-
-              <motion.p
-                className="text-lg text-white/70 mb-8 max-w-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                Aurora como fundo em tela cheia (altura vem do container{" "}
-                <code className="text-white/90">h-screen</code>). Role para ver o zoom.
-              </motion.p>
-
-              <motion.div
-                className="flex flex-wrap gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <Button asChild variant="outline" className="rounded-full border-white/20 text-white hover:bg-white/10">
-                  <Link href="/">
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Voltar
-                  </Link>
-                </Button>
-              </motion.div>
+            <div className="grid items-center gap-12 py-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.9fr)] lg:gap-16 xl:gap-20">
+              <PortfolioHeroIntro onNavigateToSection={unlockScrollAndGoTo} />
+              <PortfolioHeroAvatar className="justify-self-center lg:justify-self-end" />
             </div>
           </motion.div>
 
@@ -235,7 +210,7 @@ export default function SecondPage() {
             transition={{ delay: 0.8 }}
           >
             <span className="text-xs uppercase tracking-widest">
-              Role para zoom
+              Continuar
             </span>
             <motion.span
               animate={{ y: [0, 8, 0] }}
@@ -277,7 +252,7 @@ export default function SecondPage() {
 {`{/* Exemplo 1: Viewport inteiro (padrão típico) */}
 <div className="relative h-screen w-full">
   <Aurora
-    colorStops={["#008594", "#0264DB", "#00C497", "#0A368A"]}
+    colorStops={["#008594", "#0264DB", "#014C4F", "#0A368A"]}
     amplitude={0.4}
     blend={0.5}
   />

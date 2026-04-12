@@ -1,16 +1,19 @@
- "use client"
+"use client"
 
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useState, type MouseEvent } from "react"
+import { useMemo, type MouseEvent } from "react"
 import { ThemeToggle } from "./theme-toggle"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { Locale } from "./language-switcher"
 
-const sections = ["hero", "about", "skills", "projects", "contact"] as const
+const defaultSections = ["hero", "about", "skills", "projects", "contact"] as const
 
-const labels: Record<Locale, Record<(typeof sections)[number], string>> = {
+export const defaultSiteHeaderLabels: Record<
+  Locale,
+  Record<(typeof defaultSections)[number], string>
+> = {
   "pt-br": {
     hero: "Início",
     about: "Sobre",
@@ -34,24 +37,28 @@ const labels: Record<Locale, Record<(typeof sections)[number], string>> = {
   },
 }
 
-export function SiteHeader({ locale }: { locale: Locale }) {
-  const [active, setActive] = useState<(typeof sections)[number]>("hero")
+export type SiteHeaderItem = {
+  id: string
+  label: string
+}
 
-  useEffect(() => {
-    const handler = () => {
-      const offsets = sections.map((id) => {
-        const el = document.getElementById(id)
-        if (!el) return { id, top: Infinity }
-        const rect = el.getBoundingClientRect()
-        return { id, top: Math.abs(rect.top - 160) }
-      })
-      const closest = offsets.sort((a, b) => a.top - b.top)[0]
-      if (closest) setActive(closest.id)
-    }
-    handler()
-    window.addEventListener("scroll", handler, { passive: true })
-    return () => window.removeEventListener("scroll", handler)
-  }, [])
+type SiteHeaderProps = {
+  locale: Locale
+  items?: SiteHeaderItem[]
+  activeId?: string
+}
+
+export function SiteHeader({ locale, items, activeId }: SiteHeaderProps) {
+  const navItems = useMemo(
+    () =>
+      items ??
+      defaultSections.map((id) => ({
+        id,
+        label: defaultSiteHeaderLabels[locale][id],
+      })),
+    [items, locale],
+  )
+  const currentActiveId = activeId ?? navItems[0]?.id ?? "hero"
 
   const scrollToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault()
@@ -63,7 +70,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-background/70 backdrop-blur">
+    <header className="absolute inset-x-0 top-0 z-30 border-b border-border/60 bg-card/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link
           href="#hero"
@@ -74,7 +81,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <span className="sr-only">Luiz Rodrigues</span>
         </Link>
         <nav className="hidden gap-2 rounded-full border border-border/60 bg-card/50 px-2 py-1 text-xs font-medium shadow-sm backdrop-blur lg:flex">
-          {sections.map((id) => (
+          {navItems.map(({ id, label }) => (
             <Button
               key={id}
               asChild
@@ -82,13 +89,13 @@ export function SiteHeader({ locale }: { locale: Locale }) {
               size="sm"
               className={cn(
                 "rounded-full px-3 text-xs transition-colors",
-                active === id
+                currentActiveId === id
                   ? "bg-foreground text-background hover:bg-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
               <Link href={`#${id}`} onClick={(e) => scrollToSection(e, id)}>
-                {labels[locale][id]}
+                {label}
               </Link>
             </Button>
           ))}
@@ -98,4 +105,3 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     </header>
   )
 }
-
