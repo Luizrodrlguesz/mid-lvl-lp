@@ -1,8 +1,9 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import {
   motion,
+  useMotionValue,
   useMotionValueEvent,
   useScroll,
   useSpring,
@@ -14,24 +15,127 @@ import { BackgroundCanvas } from "@/components/background-canvas"
 import { Button } from "@/components/ui/button"
 import { Aurora, DEFAULT_COLOR_STOPS } from "@/components/aurora"
 
+/** Fração do zoom total só com wheel (portão fechado); o resto vem do scroll no trilho do hero. */
+const ZOOM_FIRST_PHASE_RATIO = 0.35
+const ZOOM_MIN = 1
+const ZOOM_MAX = 1.58
+const ZOOM_WHEEL_SENS = 0.0022
+/** Altura do trilho de scroll: mais alto = mais rolagem para completar o zoom (evita “sumir” no scroll rápido / seta). */
+const HERO_SCROLL_TRACK_VH = 280
+
 export default function SecondPage() {
   const containerRef = useRef<HTMLDivElement>(null)
+  /** True depois que o utilizador desceu o suficiente; ao voltar ao topo do hero, o zoom em duas fases reinicia. */
+  const hasLeftHeroStart = useRef(false)
   const [particleScroll, setParticleScroll] = useState(0)
+
+  const zoomLockProgress = useMotionValue(0)
+  const zoomGateOpen = useMotionValue(0)
 
   const { scrollYProgress: pageScrollProgress } = useScroll()
   useMotionValueEvent(pageScrollProgress, "change", (latest) => {
     setParticleScroll(latest)
   })
 
-  // Scroll zoom logic (hero)
   const { scrollYProgress: heroScrollProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   })
 
-  const rawScale = useTransform(heroScrollProgress, [0, 0.5], [1, 1.4])
-  const scale = useSpring(rawScale, { stiffness: 100, damping: 30 })
-  const opacity = useTransform(heroScrollProgress, [0.3, 0.5], [1, 0])
+  const rawScale = useTransform(() => {
+    const gate = zoomGateOpen.get()
+    const lock = zoomLockProgress.get()
+    const scroll = heroScrollProgress.get()
+    const span = ZOOM_MAX - ZOOM_MIN
+    if (gate < 0.5) {
+      return ZOOM_MIN + span * ZOOM_FIRST_PHASE_RATIO * lock
+    }
+    return (
+      ZOOM_MIN +
+      span * ZOOM_FIRST_PHASE_RATIO +
+      span * (1 - ZOOM_FIRST_PHASE_RATIO) * scroll
+    )
+  })
+
+  const rawOpacity = useTransform(() => {
+    if (zoomGateOpen.get() < 0.5) return 1
+    const scroll = heroScrollProgress.get()
+    const fadeStart = 0.38
+    const fadeEnd = 0.62
+    if (scroll <= fadeStart) return 1
+    if (scroll >= fadeEnd) return 0
+    return 1 - (scroll - fadeStart) / (fadeEnd - fadeStart)
+  })
+
+  const scale = useSpring(rawScale, { stiffness: 88, damping: 28 })
+  const opacity = useSpring(rawOpacity, { stiffness: 120, damping: 35 })
+
+  useEffect(() => {
+    let raf = 0
+    const onScroll = () => {
+      const y = window.scrollY
+      const hp = heroScrollProgress.get()
+
+      if (y > 72 || hp > 0.06) {
+        hasLeftHeroStart.current = true
+      }
+
+      if (hasLeftHeroStart.current && y < 28 && hp < 0.08) {
+        zoomGateOpen.set(0)
+        zoomLockProgress.set(0)
+        hasLeftHeroStart.current = false
+      }
+
+      if (zoomGateOpen.get() < 0.5 && y > 0) {
+        cancelAnimationFrame(raf)
+        raf = requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+        })
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener("scroll", onScroll)
+    }
+  }, [heroScrollProgress, zoomGateOpen, zoomLockProgress])
+
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (zoomGateOpen.get() >= 0.5) return
+      if (window.scrollY > 1) return
+
+      if (e.deltaY < 0) {
+        const lock = zoomLockProgress.get()
+        if (lock > 0) {
+          e.preventDefault()
+          zoomLockProgress.set(Math.max(0, lock + e.deltaY * ZOOM_WHEEL_SENS))
+        }
+        return
+      }
+
+      e.preventDefault()
+      const lock = zoomLockProgress.get()
+      const next = Math.min(1, lock + e.deltaY * ZOOM_WHEEL_SENS)
+      zoomLockProgress.set(next)
+      if (next >= 1) zoomGateOpen.set(1)
+    }
+    window.addEventListener("wheel", onWheel, { passive: false })
+    return () => window.removeEventListener("wheel", onWheel)
+  }, [zoomGateOpen, zoomLockProgress])
+
+  const scrollToNextSection = useCallback(() => {
+    zoomLockProgress.set(1)
+    zoomGateOpen.set(1)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById("como-usar")
+        if (!el) return
+        const top = el.getBoundingClientRect().top + window.scrollY - 8
+        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" })
+      })
+    })
+  }, [zoomGateOpen, zoomLockProgress])
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
@@ -45,7 +149,7 @@ export default function SecondPage() {
       <div
         ref={containerRef}
         className="relative z-10 bg-black"
-        style={{ height: "200vh" }}
+        style={{ height: `${HERO_SCROLL_TRACK_VH}vh` }}
       >
         <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -117,23 +221,29 @@ export default function SecondPage() {
             </div>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          {/* Link para próxima section (libera scroll + zoom por rolagem) */}
+          <motion.a
+            href="#como-usar"
+            onClick={(e) => {
+              e.preventDefault()
+              scrollToNextSection()
+            }}
+            className="absolute bottom-12 left-1/2 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-2 rounded-lg px-3 py-2 text-white/50 outline-offset-4 transition-colors hover:text-white/85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <span className="text-xs text-white/50 uppercase tracking-widest">
+            <span className="text-xs uppercase tracking-widest">
               Role para zoom
             </span>
-            <motion.div
+            <motion.span
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              aria-hidden
             >
-              <ArrowDown className="w-5 h-5 text-white/50" />
-            </motion.div>
-          </motion.div>
+              <ArrowDown className="h-5 w-5" />
+            </motion.span>
+          </motion.a>
         </div>
       </div>
 
