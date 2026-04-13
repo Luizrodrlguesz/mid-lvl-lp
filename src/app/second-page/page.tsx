@@ -23,8 +23,17 @@ const ZOOM_FIRST_PHASE_RATIO = 0.35
 const ZOOM_MIN = 1
 const ZOOM_MAX = 1.58
 const ZOOM_WHEEL_SENS = 0.0022
-/** Altura do trilho de scroll: mais alto = mais rolagem para completar o zoom (evita “sumir” no scroll rápido / seta). */
-const HERO_SCROLL_TRACK_VH = 140
+/**
+ * Altura total do hero em vh (sticky + trilho). O runway útil ≈ (valor − 100) vh.
+ * Ajustado em conjunto com `HERO_ZOOM_COMPLETES_AT` para manter a mesma distância de scroll
+ * até o zoom máximo e acrescentar uma “pausa” no fim.
+ */
+const HERO_SCROLL_TRACK_VH = 158
+/**
+ * Fracção do progresso de scroll no hero (0–1) em que o zoom já está no máximo.
+ * O restante do trilho consome scroll sem mudar escala — evita saltar logo para a secção seguinte.
+ */
+const HERO_ZOOM_COMPLETES_AT = 0.7
 
 export default function SecondPage() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -63,25 +72,20 @@ export default function SecondPage() {
     if (gate < 0.5) {
       return ZOOM_MIN + span * ZOOM_FIRST_PHASE_RATIO * lock
     }
+    const zoomScroll = Math.min(1, scroll / HERO_ZOOM_COMPLETES_AT)
     return (
       ZOOM_MIN +
       span * ZOOM_FIRST_PHASE_RATIO +
-      span * (1 - ZOOM_FIRST_PHASE_RATIO) * scroll
+      span * (1 - ZOOM_FIRST_PHASE_RATIO) * zoomScroll
     )
   })
 
-  const rawOpacity = useTransform(() => {
-    if (zoomGateOpen.get() < 0.5) return 1
-    const scroll = heroScrollProgress.get()
-    const fadeStart = 0.38
-    const fadeEnd = 0.62
-    if (scroll <= fadeStart) return 1
-    if (scroll >= fadeEnd) return 0
-    return 1 - (scroll - fadeStart) / (fadeEnd - fadeStart)
-  })
-
   const scale = useSpring(rawScale, { stiffness: 88, damping: 28 })
-  const opacity = useSpring(rawOpacity, { stiffness: 120, damping: 35 })
+  /** Opacidade acompanha o zoom em todo o percurso (wheel + scroll), não só no fim do trilho. */
+  const opacity = useTransform(scale, (s) => {
+    const t = (s - ZOOM_MIN) / (ZOOM_MAX - ZOOM_MIN)
+    return Math.max(0, Math.min(1, 1 - t))
+  })
 
   useEffect(() => {
     let raf = 0

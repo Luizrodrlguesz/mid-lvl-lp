@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
-import { useEffect, useId, type ReactNode } from "react"
+import { useEffect, useId, useState, type ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -12,7 +12,7 @@ import { SharpStarIconInline } from "@/components/sharpstar-icon-inline"
 const BOX = 1200
 
 // ─── Avatar: meio-termo entre 0.52 (original) e 0.82 (anterior) ───
-const AVATAR_DIAMETER_RATIO = 0.72
+const AVATAR_DIAMETER_RATIO = 0.93
 
 function SharpStarFrame({
   className,
@@ -66,12 +66,27 @@ function OrbitSlot({ angleDeg, orbitFrac, icon, starClassName }: OrbitSlotProps)
 }
 
 type PortfolioHeroAvatarProps = {
-  imageSrc?: string
   imageAlt?: string
+  /** Classes extras nas imagens (ex.: `object-top`). */
+  imageClassName?: string
   className?: string
 }
 
-const DEFAULT_AVATAR = "/assets/thumb/luiz-1.png"
+const AVATAR_IDLE_SRC = "/assets/avatar/pxl-2.png"
+
+/** Frames do sprite só no hover (estado idle = `AVATAR_IDLE_SRC`). */
+const AVATAR_HOVER_SPRITE_FRAMES = [
+  "/assets/avatar/pxl-1.png",
+  "/assets/avatar/pxl-3.png",
+  "/assets/avatar/pxl-4.png",
+  "/assets/avatar/pxl-5.png",
+] as const
+
+/** Intervalo entre frames do sprite no hover (ms). */
+const SPRITE_FRAME_MS = 300
+
+/** Crossfade idle ↔ sprite ao entrar/sair do hover (só opacity, inline para não brigar com Tailwind). */
+const IDLE_SPRITE_CROSSFADE_MS = 420
 
 const ORBIT_ICON_PHONE = "/assets/phone-icon.png"
 const ORBIT_ICON_DESK = "/assets/desk-icon.png"
@@ -94,10 +109,21 @@ function OrbitCenterIcon({ src, alt }: { src: string; alt: string }) {
 }
 
 export function PortfolioHeroAvatar({
-  imageSrc = DEFAULT_AVATAR,
   imageAlt = "Luiz Rodrigues",
+  imageClassName,
   className,
 }: PortfolioHeroAvatarProps) {
+  const [isAvatarHovered, setIsAvatarHovered] = useState(false)
+  const [spriteFrame, setSpriteFrame] = useState(0)
+
+  useEffect(() => {
+    if (!isAvatarHovered) return
+    const id = window.setInterval(() => {
+      setSpriteFrame((i) => (i + 1) % AVATAR_HOVER_SPRITE_FRAMES.length)
+    }, SPRITE_FRAME_MS)
+    return () => window.clearInterval(id)
+  }, [isAvatarHovered])
+
   const uid = useId().replace(/:/g, "")
   const gradId = `hero-avatar-ring-${uid}`
   const filterId = `hero-avatar-glow-${uid}`
@@ -242,23 +268,73 @@ export function PortfolioHeroAvatar({
           <div
             className={cn(
               "flex aspect-square items-center justify-center overflow-hidden rounded-full",
-              "border border-white/18 bg-white/10 shadow-[0_0_56px_-14px_rgba(124,58,237,0.55)]",
+              "border border-white/18 bg-white/10",
+              "shadow-[0_0_0_01px_rgba(105,125,205,0.5),0_0_36px_rgba(105,125,255,0.5),0_0_56px_-14px_rgba(124,58,237,0.15)]",
               "backdrop-blur-xl",
             )}
             style={{
               width: `${AVATAR_DIAMETER_RATIO * 100}%`,
               height: `${AVATAR_DIAMETER_RATIO * 100}%`,
             }}
+            onPointerEnter={() => {
+              setSpriteFrame(0)
+              setIsAvatarHovered(true)
+            }}
+            onPointerLeave={() => {
+              setIsAvatarHovered(false)
+              setSpriteFrame(0)
+            }}
           >
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-violet-500/18 via-transparent to-blue-500/22" />
-            <Image
-              src={imageSrc}
-              alt={imageAlt}
-              width={400}
-              height={400}
-              className="relative z-10 size-full object-cover"
-              priority
-            />
+            <div
+              className="relative z-10 size-full min-h-0 min-w-0"
+              role="img"
+              aria-label={imageAlt}
+            >
+              <div
+                className="absolute inset-0 will-change-[opacity]"
+                style={{
+                  opacity: isAvatarHovered ? 0 : 1,
+                  transition: `opacity ${IDLE_SPRITE_CROSSFADE_MS}ms ease-in-out`,
+                }}
+              >
+                <Image
+                  src={AVATAR_IDLE_SRC}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 80vw, 400px"
+                  className={cn("object-cover select-none", imageClassName)}
+                  priority
+                  aria-hidden
+                  draggable={false}
+                />
+              </div>
+              <div
+                className="pointer-events-none absolute inset-0 will-change-[opacity]"
+                style={{
+                  opacity: isAvatarHovered ? 1 : 0,
+                  transition: `opacity ${IDLE_SPRITE_CROSSFADE_MS}ms ease-in-out`,
+                }}
+              >
+                {AVATAR_HOVER_SPRITE_FRAMES.map((src, i) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 80vw, 400px"
+                    className={cn(
+                      "object-cover select-none",
+                      i === spriteFrame ? "opacity-100" : "opacity-0",
+                      imageClassName,
+                    )}
+                    priority={i === 0}
+                    aria-hidden
+                    draggable={false}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

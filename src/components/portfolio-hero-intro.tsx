@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 
+import GradientText from "@/components/gradient-text"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -37,12 +38,29 @@ export function PortfolioHeroIntro({
     <div className={cn("flex flex-col justify-center gap-10 text-white", className)}>
       <div className="space-y-5">
         <motion.h1
-          className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:max-w-xl lg:text-[2.65rem] lg:leading-[1.12]"
+          className="text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:max-w-xl lg:text-[2.8rem] lg:leading-[1.12]"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
-          Desenvolvedor Front-end focado em interfaces modernas e experiências fluidas
+          DesenvolvedorFront-end focado em 
+          <GradientText
+            colors={["#7c3aed", "#38bdf8", "#a78bfa"]}
+            animationSpeed={8}
+            showBorder={false}
+            className="align-baseline font-bold tracking-tight"
+          >
+            interfaces modernas
+          </GradientText>{" "}
+          e{" "}
+          <GradientText
+            colors={["#7c3aed", "#38bdf8", "#a78bfa"]}
+            animationSpeed={8}
+            showBorder={false}
+            className="align-baseline font-bold tracking-tight"
+          >
+             experiências fluidas
+          </GradientText>{" "}
         </motion.h1>
 
         <motion.p
@@ -97,7 +115,7 @@ export function PortfolioHeroIntro({
         {MICRO_INFOS.map(({ label, iconSrc, iconAlt }) => (
           <li
             key={label}
-            className="flex items-center gap-2 text-base leading-snug text-white/62 sm:text-[1.0625rem] sm:text-white/68"
+            className="flex items-center gap-3 text-base leading-snug text-white/62 sm:text-[1.0625rem] sm:text-white/68"
           >
             <span className="relative size-9 shrink-0 sm:size-9" aria-hidden>
               <Image
