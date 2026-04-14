@@ -74,3 +74,15 @@ export function insightsTemConteudo(insights) {
   if (!insights) return false
   return ["desafio", "solucao", "resultado"].some((k) => insights[k]?.trim())
 }
+
+/**
+ * Texto curto para o modo visual (fallback: truncar descrição principal).
+ * @param {{ descricaoResumida?: string, descricao?: string }} projeto
+ */
+export function descricaoParaModoVisual(projeto) {
+  const curta = projeto.descricaoResumida?.trim()
+  if (curta) return curta
+  const d = projeto.descricao?.trim() ?? ""
+  if (d.length <= 200) return d
+  return `${d.slice(0, 197)}…`
+}

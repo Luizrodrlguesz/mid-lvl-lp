@@ -1,6 +1,10 @@
+"use client"
+
+import { motion } from "framer-motion"
+import { springTransition } from "@/lib/projects-motion"
+
 /**
  * Alterna o conjunto de projetos visíveis (profissional vs pessoal).
- * Componente controlado: estado e callbacks vivem no pai (ProjectsSection).
  */
 export function ProjectsFilter({ value, onChange }) {
   const options = [
@@ -17,19 +21,21 @@ export function ProjectsFilter({ value, onChange }) {
       {options.map((opt) => {
         const selected = value === opt.id
         return (
-          <button
+          <motion.button
             key={opt.id}
             type="button"
             onClick={() => onChange(opt.id)}
             aria-pressed={selected}
+            whileTap={{ scale: 0.98 }}
+            transition={springTransition}
             className={
               selected
-                ? "rounded-md border border-foreground bg-foreground px-3 py-1.5 text-sm text-background"
-                : "rounded-md border border-border bg-transparent px-3 py-1.5 text-sm text-foreground"
+                ? "rounded-md border border-foreground bg-foreground px-3.5 py-1.5 text-sm font-medium text-background shadow-sm"
+                : "rounded-md border border-border/90 bg-transparent px-3.5 py-1.5 text-sm text-foreground transition-colors duration-200 hover:border-border hover:bg-muted/40"
             }
           >
             {opt.label}
-          </button>
+          </motion.button>
         )
       })}
     </div>

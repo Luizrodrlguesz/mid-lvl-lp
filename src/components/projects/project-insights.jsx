@@ -7,8 +7,7 @@ const CAMPOS = [
 ]
 
 /**
- * Bloco opcional: raciocínio técnico (desafio → solução → resultado).
- * Só aparece se houver pelo menos um campo preenchido.
+ * Bloco opcional com separação visual suave (painel discreto).
  */
 export function ProjectInsights({ projectId, insights }) {
   if (!insightsTemConteudo(insights)) return null
@@ -24,15 +23,23 @@ export function ProjectInsights({ projectId, insights }) {
   const headingId = `insights-heading-${projectId}`
 
   return (
-    <section aria-labelledby={headingId} className="space-y-3">
-      <h4 id={headingId} className="text-sm font-medium text-foreground">
+    <section
+      aria-labelledby={headingId}
+      className="space-y-3 rounded-lg border border-border/70 bg-muted/15 p-4 ring-1 ring-black/[0.03] dark:ring-white/[0.04]"
+    >
+      <h4 id={headingId} className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         Diferencial técnico
       </h4>
-      <dl className="grid gap-3 text-sm text-muted-foreground">
+      <dl className="grid gap-3.5 text-sm text-muted-foreground">
         {linhas.map(({ key, label, texto }) => (
-          <div key={key}>
-            <dt className="font-medium text-foreground/90">{label}</dt>
-            <dd className="mt-0.5 leading-relaxed">{texto}</dd>
+          <div
+            key={key}
+            className="border-l-2 border-primary/35 pl-3"
+          >
+            <dt className="text-xs font-semibold uppercase tracking-wide text-foreground/85">
+              {label}
+            </dt>
+            <dd className="mt-1 leading-relaxed">{texto}</dd>
           </div>
         ))}
       </dl>

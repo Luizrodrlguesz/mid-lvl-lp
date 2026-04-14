@@ -1,8 +1,6 @@
 /**
  * Dados de exemplo da secção Projetos.
  * Ordem: mais recente → mais antigo (índice 0 = mais recente).
- *
- * Modelo alinhado ao portfólio (campos em PT para conteúdo editorial).
  */
 
 /** @typedef {'profissional' | 'pessoal'} TipoProjeto */
@@ -10,7 +8,7 @@
 
 /**
  * @typedef {Object} PlataformaEntrada
- * @property {string} [imagem] URL ou caminho da captura (evolução futura: galeria / alternador).
+ * @property {string} [imagem]
  * @property {string} [link]
  */
 
@@ -28,6 +26,13 @@
  */
 
 /**
+ * @typedef {Object} ConteudoTecnicoProjeto
+ * @property {string[]} [stackDetalhada]
+ * @property {string[]} [decisoesTecnicas]
+ * @property {string[]} [desafiosExtras]
+ */
+
+/**
  * @typedef {Object} Projeto
  * @property {string} id
  * @property {TipoProjeto} tipo
@@ -35,11 +40,13 @@
  * @property {string} nome
  * @property {string} resumo
  * @property {string} descricao
+ * @property {string} [descricaoResumida] Modo visual — texto mais curto
  * @property {PlataformasProjeto} plataformas
  * @property {string[]} tecnologias
  * @property {InsightsProjeto} [insights]
  * @property {string[]} evolucao
  * @property {string} [figmaLink]
+ * @property {ConteudoTecnicoProjeto} [conteudoTecnico]
  */
 
 /** @type {Projeto[]} */
@@ -52,6 +59,8 @@ export const MOCK_PROJECTS = [
     resumo: "Painel interno para acompanhamento de métricas e incidentes.",
     descricao:
       "Aplicação web consumindo APIs internas, com foco em filtros por período, exportação e estados de carregamento consistentes. Base preparada para evoluir com gráficos e permissões por perfil.",
+    descricaoResumida:
+      "Painel interno com filtros, exportação e estados de carregamento consistentes, preparado para gráficos e permissões.",
     plataformas: {
       web: {
         imagem: "/placeholder-dashboard.png",
@@ -70,6 +79,23 @@ export const MOCK_PROJECTS = [
     },
     evolucao: ["Modelagem de estados assíncronos", "Contratos de API com o backend"],
     figmaLink: "https://www.figma.com/file/example-dashboard",
+    conteudoTecnico: {
+      stackDetalhada: [
+        "React 18",
+        "Next.js 14 (App Router)",
+        "TanStack Query v5",
+        "OpenAPI-generated client",
+        "Zod para validação de filtros",
+      ],
+      decisoesTecnicas: [
+        "Chaves de cache incluem todos os parâmetros de filtro para evitar dados cruzados entre vistas.",
+        "Skeletons por secção em vez de spinner global para manter contexto visual.",
+      ],
+      desafiosExtras: [
+        "Compatibilidade com exportação CSV em datasets > 50k linhas sem bloquear a UI.",
+        "Alinhar tipos do cliente REST com mudanças frequentes do contrato em desenvolvimento.",
+      ],
+    },
   },
   {
     id: "corp-onboarding",
@@ -79,6 +105,8 @@ export const MOCK_PROJECTS = [
     resumo: "Cadastro guiado de empresas com validação e revisão manual.",
     descricao:
       "Fluxo multi-etapas com persistência parcial, upload de documentos e painel de revisão para operações. Estrutura modular por etapa para facilitar testes e novos requisitos legais.",
+    descricaoResumida:
+      "Cadastro multi-etapas com uploads, revisão manual e módulos por etapa para regras legais variáveis.",
     plataformas: {
       web: { imagem: "", link: "https://example.com/onboarding" },
       mobile: { imagem: "", link: "" },
@@ -90,6 +118,17 @@ export const MOCK_PROJECTS = [
       resultado: "Menos retrabalho ao lançar variações regionais.",
     },
     evolucao: ["Feature flags em produção", "Upload resiliente com retry"],
+    conteudoTecnico: {
+      stackDetalhada: ["Node 20 LTS", "PostgreSQL + Row-level policies", "S3 presigned URLs", "BullMQ para jobs"],
+      decisoesTecnicas: [
+        "Upload direto ao S3 com URLs pré-assinadas para não passar binários pelo servidor de aplicação.",
+        "Estado do fluxo persistido como JSON versionado para permitir rollback de etapas.",
+      ],
+      desafiosExtras: [
+        "Revisão manual exigia trilho de auditoria imutável por evento.",
+        "Segmentos com documentos obrigatórios distintos sem duplicar código de formulário.",
+      ],
+    },
   },
   {
     id: "pessoal-stargazing",
@@ -99,6 +138,8 @@ export const MOCK_PROJECTS = [
     resumo: "Registo simples de sessões de observação (side project).",
     descricao:
       "App para anotar condições do céu, equipamento e notas. Estrutura pensada para no futuro sincronizar entre web e mobile e mostrar histórico por localização.",
+    descricaoResumida:
+      "Diário de observações com condições do céu e equipamento; base para sync e mapas no futuro.",
     plataformas: {
       web: { imagem: "", link: "https://example.com/stargazing" },
       mobile: {
@@ -113,6 +154,16 @@ export const MOCK_PROJECTS = [
       resultado: "Base estável para acrescentar mapas e alertas meteorológicos.",
     },
     evolucao: ["Offline-first", "Migrações locais de base de dados"],
+    conteudoTecnico: {
+      stackDetalhada: ["Expo SDK 51", "expo-sqlite", "Zustand", "react-native-maps (planeado)"],
+      decisoesTecnicas: [
+        "SQLite local primeiro; sync apenas quando houver conta e API estável.",
+        "Campos de observação modelados como JSON schema leve para evoluir sem migrations pesadas.",
+      ],
+      desafiosExtras: [
+        "Notas com anexos de fotos em baixa luz e metadados EXIF opcionais.",
+      ],
+    },
   },
   {
     id: "pessoal-portfolio",
@@ -122,6 +173,8 @@ export const MOCK_PROJECTS = [
     resumo: "Landing single-page com hero interativo e secções modulares.",
     descricao:
       "Experimento contínuo com performance, acessibilidade e componentização. A secção Projetos consome dados centralizados e componentes desacoplados para evoluir UI depois.",
+    descricaoResumida:
+      "Single-page com foco em performance e componentização; dados centralizados para evoluir a UI.",
     plataformas: {
       web: { imagem: "", link: "https://example.com/portfolio" },
       mobile: { imagem: "", link: "" },
@@ -134,5 +187,15 @@ export const MOCK_PROJECTS = [
     },
     evolucao: ["Scroll-linked UI", "Organização de dados por domínio"],
     figmaLink: "https://www.figma.com/file/example-portfolio",
+    conteudoTecnico: {
+      stackDetalhada: ["Next.js 16", "Turbopack", "Tailwind v4", "OGL / WebGL2", "Framer Motion"],
+      decisoesTecnicas: [
+        "Secção Projetos em JS puro com helpers testáveis para facilitar migração de dados.",
+        "Motion concentrado em poucos componentes para reduzir repaint e manter previsibilidade.",
+      ],
+      desafiosExtras: [
+        "Hero com scroll zoom sem atrapalhar acessibilidade do restante da página.",
+      ],
+    },
   },
 ]
