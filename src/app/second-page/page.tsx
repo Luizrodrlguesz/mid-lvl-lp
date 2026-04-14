@@ -16,6 +16,7 @@ import { HorizontalScrollGallery } from "@/components/horizontal-scroll-gallery"
 import { PortfolioHeader } from "@/components/portfolio-header"
 import { PortfolioHeroAvatar } from "@/components/portfolio-hero-avatar"
 import { PortfolioHeroIntro } from "@/components/portfolio-hero-intro"
+import { ProjectsSection } from "@/components/projects/projects-section"
 import type { Locale } from "@/components/language-switcher"
 
 /** Fração do zoom total só com wheel (portão fechado); o resto vem do scroll no trilho do hero. */
@@ -298,25 +299,7 @@ export default function SecondPage() {
         aria-labelledby="heading-camadas"
         className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
       >
-        <div className="mx-auto max-w-6xl space-y-6">
-          <h2 id="heading-camadas" className="text-3xl font-bold">
-            Camadas e legibilidade
-          </h2>
-          <p className="max-w-3xl text-muted-foreground">
-            Coloque a <code className="rounded bg-muted px-1 py-0.5 text-sm">Aurora</code> em um
-            wrapper <code className="rounded bg-muted px-1 py-0.5 text-sm">absolute inset-0</code>{" "}
-            com <code className="rounded bg-muted px-1 py-0.5 text-sm">z-0</code> e o conteúdo
-            (texto, botões, cards) com{" "}
-            <code className="rounded bg-muted px-1 py-0.5 text-sm">relative z-10</code>. Fundos
-            semi-transparentes ou <code className="rounded bg-muted px-1 py-0.5 text-sm">backdrop-blur</code>{" "}
-            no card ajudam o contraste sem esconder o brilho de fundo.
-          </p>
-          <ul className="max-w-3xl list-inside list-disc space-y-2 text-muted-foreground">
-            <li>O canvas da Aurora ignora cliques (<code className="text-foreground">pointer-events: none</code>).</li>
-            <li>Evite texto branco puro sobre o clarão mais forte sem uma camada escura por baixo.</li>
-            <li>Em mobile, teste altura com barra do navegador visível e oculta.</li>
-          </ul>
-        </div>
+        <ProjectsSection />
       </section>
 
       <section
