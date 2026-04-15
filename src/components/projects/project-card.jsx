@@ -1,12 +1,13 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
   descricaoParaModoVisual,
   imagemParaPlataforma,
+  insightsTemConteudo,
   plataformasDisponiveis,
   visitUrlParaPlataforma,
 } from "@/lib/project-helpers"
@@ -52,10 +53,17 @@ function CtaWrap({ children, disabled }) {
   )
 }
 
+function plataformaInicialParaProjeto(projeto) {
+  const lista = plataformasDisponiveis(projeto)
+  if (lista.includes("web")) return "web"
+  if (lista.includes("mobile")) return "mobile"
+  return "web"
+}
+
 /**
  * Card do projeto: grelha, stagger narrativo (texto → imagem) e modo visual/técnico.
  */
-export function ProjectCard({ projeto, tipo = "profissional", viewMode = "visual" }) {
+function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" }) {
   const isTecnico = viewMode === "tecnico"
 
   const disponiveis = useMemo(
@@ -63,14 +71,9 @@ export function ProjectCard({ projeto, tipo = "profissional", viewMode = "visual
     [projeto],
   )
 
-  const [plataformaAtiva, setPlataformaAtiva] = useState("web")
-
-  useEffect(() => {
-    const lista = plataformasDisponiveis(projeto)
-    if (lista.includes("web")) setPlataformaAtiva("web")
-    else if (lista.includes("mobile")) setPlataformaAtiva("mobile")
-    else setPlataformaAtiva("web")
-  }, [projeto])
+  const [plataformaAtiva, setPlataformaAtiva] = useState(() =>
+    plataformaInicialParaProjeto(projeto),
+  )
 
   const opcoesPlataforma = useMemo(
     () =>
@@ -121,55 +124,7 @@ export function ProjectCard({ projeto, tipo = "profissional", viewMode = "visual
           "border-violet-500/20 shadow-violet-900/10 ring-1 ring-violet-500/15 dark:shadow-violet-950/25",
       )}
     >
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.92fr)] lg:items-start lg:gap-10">
-        <motion.div
-          key={`media-${narrativeKey}`}
-          variants={narrativeImageColumn}
-          initial="hidden"
-          animate="show"
-          className="order-1 lg:order-2 lg:sticky lg:top-24"
-        >
-          <figure className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <div className="relative aspect-4/3 min-h-[200px] overflow-hidden rounded-lg border border-border/80 bg-muted/25 shadow-inner sm:aspect-16/10 sm:min-h-[220px]">
-              <AnimatePresence initial={false} mode="sync">
-                {imageSrc ? (
-                  <motion.div
-                    key={imageAnimKey}
-                    role="group"
-                    aria-label={`Pré-visualização ${plataformaAtiva}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={imageCrossfadeTransition}
-                    className="absolute inset-0"
-                  >
-                    <img
-                      src={imageSrc}
-                      alt={`Pré-visualização (${plataformaAtiva}) — ${projeto.nome}`}
-                      className="h-full w-full object-cover object-top"
-                      loading="lazy"
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key={`${imageAnimKey}-placeholder`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={imageCrossfadeTransition}
-                    className="absolute inset-0 flex items-center justify-center p-4 text-center"
-                  >
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      Sem imagem para esta plataforma. Adicione URL em{" "}
-                      <code className="rounded bg-muted px-1 py-0.5 text-xs">plataformas</code>.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </figure>
-        </motion.div>
-
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,43fr)_minmax(0,57fr)] lg:items-start lg:gap-10">
         <motion.div
           key={narrativeKey}
           variants={narrativeContainer}
@@ -242,9 +197,6 @@ export function ProjectCard({ projeto, tipo = "profissional", viewMode = "visual
           {isTecnico ? (
             <>
               <motion.div variants={narrativeItem}>
-                <ProjectInsights projectId={projeto.id} insights={projeto.insights} />
-              </motion.div>
-              <motion.div variants={narrativeItem}>
                 <ProjectTechnicalDetails
                   projectId={projeto.id}
                   conteudo={projeto.conteudoTecnico}
@@ -302,7 +254,74 @@ export function ProjectCard({ projeto, tipo = "profissional", viewMode = "visual
             ) : null}
           </motion.footer>
         </motion.div>
+
+        <motion.div
+          key={`media-${narrativeKey}`}
+          className="order-1 flex min-w-0 flex-col gap-6 lg:order-2 lg:sticky lg:top-24 lg:self-start"
+        >
+          <motion.div
+            variants={narrativeImageColumn}
+            initial="hidden"
+            animate="show"
+          >
+            <figure className="relative mx-auto w-full max-w-lg lg:max-w-none">
+              <div className="relative aspect-4/3 min-h-[200px] overflow-hidden rounded-lg border border-border/80 bg-muted/25 shadow-inner sm:aspect-16/10 sm:min-h-[220px]">
+                <AnimatePresence initial={false} mode="sync">
+                  {imageSrc ? (
+                    <motion.div
+                      key={imageAnimKey}
+                      role="group"
+                      aria-label={`Pré-visualização ${plataformaAtiva}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={imageCrossfadeTransition}
+                      className="absolute inset-0"
+                    >
+                      <img
+                        src={imageSrc}
+                        alt={`Pré-visualização (${plataformaAtiva}) — ${projeto.nome}`}
+                        className="h-full w-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key={`${imageAnimKey}-placeholder`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={imageCrossfadeTransition}
+                      className="absolute inset-0 flex items-center justify-center p-4 text-center"
+                    >
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        Sem imagem para esta plataforma. Adicione URL em{" "}
+                        <code className="rounded bg-muted px-1 py-0.5 text-xs">plataformas</code>.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </figure>
+          </motion.div>
+
+          {isTecnico && insightsTemConteudo(projeto.insights) ? (
+            <motion.div
+              key={`insights-right-${projeto.id}`}
+              variants={narrativeItem}
+              initial="hidden"
+              animate="show"
+              className="min-w-0"
+            >
+              <ProjectInsights projectId={projeto.id} insights={projeto.insights} />
+            </motion.div>
+          ) : null}
+        </motion.div>
       </div>
     </motion.article>
   )
+}
+
+export function ProjectCard(props) {
+  return <ProjectCardInner key={props.projeto.id} {...props} />
 }

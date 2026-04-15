@@ -299,7 +299,7 @@ export default function SecondPage() {
         aria-labelledby="heading-camadas"
         className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
       >
-        <ProjectsSection />
+        <ProjectsSection className="max-w-[95vw]" />
       </section>
 
       <section
@@ -307,7 +307,7 @@ export default function SecondPage() {
         aria-labelledby="heading-stack"
         className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
       >
-        <div className="mx-auto max-w-6xl space-y-6">
+        <div className="mx-auto w-full max-w-[95vw] space-y-6">
           <h2 id="heading-stack" className="text-3xl font-bold">
             Stack e renderização
           </h2>
@@ -337,7 +337,7 @@ export default function SecondPage() {
         aria-labelledby="heading-landing"
         className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
       >
-        <div className="mx-auto max-w-6xl space-y-6">
+        <div className="mx-auto w-full max-w-[95vw] space-y-6">
           <h2 id="heading-landing" className="text-3xl font-bold">
             Onde usar na landing
           </h2>
@@ -369,7 +369,7 @@ export default function SecondPage() {
         aria-labelledby="heading-props"
         className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
       >
-        <div className="mx-auto max-w-6xl space-y-6">
+        <div className="mx-auto w-full max-w-[95vw] space-y-6">
           <h2 id="heading-props" className="text-3xl font-bold">
             Props
           </h2>

@@ -17,6 +17,7 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { LanguageSwitcher, type Locale } from "@/components/language-switcher"
 import { BackToTop } from "@/components/back-to-top"
+import { SkillShowcaseCard } from "@/components/skills/skill-showcase-card"
 import { cn } from "@/lib/utils"
 import {
   aboutCopy,
@@ -313,7 +314,6 @@ export default function Home() {
   const [highlightIdx, setHighlightIdx] = useState(0)
   const categorySkills = showcaseByCategory[skillCategory]
   const selectedSkill = categorySkills.find((s) => s.id === selectedSkillId)
-  const selectedSkillImage = selectedSkill?.image ?? "/assets/skills/htmlcss.png"
   const shouldSplitColumns = categorySkills.length > 5
   const projectImage = projects[activeProject]?.image
   const skillLogos: Record<string, string> = useMemo(
@@ -736,25 +736,11 @@ export default function Home() {
                       transition={{ duration: 0.18, ease: "easeOut" }}
                       className="h-full"
                     >
-                      <Card className="relative h-full overflow-hidden border-border/60 bg-background/60">
-                        <div
-                          className="pointer-events-none absolute inset-0 opacity-10"
-                          style={{
-                            backgroundImage: `url('${selectedSkillImage}')`,
-                            backgroundSize: "60%",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "right center",
-                          }}
-                        />
-                        <CardHeader className="relative pb-2">
-                          <CardTitle className="text-base">
-                            {selectedSkill?.label[locale] ?? "Selecione uma skill"}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="relative text-sm text-muted-foreground">
-                          {selectedSkill?.description[locale] ?? "Escolha uma skill para ver os detalhes."}
-                        </CardContent>
-                      </Card>
+                      <SkillShowcaseCard
+                        skill={selectedSkill}
+                        locale={locale}
+                        className="h-full min-h-[min(100%,420px)] max-h-[min(72vh,620px)] max-w-none border-border/60 bg-background/60 shadow-sm"
+                      />
                     </motion.div>
                   </AnimatePresence>
                 </div>

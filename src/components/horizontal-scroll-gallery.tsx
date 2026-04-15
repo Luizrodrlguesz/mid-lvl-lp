@@ -1,11 +1,52 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { skillShowcase } from "@/lib/content"
+import { HorizontalGalleryCategoryPanel } from "@/components/horizontal-gallery-category-panel"
+
+const GALLERY_LOCALE = "pt-br" as const
+
+const GALLERY_CATEGORIES = [
+  {
+    category: "linguagens" as const,
+    title: "Linguagens",
+    subtitle:
+      "Apresentação das linguagens que uso no dia a dia: o papel de cada uma, onde aplico e como encaixam no meu fluxo de trabalho.",
+  },
+  {
+    category: "front",
+    title: "Front-end",
+    subtitle:
+      "Ferramentas com que estruturo telas, navegação e experiência do utilizador — da marcação às frameworks que entregam o produto.",
+  },
+  {
+    category: "back",
+    title: "Back-end",
+    subtitle:
+      "Camada em que apoio integrações, APIs e validação de dados, alinhando o que a interface promete com o que o servidor garante.",
+  },
+  {
+    category: "outros",
+    title: "Outros",
+    subtitle:
+      "Ecossistema em volta do código: estilização utilitária, design system, versionamento, deploy e tudo o que acelera a entrega com qualidade.",
+  },
+]
 
 export function HorizontalScrollGallery() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const panelCount = GALLERY_CATEGORIES.length
+
+  const panelsData = useMemo(
+    () =>
+      GALLERY_CATEGORIES.map((row) => ({
+        ...row,
+        skills: skillShowcase.filter((s) => s.category === row.category),
+      })),
+    [],
+  )
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -31,7 +72,7 @@ export function HorizontalScrollGallery() {
 
   return (
     <div>
-      <div className="mx-auto max-w-6xl space-y-2 px-6 pb-12 pt-24">
+      <div className="mx-auto w-full max-w-[95vw] space-y-2 px-6 pb-12 pt-24">
         <h2 id="heading-variacoes" className="text-3xl font-bold">
           Galeria horizontal
         </h2>
@@ -48,12 +89,12 @@ export function HorizontalScrollGallery() {
           flexWrap: "nowrap",
           overflow: "hidden",
           height: "100vh",
-          width: `${4 * 100}vw`,
+          width: `${panelCount * 100}vw`,
         }}
       >
-        {CARDS.map((card) => (
+        {panelsData.map(({ category, title, subtitle, skills }) => (
           <div
-            key={card.title}
+            key={category}
             className="gallery-panel"
             style={{
               width: "100vw",
@@ -62,26 +103,18 @@ export function HorizontalScrollGallery() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: "2rem",
+              padding: "clamp(1rem, 2.5vw, 2rem)",
             }}
           >
-            <article className="flex min-h-[220px] w-full max-w-2xl flex-col rounded-2xl border border-border bg-card/80 p-8 shadow-sm backdrop-blur-sm">
-              <h3 className="text-lg font-semibold text-foreground">{card.title}</h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{card.body}</p>
-              <span className="mt-6 inline-flex w-fit rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
-                Placeholder
-              </span>
-            </article>
+            <HorizontalGalleryCategoryPanel
+              title={title}
+              subtitle={subtitle}
+              skills={skills}
+              locale={GALLERY_LOCALE}
+            />
           </div>
         ))}
       </div>
     </div>
   )
 }
-
-const CARDS = [
-  { title: "Bloco um", body: "Texto de apoio genérico para manter o ritmo visual." },
-  { title: "Bloco dois", body: "Conteúdo placeholder até você definir o que entra em cada card." },
-  { title: "Bloco três", body: "Mesma hierarquia de título e parágrafo nos quatro itens." },
-  { title: "Bloco quatro", body: "Só para ocupar o quarto slot e ver alinhamento em telas largas." },
-]

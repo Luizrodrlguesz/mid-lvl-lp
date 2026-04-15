@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { MOCK_PROJECTS } from "@/data/projects"
 import { projetosPorTipo } from "@/lib/project-helpers"
 import { PROJECTS_EASE } from "@/lib/projects-motion"
+import { cn } from "@/lib/utils"
 import { ProjectsFilter } from "./projects-filter"
 import { ProjectsHeader } from "./projects-header"
 import { ProjectCard } from "./project-card"
@@ -14,8 +15,9 @@ import { ProjectsTimeline } from "./projects-timeline"
 /**
  * Orquestra timeline, modo visual/técnico e animação de entrada da secção.
  * O brilho da linha da constelação segue discretamente o scroll na viewport.
+ * @param {{ className?: string }} [props]
  */
-export function ProjectsSection() {
+export function ProjectsSection({ className } = {}) {
   const scrollRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: scrollRef,
@@ -57,7 +59,7 @@ export function ProjectsSection() {
   return (
     <motion.div
       ref={scrollRef}
-      className="mx-auto max-w-6xl space-y-8"
+      className={cn("mx-auto max-w-6xl space-y-8", className)}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-72px 0px", amount: 0.12 }}
