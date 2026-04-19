@@ -17,14 +17,14 @@ export const defaultSiteHeaderLabels: Record<
   "pt-br": {
     hero: "Início",
     about: "Sobre",
-    skills: "Skills",
+    skills: "Habilidades",
     projects: "Projetos",
     contact: "Contato",
   },
   "en-us": {
     hero: "Home",
     about: "About",
-    skills: "Skills",
+    skills: "Habilidades",
     projects: "Projects",
     contact: "Contact",
   },
