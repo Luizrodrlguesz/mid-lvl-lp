@@ -116,8 +116,8 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
       exit={{ opacity: 0, y: -10 }}
       transition={cardPresenceTransition}
       className={cn(
-        "overflow-hidden rounded-xl border p-6 shadow-sm sm:p-8",
-        "bg-card/95 backdrop-blur-sm",
+        "overflow-hidden rounded-[32px] border p-6 shadow-sm sm:p-8",
+        "bg-black/10 backdrop-blur-[25px]",
         tipo === "profissional" &&
           "border-white/10 shadow-black/20 ring-1 ring-white/5",
         tipo === "pessoal" &&

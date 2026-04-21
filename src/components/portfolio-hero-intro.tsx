@@ -99,7 +99,7 @@ export function PortfolioHeroIntro({
             "rounded-full border-white/25 bg-white/5 text-white backdrop-blur-sm",
             "hover:bg-white/12 hover:text-white",
           )}
-          onClick={() => onNavigateToSection("props")}
+          onClick={() => onNavigateToSection("contato")}
         >
           Falar comigo
         </Button>

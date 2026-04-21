@@ -107,7 +107,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
-    title: { "pt-br": "Flutter / Dart", "en-us": "Flutter / Dart", "fr-fr": "Flutter / Dart" },
+    title: { "pt-br": "Mobile", "en-us": "Mobile", "fr-fr": "Mobile" },
     description: {
       "pt-br":
         "Explorando Flutter/Dart para experiências mobile, prototipando telas e entendendo o fluxo de estado e navegação.",

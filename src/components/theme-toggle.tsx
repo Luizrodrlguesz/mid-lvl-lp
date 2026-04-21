@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch"
   const isDark = (theme ?? resolvedTheme ?? "dark") === "dark"
 
    return (
-     <div className="flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-3 py-2 shadow-sm backdrop-blur">
+     <div className="flex items-center gap-2 rounded-full border border-border/70 bg-black/10 px-3 py-2 shadow-sm backdrop-blur-[25px]">
        <Sun className="h-4 w-4 text-muted-foreground" aria-hidden />
        <Switch
          checked={isDark}

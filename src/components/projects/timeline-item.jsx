@@ -37,11 +37,11 @@ export function TimelineItem({
               ? cn(
                   "z-10 border-primary/50 shadow-[0_0_20px_rgba(99,102,241,0.35)] ring-2 ring-primary/30",
                   isProf
-                    ? "bg-linear-to-br from-white/15 to-white/5 text-foreground"
+                    ? "bg-linear-to-br from-indigo-500/25 to-slate-950/55 text-foreground"
                     : "bg-linear-to-br from-violet-400/25 to-violet-950/40 text-violet-50",
                 )
               : cn(
-                  "border-border/70 bg-card/80 text-muted-foreground hover:border-primary/25 hover:text-foreground/90",
+                  "border-border/70 bg-muted/30 text-muted-foreground backdrop-blur-[2px] hover:border-primary/25 hover:text-foreground/90",
                   "shadow-sm",
                 ),
           )}

@@ -22,7 +22,7 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
   const selected = skills.find((s) => s.id === selectedId) ?? skills[0]
   if (!selected) {
     return (
-      <article className="flex w-full max-w-5xl flex-col rounded-2xl border border-border bg-card/80 p-7 shadow-sm backdrop-blur-sm md:p-8">
+      <article className="flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] md:p-8">
         <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h2>
         <p className="mt-2 text-sm text-muted-foreground">Nenhuma habilidade nesta categoria.</p>
       </article>
@@ -36,7 +36,7 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
   const name = selected.label[locale]
 
   return (
-    <article className="flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col rounded-2xl border border-border bg-card/85 p-7 shadow-sm backdrop-blur-sm md:p-8">
+    <article className="flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] md:p-8">
       <header className="shrink-0 border-b border-border/60 pb-4 md:pb-5">
         <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
@@ -64,13 +64,11 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
           })}
         </nav>
 
-        <div className="relative flex min-h-[220px] flex-col overflow-hidden rounded-xl border border-border/80 bg-background/50 shadow-inner sm:min-h-[260px] lg:min-h-[300px]">
+        <div className="relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] border border-border/80 bg-black/10 shadow-inner backdrop-blur-[25px] sm:min-h-[260px] lg:min-h-[300px]">
           <div
-            className="pointer-events-none absolute inset-0 bg-no-repeat opacity-[0.11]"
+            className="skill-card-bg-layer skill-card-bg-drift pointer-events-none absolute -right-[9%] h-[min(100%,505px)] w-[min(100%,440px)] max-w-[min(98vw,485px)] bg-contain bg-right bg-no-repeat opacity-[0.14] will-change-transform sm:h-[min(100%,530px)] sm:w-[min(96%,462px)] lg:-right-[6%] lg:h-[min(100%,550px)] lg:w-[min(92%,505px)]"
             style={{
               backgroundImage: `url('${selected.image}')`,
-              backgroundSize: "min(40%, 168px)",
-              backgroundPosition: "right 8% center",
             }}
             aria-hidden
           />
@@ -104,7 +102,7 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
                   Domínio
                 </p>
-                <p className="mt-2 inline-flex rounded-full border border-border bg-card/80 px-3 py-1.5 text-xs font-medium text-foreground sm:text-sm">
+                <p className="mt-2 inline-flex rounded-full border border-border bg-black/10 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-[25px] sm:text-sm">
                   {nivel}
                 </p>
               </section>

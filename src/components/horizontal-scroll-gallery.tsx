@@ -72,10 +72,18 @@ export function HorizontalScrollGallery() {
 
   return (
     <div>
-      <div className="mx-auto w-full max-w-[95vw] space-y-2 px-6 pb-12 pt-24">
-        <h2 id="heading-variacoes" className="text-3xl font-bold">
-          Galeria horizontal
-        </h2>
+      <div className="mx-auto w-full max-w-[95vw] space-y-3 px-6 pb-12 pt-24">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
+            Habilidades
+          </p>
+          <h2
+            id="heading-variacoes"
+            className="font-orbitron-italic mt-2 text-3xl font-bold"
+          >
+            Galeria horizontal
+          </h2>
+        </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
           Scroll vertical percorre os cards horizontalmente. Ao chegar no último, o scroll vertical
           volta ao normal.

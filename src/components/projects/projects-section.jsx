@@ -37,6 +37,7 @@ export function ProjectsSection({ className } = {}) {
 
   useEffect(() => {
     if (!filtrados.length) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveId(null)
       return
     }
@@ -59,35 +60,38 @@ export function ProjectsSection({ className } = {}) {
   return (
     <motion.div
       ref={scrollRef}
-      className={cn("mx-auto max-w-6xl space-y-8", className)}
+      className={cn("mx-auto max-w-6xl flex flex-col gap-8", className)}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-72px 0px", amount: 0.12 }}
       transition={{ duration: 0.42, ease: PROJECTS_EASE }}
     >
       <ProjectsHeader
-        title="Projetos"
+        eyebrow="Projetos"
+        title="Minha jornada"
         description="Percorra a constelação da linha do tempo — do mais recente ao mais antigo. Use o modo Visual para uma leitura rápida ou Técnico para aprofundar decisões e stack."
       />
 
-      <motion.div
-        key={tipo}
-        initial={{ opacity: 0.88 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.28, ease: PROJECTS_EASE }}
-        className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-      >
-        <ProjectsFilter value={tipo} onChange={setTipo} />
-        <ProjectModeToggle value={viewMode} onChange={setViewMode} />
-      </motion.div>
+      <div className="flex flex-col gap-0">
+        <motion.div
+          key={tipo}
+          initial={{ opacity: 0.88 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.28, ease: PROJECTS_EASE }}
+          className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <ProjectsFilter value={tipo} onChange={setTipo} />
+          <ProjectModeToggle value={viewMode} onChange={setViewMode} />
+        </motion.div>
 
-      <ProjectsTimeline
-        items={timelineItems}
-        activeId={ativo?.id ?? ""}
-        onSelect={setActiveId}
-        tipo={tipo}
-        scrollLineGlow={lineGlow}
-      />
+        <ProjectsTimeline
+          items={timelineItems}
+          activeId={ativo?.id ?? ""}
+          onSelect={setActiveId}
+          tipo={tipo}
+          scrollLineGlow={lineGlow}
+        />
+      </div>
 
       <AnimatePresence mode="wait">
         {ativo ? (

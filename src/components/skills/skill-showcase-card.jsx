@@ -29,7 +29,7 @@ export function SkillShowcaseCard({ skill, locale, className = "", density = "co
   if (!skill) {
     return (
       <article
-        className={`relative flex min-h-[200px] flex-col justify-center overflow-hidden rounded-2xl border border-border bg-card/80 p-8 text-center text-sm text-muted-foreground shadow-sm backdrop-blur-sm ${className}`}
+        className={`relative flex min-h-[200px] flex-col justify-center overflow-hidden rounded-[32px] border border-border bg-black/10 p-8 text-center text-sm text-muted-foreground shadow-sm backdrop-blur-[25px] ${className}`}
       >
         {locale === "pt-br"
           ? "Escolha uma habilidade para ver os detalhes."
@@ -46,7 +46,7 @@ export function SkillShowcaseCard({ skill, locale, className = "", density = "co
 
   return (
     <article
-      className={`relative flex max-h-full min-h-0 w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-border bg-card/85 text-left shadow-sm backdrop-blur-sm ${pad} ${className}`}
+      className={`relative flex max-h-full min-h-0 w-full max-w-2xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 text-left shadow-sm backdrop-blur-[25px] ${pad} ${className}`}
     >
       <div
         className="pointer-events-none absolute inset-0 bg-no-repeat opacity-[0.07]"

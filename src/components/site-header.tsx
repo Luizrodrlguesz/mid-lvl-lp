@@ -70,7 +70,7 @@ export function SiteHeader({ locale, items, activeId }: SiteHeaderProps) {
   }
 
   return (
-    <header className="absolute inset-x-0 top-0 z-30 border-b border-border/60 bg-card/80 backdrop-blur">
+    <header className="absolute inset-x-0 top-0 z-30 border-b border-border/60 bg-black/10 backdrop-blur-[25px]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link
           href="#hero"
@@ -80,7 +80,7 @@ export function SiteHeader({ locale, items, activeId }: SiteHeaderProps) {
           <Image src="/assets/lr-logo.png" alt="Luiz Rodrigues" width={45} height={28} priority />
           <span className="sr-only">Luiz Rodrigues</span>
         </Link>
-        <nav className="hidden gap-2 rounded-full border border-border/60 bg-card/50 px-2 py-1 text-xs font-medium shadow-sm backdrop-blur lg:flex">
+        <nav className="hidden gap-2 rounded-full border border-border/60 bg-black/10 px-1 py-1 text-xs font-medium shadow-sm backdrop-blur-[25px] lg:flex">
           {navItems.map(({ id, label }) => (
             <Button
               key={id}

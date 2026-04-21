@@ -22,7 +22,7 @@
      <Button
        size="icon"
        variant="secondary"
-       className="h-11 w-11 rounded-full border border-border/60 bg-card/90 shadow-lg backdrop-blur transition hover:-translate-y-1"
+       className="h-11 w-11 rounded-full border border-border/60 bg-black/10 shadow-lg backdrop-blur-[25px] transition hover:-translate-y-1"
        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
        aria-label="Voltar ao topo"
      >

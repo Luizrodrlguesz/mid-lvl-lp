@@ -17,7 +17,16 @@ import { PortfolioHeader } from "@/components/portfolio-header"
 import { PortfolioHeroAvatar } from "@/components/portfolio-hero-avatar"
 import { PortfolioHeroIntro } from "@/components/portfolio-hero-intro"
 import { ProjectsSection } from "@/components/projects/projects-section"
-import type { Locale } from "@/components/language-switcher"
+import { SecondPageAboutSection } from "@/components/second-page-about-section"
+import {
+  LanguageSwitcher,
+  type Locale,
+} from "@/components/language-switcher"
+import { BackToTop } from "@/components/back-to-top"
+import { SecondPageContactSection } from "@/components/second-page-contact-section"
+import { SiteFooter } from "@/components/site-footer"
+import { LoadingScreen } from "@/components/loading-screen"
+import { cn } from "@/lib/utils"
 
 /** Fração do zoom total só com wheel (portão fechado); o resto vem do scroll no trilho do hero. */
 const ZOOM_FIRST_PHASE_RATIO = 0.35
@@ -44,13 +53,14 @@ export default function SecondPage() {
 
   const zoomLockProgress = useMotionValue(0)
   const zoomGateOpen = useMotionValue(0)
-  const locale: Locale = "pt-br"
+  const [locale, setLocale] = useState<Locale>("pt-br")
+  const [loading, setLoading] = useState(true)
   const headerItems = useMemo(
     () => [
       { id: "hero", label: "Início" },
-      { id: "como-usar", label: "Sobre" },
+      { id: "sobre", label: "Sobre" },
       { id: "variacoes", label: "Projetos" },
-      { id: "props", label: "Contato" },
+      { id: "contato", label: "Contato" },
     ],
     [],
   )
@@ -59,6 +69,11 @@ export default function SecondPage() {
   useMotionValueEvent(pageScrollProgress, "change", (latest) => {
     setParticleScroll(latest)
   })
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setLoading(false), 3000)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const { scrollYProgress: heroScrollProgress } = useScroll({
     target: containerRef,
@@ -159,11 +174,18 @@ export default function SecondPage() {
   )
 
   const scrollToNextSection = useCallback(() => {
-    unlockScrollAndGoTo("como-usar")
+    unlockScrollAndGoTo("sobre")
   }, [unlockScrollAndGoTo])
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
+      <LoadingScreen show={loading} />
+      <div
+        className={cn(
+          "transition-opacity duration-300",
+          loading ? "pointer-events-none opacity-0" : "opacity-100",
+        )}
+      >
       <BackgroundCanvas scrollProgress={particleScroll} />
       <PortfolioHeader locale={locale} items={headerItems} />
 
@@ -204,7 +226,7 @@ export default function SecondPage() {
 
           {/* Link para próxima section (libera scroll + zoom por rolagem) */}
           <motion.a
-            href="#como-usar"
+            href="#sobre"
             onClick={(e) => {
               e.preventDefault()
               scrollToNextSection()
@@ -234,61 +256,12 @@ export default function SecondPage() {
           aria-hidden="true"
         />
 
-      <section
-        id="como-usar"
-        aria-labelledby="heading-como-usar"
-        className="relative z-10 border-t border-white/10  py-24 px-6 text-zinc-100"
-      >
-        <div className="mx-auto max-w-6xl space-y-6">
-          <h2 id="heading-como-usar" className="text-3xl font-bold text-white">
-            Como usar
-          </h2>
-            <p className="text-zinc-400">
-              O componente funciona dentro de qualquer container com{" "}
-              <code className="rounded bg-white/10 px-1 py-0.5 text-sm text-zinc-200">
-                w-full h-full
-              </code>
-              :
-            </p>
-
-            {/* Código de exemplo */}
-            <div className="p-6 rounded-xl bg-muted font-mono text-sm overflow-x-auto">
-              <pre className="text-foreground">
-{`{/* Exemplo 1: Viewport inteiro (padrão típico) */}
-<div className="relative h-screen w-full">
-  <Aurora
-    colorStops={["#008594", "#0264DB", "#014C4F", "#0A368A"]}
-    amplitude={0.4}
-    blend={0.5}
-  />
-</div>
-
-{/* Exemplo 2: Container específico */}
-<div className="w-full h-96 relative">
-  <Aurora
-    colorStops={["#0ea5e9", "#06b6d4", "#3b82f6"]}
-    amplitude={0.5}
-    blend={0.6}
-  />
-</div>
-
-{/* Exemplo 3: Full screen */}
-<div className="w-full h-screen relative">
-  <Aurora
-    colorStops={["#22c55e", "#16a34a", "#059669"]}
-    amplitude={0.3}
-    blend={0.4}
-  />
-</div>`}
-              </pre>
-            </div>
-        </div>
-      </section>
+      <SecondPageAboutSection locale={locale} />
 
       <section
         id="variacoes"
         aria-labelledby="heading-variacoes"
-        className="relative z-10 border-t border-border/60 bg-transparent"
+        className="relative z-10  border-border/60 bg-transparent"
       >
         <HorizontalScrollGallery />
       </section>
@@ -297,113 +270,20 @@ export default function SecondPage() {
       <section
         id="camadas-conteudo"
         aria-labelledby="heading-camadas"
-        className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
+        className="relative z-10  border-border/60 bg-transparent py-24 px-6"
       >
-        <ProjectsSection className="max-w-[95vw]" />
+        <ProjectsSection className="max-w-[92vw]" />
       </section>
 
-      <section
-        id="stack"
-        aria-labelledby="heading-stack"
-        className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
-      >
-        <div className="mx-auto w-full max-w-[95vw] space-y-6">
-          <h2 id="heading-stack" className="text-3xl font-bold">
-            Stack e renderização
-          </h2>
-          <p className="max-w-3xl text-muted-foreground">
-            O efeito roda em <strong className="font-medium text-foreground">WebGL 2</strong> via{" "}
-            <a
-              href="https://github.com/oframe/ogl"
-              className="text-primary underline-offset-4 hover:underline"
-            >
-              OGL
-            </a>
-            : um triângulo em tela cheia e um fragment shader com ruído simplex, igual ao padrão do
-            React Bits. O componente é <code className="rounded bg-muted px-1 py-0.5 text-sm">use client</code>{" "}
-            porque precisa do <code className="rounded bg-muted px-1 py-0.5 text-sm">canvas</code> no
-            browser.
-          </p>
-          <p className="max-w-3xl text-muted-foreground">
-            Em dispositivos sem WebGL 2 o contexto pode falhar silenciosamente; em produção vale
-            prever um fundo sólido ou gradiente CSS como fallback se o seu público incluir browsers
-            muito antigos.
-          </p>
-        </div>
-      </section>
+      <SecondPageContactSection />
 
-      <section
-        id="landing-ideas"
-        aria-labelledby="heading-landing"
-        className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
-      >
-        <div className="mx-auto w-full max-w-[95vw] space-y-6">
-          <h2 id="heading-landing" className="text-3xl font-bold">
-            Onde usar na landing
-          </h2>
-          <p className="max-w-3xl text-muted-foreground">
-            Alguns encaixes comuns para um fundo orgânico como este:
-          </p>
-          <ul className="max-w-3xl list-inside list-disc space-y-3 text-muted-foreground">
-            <li>
-              <span className="font-medium text-foreground">Hero acima da dobra</span> — headline,
-              subtexto e CTA primário, como nesta página.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Bloco de prova social</span> — faixa mais
-              baixa (<code className="rounded bg-muted px-1 py-0.5 text-sm">h-64</code> a{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-sm">h-96</code>) só para dar
-              atmosfera atrás de logos ou depoimentos.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Pré-footer</span> — transição suave
-              antes do rodapé escuro, com <code className="rounded bg-muted px-1 py-0.5 text-sm">blend</code>{" "}
-              mais alto para o degradê sumir devagar.
-            </li>
-          </ul>
-        </div>
-      </section>
+      <SiteFooter />
 
-      <section
-        id="props"
-        aria-labelledby="heading-props"
-        className="relative z-10 border-t border-border/60 bg-transparent py-24 px-6"
-      >
-        <div className="mx-auto w-full max-w-[95vw] space-y-6">
-          <h2 id="heading-props" className="text-3xl font-bold">
-            Props
-          </h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl border border-border bg-card">
-                <code className="text-sm font-semibold text-violet-500">colorStops</code>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Até 4 cores ao longo do eixo horizontal. Padrão: tons de azul/teal. Ex:{" "}
-                  <code className="rounded bg-muted px-1 py-0.5 text-xs text-foreground">
-                    {`["#008594", …, "#0A368A"]`}
-                  </code>
-                </p>
-              </div>
-              <div className="p-4 rounded-xl border border-border bg-card">
-                <code className="text-sm font-semibold text-blue-500">amplitude</code>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Intensidade do movimento das ondas (0-1). Padrão: 0.4
-                </p>
-              </div>
-              <div className="p-4 rounded-xl border border-border bg-card">
-                <code className="text-sm font-semibold text-emerald-500">blend</code>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Opacidade do blend das cores (0-1). Padrão: 0.5
-                </p>
-              </div>
-              <div className="p-4 rounded-xl border border-border bg-card">
-                <code className="text-sm font-semibold text-amber-500">speed</code>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Velocidade da animação. Padrão: 1
-                </p>
-              </div>
-            </div>
-        </div>
-      </section>
+      <div className="fixed bottom-6 right-6 z-30 flex flex-col items-end gap-3">
+        <LanguageSwitcher value={locale} onChange={setLocale} />
+        <BackToTop />
+      </div>
+      </div>
     </div>
   )
 }

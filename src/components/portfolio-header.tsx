@@ -76,7 +76,7 @@ export function PortfolioHeader({
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
           >
-            <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-1 py-1 shadow-md backdrop-blur">
+            <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-black/10 px-1 py-1 shadow-md backdrop-blur-[25px]">
               <div className="flex items-center gap-1">
                 {navItems.map(({ id, label }) => (
                   <Button

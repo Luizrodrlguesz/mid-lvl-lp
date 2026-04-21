@@ -3,6 +3,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Títulos de secção (second page): Orbitron + itálico */
+.font-orbitron-italic {
+  font-family: var(--font-orbitron), ui-sans-serif, sans-serif;
+  font-style: italic;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -133,12 +139,7 @@
 }
 
 .section-card {
-  @apply relative overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-[0_10px_80px_-40px_rgba(0,0,0,0.45)] backdrop-blur;
-}
-
-/* Make cards a bit more transparent on light mode without affecting dark */
-body:not(.dark) .section-card {
-  background-color: color-mix(in srgb, var(--card) 50%, transparent);
+  @apply relative overflow-hidden rounded-3xl border border-border/60 bg-black/10 p-6 shadow-[0_10px_80px_-40px_rgba(0,0,0,0.45)] backdrop-blur-[2px];
 }
 
 .section-card::after {
@@ -332,6 +333,33 @@ html {
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+/* Galeria horizontal — arte de fundo nos cards de habilidade */
+@keyframes skill-card-bg-drift {
+  0%,
+  100% {
+    transform: translate3d(0, -50%, 0) rotate(-11deg) scale(1);
+  }
+  50% {
+    transform: translate3d(12px, calc(-50% - 6px), 0) rotate(-7deg) scale(1.04);
+  }
+}
+
+.skill-card-bg-layer {
+  top: 50%;
+  transform: translate3d(0, -50%, 0) rotate(-11deg);
+  transform-origin: 60% 50%;
+}
+
+.skill-card-bg-drift {
+  animation: skill-card-bg-drift 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-card-bg-drift {
+    animation: none;
+  }
 }
 
 /* Shimmer loading effect */
