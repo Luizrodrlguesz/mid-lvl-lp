@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 /**
@@ -12,17 +12,44 @@ import { cn } from "@/lib/utils"
  * @param {"pt-br" | "en-us" | "fr-fr"} props.locale
  */
 export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale }) {
+  const cardRef = useRef(null)
   const firstId = skills[0]?.id
   const [selectedId, setSelectedId] = useState(firstId)
+  const [hasEntered, setHasEntered] = useState(false)
 
   useEffect(() => {
     setSelectedId(firstId)
   }, [firstId])
 
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setHasEntered(entry.isIntersecting)
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0,
+      },
+    )
+
+    observer.observe(card)
+    return () => observer.disconnect()
+  }, [])
+
   const selected = skills.find((s) => s.id === selectedId) ?? skills[0]
   if (!selected) {
     return (
-      <article className="flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] md:p-8">
+      <article
+        ref={cardRef}
+        className={cn(
+          "flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out md:p-8",
+          hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+        )}
+      >
         <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h2>
         <p className="mt-2 text-sm text-muted-foreground">Nenhuma habilidade nesta categoria.</p>
       </article>
@@ -36,14 +63,33 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
   const name = selected.label[locale]
 
   return (
-    <article className="flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] md:p-8">
-      <header className="shrink-0 border-b border-border/60 pb-4 md:pb-5">
+    <article
+      ref={cardRef}
+      className={cn(
+        "flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out md:p-8",
+        hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+      )}
+    >
+      <header
+        className={cn(
+          "shrink-0 border-b border-border/60 pb-4 transition-[opacity,transform] duration-500 ease-out md:pb-5",
+          hasEntered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+        )}
+        style={{ transitionDelay: hasEntered ? "80ms" : "0ms" }}
+      >
         <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
       </header>
 
       <div className="grid min-h-0 flex-1 gap-5 pt-5 lg:grid-cols-[minmax(0,11.5rem)_minmax(0,1fr)] lg:gap-6">
-        <nav className="flex flex-row flex-wrap gap-2 lg:flex-col lg:flex-nowrap lg:overflow-y-auto" aria-label="Habilidades da categoria">
+        <nav
+          className={cn(
+            "flex flex-row flex-wrap gap-2 transition-[opacity,transform] duration-500 ease-out lg:flex-col lg:flex-nowrap lg:overflow-y-auto",
+            hasEntered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+          )}
+          style={{ transitionDelay: hasEntered ? "140ms" : "0ms" }}
+          aria-label="Habilidades da categoria"
+        >
           {skills.map((skill) => {
             const active = skill.id === selectedId
             return (
@@ -64,7 +110,13 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
           })}
         </nav>
 
-        <div className="relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] border border-border/80 bg-black/10 shadow-inner backdrop-blur-[25px] sm:min-h-[260px] lg:min-h-[300px]">
+        <div
+          className={cn(
+            "relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] border border-border/80 bg-black/10 shadow-inner backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out sm:min-h-[260px] lg:min-h-[300px]",
+            hasEntered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+          )}
+          style={{ transitionDelay: hasEntered ? "190ms" : "0ms" }}
+        >
           <div
             className="skill-card-bg-layer skill-card-bg-drift pointer-events-none absolute -right-[9%] h-[min(100%,505px)] w-[min(100%,440px)] max-w-[min(98vw,485px)] bg-contain bg-right bg-no-repeat opacity-[0.14] will-change-transform sm:h-[min(100%,530px)] sm:w-[min(96%,462px)] lg:-right-[6%] lg:h-[min(100%,550px)] lg:w-[min(92%,505px)]"
             style={{
