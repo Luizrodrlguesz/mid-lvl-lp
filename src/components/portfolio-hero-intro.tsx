@@ -87,7 +87,7 @@ export function PortfolioHeroIntro({
             "rounded-full border-0 px-7 text-white shadow-lg shadow-violet-600/25",
             "bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500",
           )}
-          onClick={() => onNavigateToSection("variacoes")}
+          onClick={() => onNavigateToSection("projetos")}
         >
           Ver projetos
         </Button>

@@ -17,23 +17,25 @@ type PortfolioHeaderProps = {
   locale: Locale
   items?: SiteHeaderItem[]
   floatingThreshold?: number
+  onNavigateToSection?: (sectionId: string) => void
 }
 
 export function PortfolioHeader({
   locale,
   items,
   floatingThreshold = 140,
+  onNavigateToSection,
 }: PortfolioHeaderProps) {
   const navItems = useMemo(
     () =>
       items ??
-      (["hero", "about", "skills", "projects", "contact"] as const).map((id) => ({
+      (["inicio", "sobre", "habilidades", "projetos", "contato"] as const).map((id) => ({
         id,
         label: defaultSiteHeaderLabels[locale][id],
       })),
     [items, locale],
   )
-  const [activeId, setActiveId] = useState(navItems[0]?.id ?? "hero")
+  const [activeId, setActiveId] = useState(navItems[0]?.id ?? "inicio")
   const [showFloatingNav, setShowFloatingNav] = useState(false)
 
   useEffect(() => {
@@ -56,6 +58,10 @@ export function PortfolioHeader({
 
   const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault()
+    if (onNavigateToSection) {
+      onNavigateToSection(id)
+      return
+    }
     const el = document.getElementById(id)
     if (!el) return
     const offset = 80
@@ -65,7 +71,12 @@ export function PortfolioHeader({
 
   return (
     <>
-      <SiteHeader locale={locale} items={navItems} activeId={activeId} />
+      <SiteHeader
+        locale={locale}
+        items={navItems}
+        activeId={activeId}
+        onNavigateToSection={onNavigateToSection}
+      />
 
       <AnimatePresence>
         {showFloatingNav ? (

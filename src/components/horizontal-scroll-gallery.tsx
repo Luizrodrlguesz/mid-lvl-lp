@@ -78,7 +78,7 @@ export function HorizontalScrollGallery() {
             Habilidades
           </p>
           <h2
-            id="heading-variacoes"
+            id="heading-habilidades"
             className="font-orbitron-italic mt-2 text-3xl font-bold"
           >
             Galeria horizontal

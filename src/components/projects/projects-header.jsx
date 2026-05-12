@@ -14,7 +14,7 @@ export function ProjectsHeader({ title, description, eyebrow }) {
           </p>
         ) : null}
         <h2
-          id="heading-camadas"
+          id="heading-projetos"
           className={cn(
             "font-orbitron-italic text-3xl font-bold text-foreground",
             eyebrow && "mt-2",

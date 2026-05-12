@@ -8,32 +8,38 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { Locale } from "./language-switcher"
 
-const defaultSections = ["hero", "about", "skills", "projects", "contact"] as const
+const defaultSections = [
+  "inicio",
+  "sobre",
+  "habilidades",
+  "projetos",
+  "contato",
+] as const
 
 export const defaultSiteHeaderLabels: Record<
   Locale,
   Record<(typeof defaultSections)[number], string>
 > = {
   "pt-br": {
-    hero: "Início",
-    about: "Sobre",
-    skills: "Habilidades",
-    projects: "Projetos",
-    contact: "Contato",
+    inicio: "Início",
+    sobre: "Sobre",
+    habilidades: "Habilidades",
+    projetos: "Projetos",
+    contato: "Contato",
   },
   "en-us": {
-    hero: "Home",
-    about: "About",
-    skills: "Habilidades",
-    projects: "Projects",
-    contact: "Contact",
+    inicio: "Home",
+    sobre: "About",
+    habilidades: "Skills",
+    projetos: "Projects",
+    contato: "Contact",
   },
   "fr-fr": {
-    hero: "Accueil",
-    about: "À propos",
-    skills: "Compétences",
-    projects: "Projets",
-    contact: "Contact",
+    inicio: "Accueil",
+    sobre: "À propos",
+    habilidades: "Compétences",
+    projetos: "Projets",
+    contato: "Contact",
   },
 }
 
@@ -46,9 +52,15 @@ type SiteHeaderProps = {
   locale: Locale
   items?: SiteHeaderItem[]
   activeId?: string
+  onNavigateToSection?: (sectionId: string) => void
 }
 
-export function SiteHeader({ locale, items, activeId }: SiteHeaderProps) {
+export function SiteHeader({
+  locale,
+  items,
+  activeId,
+  onNavigateToSection,
+}: SiteHeaderProps) {
   const navItems = useMemo(
     () =>
       items ??
@@ -58,10 +70,14 @@ export function SiteHeader({ locale, items, activeId }: SiteHeaderProps) {
       })),
     [items, locale],
   )
-  const currentActiveId = activeId ?? navItems[0]?.id ?? "hero"
+  const currentActiveId = activeId ?? navItems[0]?.id ?? "inicio"
 
   const scrollToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault()
+    if (onNavigateToSection) {
+      onNavigateToSection(id)
+      return
+    }
     const el = document.getElementById(id)
     if (!el) return
     const offset = 80
@@ -73,9 +89,9 @@ export function SiteHeader({ locale, items, activeId }: SiteHeaderProps) {
     <header className="absolute inset-x-0 top-0 z-30 border-b border-border/60 bg-black/10 backdrop-blur-[25px]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link
-          href="#hero"
+          href="#inicio"
           className="flex items-center gap-2"
-          onClick={(e) => scrollToSection(e, "hero")}
+          onClick={(e) => scrollToSection(e, "inicio")}
         >
           <Image src="/assets/lr-logo.png" alt="Luiz Rodrigues" width={45} height={28} priority />
           <span className="sr-only">Luiz Rodrigues</span>
