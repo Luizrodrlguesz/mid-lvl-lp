@@ -24,7 +24,6 @@ import {
 } from "@/components/language-switcher"
 import { BackToTop } from "@/components/back-to-top"
 import { SecondPageContactSection } from "@/components/second-page-contact-section"
-import { SiteFooter } from "@/components/site-footer"
 import { LoadingScreen } from "@/components/loading-screen"
 import { cn } from "@/lib/utils"
 
@@ -282,8 +281,6 @@ export default function Home() {
         </section>
 
         <SecondPageContactSection />
-
-        <SiteFooter />
 
         <div className="fixed bottom-6 right-6 z-30 flex flex-col items-end gap-3">
           <LanguageSwitcher value={locale} onChange={setLocale} />

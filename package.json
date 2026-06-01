@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node -e \"const major = +process.versions.node.split('.')[0]; if (major >= 24 || major < 20) { console.error('Este projeto requer Node 20 ou 22. Use nvm, volta ou brew para instalar/ativar uma versão compatível.'); process.exit(1); }\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
+  },
+  "engines": {
+    "node": ">=20 <24"
   },
   "dependencies": {
     "@radix-ui/react-progress": "^1.1.8",
