@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Node Version
+
+This project is configured to run with Node 20. If your system is using Node 24 or newer, `npm run dev` may not start correctly.
+
+Create a `.nvmrc` file in the repo root and use a Node 20 runtime before running the app.
+
 ## Getting Started
 
 First, run the development server:

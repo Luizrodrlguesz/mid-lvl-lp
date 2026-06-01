@@ -17,20 +17,34 @@ export function LoadingScreen({ show }: LoadingScreenProps) {
           exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.92, opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative h-28 w-28"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="relative flex h-32 w-32 items-center justify-center"
           >
-            <Image
-              src="/assets/thumb/astro-2.png"
-              alt="Logo"
-              fill
-              priority
-              sizes="112px"
-              className="object-contain"
-            />
+            <motion.div
+              className="relative h-28 w-28"
+              animate={{
+                x: [-22, 22],
+                rotate: [-8, 8],
+              }}
+              transition={{
+                duration: 2.6,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: [0.45, 0, 0.55, 1],
+              }}
+            >
+              <Image
+                src="/assets/avatar/pxl-loading.png"
+                alt=""
+                fill
+                priority
+                sizes="112px"
+                className="object-contain"
+              />
+            </motion.div>
           </motion.div>
         </motion.div>
       ) : null}

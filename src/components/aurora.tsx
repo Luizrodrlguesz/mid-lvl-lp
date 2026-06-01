@@ -95,12 +95,14 @@ void main() {
   colors[3] = ColorStop(uColorStops[3], 1.0);
   
   vec3 rampColor;
-  COLOR_RAMP(colors, uv.x, rampColor);
-  
-  float height = snoise(vec2(uv.x * 1.35 + uTime * 0.16, uTime * 0.38)) * 0.82 * uAmplitude;
+  float rampX = 1.0 - uv.x;
+  COLOR_RAMP(colors, rampX, rampColor);
+  rampColor *= 0.72;
+
+  float height = snoise(vec2(uv.x * 1.35 + uTime * 0.10, uTime * 0.25)) * 0.82 * uAmplitude;
   height = exp(height);
   height = (uv.y * 2.0 - height + 0.2);
-  float intensity = 0.6 * height;
+  float intensity = 0.48 * height;
   
   float midPoint = 0.20;
   float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
@@ -112,10 +114,10 @@ void main() {
 `
 
 export const DEFAULT_COLOR_STOPS: readonly string[] = [
-  "#008594",
-  "#0264DB",
-  "#00C497",
-  "#0A368A",
+  "#0A1763",
+  "#143d78",
+  "#1a5088",
+  "#0a1f3d",
 ]
 
 function resolveColorStops(stops: string[] | undefined): string[] {
@@ -211,7 +213,7 @@ export function Aurora({
       animateId = requestAnimationFrame(update)
       const p = propsRef.current
       const { time = t * 0.01, speed: sp = 1.0 } = p
-      program.uniforms.uTime.value = time * sp * 0.14
+      program.uniforms.uTime.value = time * sp * 0.095
       program.uniforms.uAmplitude.value = p.amplitude ?? 1.0
       program.uniforms.uBlend.value = p.blend ?? 0.5
       program.uniforms.uColorStops.value = rgbStopsFromHex(
