@@ -1,112 +1,72 @@
+// components/portfolio-hero-avatar.tsx
 "use client"
 
 import Image from "next/image"
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
-import { useEffect, useId, useState, type ReactNode } from "react"
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  type Variants,
+} from "framer-motion"
+import { useEffect, useId, useMemo, useState } from "react"
 
 import { cn } from "@/lib/utils"
 
-import { SharpStarIconInline } from "@/components/sharpstar-icon-inline"
-
-/** Espaço de coordenadas do SVG (dobro do 320px original). */
+/** Espaço de coordenadas do SVG. */
 const BOX = 1200
+const CENTER = BOX / 2
 
-// ─── Avatar: meio-termo entre 0.52 (original) e 0.82 (anterior) ───
-const AVATAR_DIAMETER_RATIO = 0.93
+/** Avatar menor que antes para abrir espaço pro frame HUD. */
+const AVATAR_DIAMETER_RATIO = 0.6
 
-function SharpStarFrame({
-  className,
-  children,
-}: {
-  className?: string
-  children: ReactNode
-}) {
-  return (
-    <div className={cn("relative flex items-center justify-center", className)}>
-      {/* sharpstar bem maior que o container, centralizado (SVG inline → escala via CSS) */}
-      <SharpStarIconInline
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30"
-        style={{ width: "90px", height: "90px" }}
-      />
-      {/* ícone centralizado sobre o SVG */}
-      <div className="relative z-10 flex items-center justify-center">
-        {children}
-      </div>
-    </div>
-  )
+// ─── Skills em órbita (ângulo em graus, 0° = direita, sentido horário) ───
+type Skill = { label: string; angleDeg: number }
+const SKILLS: readonly Skill[] = [
+  { label: "React", angleDeg: -128 },
+  { label: "TypeScript", angleDeg: -64 },
+  { label: "Next.js", angleDeg: 4 },
+  { label: "Laravel", angleDeg: 66 },
+  { label: "Tailwind", angleDeg: 146 },
+] as const
+
+// raios no espaço BOX
+const R_FACE = (BOX * AVATAR_DIAMETER_RATIO) / 2 // 360
+const R_RING = R_FACE + 30 // anel de gradiente justo ao avatar
+const R_TICK_IN = R_FACE + 44 // início do tracinho conector
+const R_TICK_OUT = R_FACE + 92 // fim do tracinho conector
+const R_CHIP = R_FACE + 118 // posição dos chips
+const R_OUTER = BOX * 0.485 // anel externo discreto
+const BRACKET_HALF = BOX * 0.475 // meia-largura das cantoneiras
+
+function polar(angleDeg: number, radius: number) {
+  const a = (angleDeg * Math.PI) / 180
+  return { x: CENTER + radius * Math.cos(a), y: CENTER + radius * Math.sin(a) }
 }
 
-type OrbitSlotProps = {
-  angleDeg: number
-  /** Fração do lado do quadrado (0–0.5): distância do centro ao ícone. */
-  orbitFrac: number
-  icon: ReactNode
-  starClassName: string
-}
-
-function OrbitSlot({ angleDeg, orbitFrac, icon, starClassName }: OrbitSlotProps) {
-  const offsetCqmin = -(orbitFrac * 100)
-  return (
-    <div
-      className="absolute left-1/2 top-1/2 size-0"
-      style={{
-        transform: `rotate(${angleDeg}deg) translateY(${offsetCqmin.toFixed(3)}cqmin)`,
-      }}
-    >
-      {/* contra-rotação para manter o ícone sempre de pé */}
-      <motion.div
-        className="flex -translate-x-1/2 -translate-y-1/2"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 72, repeat: Infinity, ease: "linear" }}
-      >
-        <SharpStarFrame className={starClassName}>{icon}</SharpStarFrame>
-      </motion.div>
-    </div>
-  )
+const chipVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  show: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, delay: 0.25 + i * 0.08, ease: [0.22, 1, 0.36, 1] },
+  }),
 }
 
 type PortfolioHeroAvatarProps = {
   imageAlt?: string
-  /** Classes extras nas imagens (ex.: `object-top`). */
   imageClassName?: string
   className?: string
 }
 
 const AVATAR_IDLE_SRC = "/assets/avatar/pxl-2.png"
-
-/** Frames do sprite só no hover (estado idle = `AVATAR_IDLE_SRC`). */
 const AVATAR_HOVER_SPRITE_FRAMES = [
   "/assets/avatar/pxl-1.png",
   "/assets/avatar/pxl-3.png",
   "/assets/avatar/pxl-4.png",
   "/assets/avatar/pxl-5.png",
 ] as const
-
-/** Intervalo entre frames do sprite no hover (ms). */
 const SPRITE_FRAME_MS = 300
-
-/** Crossfade idle ↔ sprite ao entrar/sair do hover (só opacity, inline para não brigar com Tailwind). */
 const IDLE_SPRITE_CROSSFADE_MS = 420
-
-const ORBIT_ICON_PHONE = "/assets/phone-icon.png"
-const ORBIT_ICON_DESK = "/assets/desk-icon.png"
-const ORBIT_ICON_CODE = "/assets/code-icon.png"
-
-function OrbitCenterIcon({ src, alt }: { src: string; alt: string }) {
-  return (
-    <span className="relative block size-6 shrink-0 min-[480px]:size-11">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        priority
-        sizes="(max-width: 479px) 18px, 20px"
-        className="object-contain select-none"
-        draggable={false}
-      />
-    </span>
-  )
-}
 
 export function PortfolioHeroAvatar({
   imageAlt = "Luiz Rodrigues",
@@ -128,27 +88,15 @@ export function PortfolioHeroAvatar({
   const gradId = `hero-avatar-ring-${uid}`
   const filterId = `hero-avatar-glow-${uid}`
 
-  const cx = BOX / 2
-  const cy = BOX / 2
-  const R_face = (BOX * AVATAR_DIAMETER_RATIO) / 2
-
-  // ─── Traços mais grossos e mais longos ───────────────────────────────────
-  const strokeMain = 10          // era 4
-  const strokeTrail = 5          // era 1.85
-  const ringR = R_face + strokeMain / 2 + BOX * 0.022   // anel justo ao avatar
-  const circumference = 2 * Math.PI * ringR
-
-  // Comprimento do arco principal: 14 % → era 8 %
-  const arcMain  = circumference * 0.29
-  // Comprimento do arco trail: 7 % → era 4 %
+  // ─── Anel de gradiente animado (mantido do seu código) ───
+  const strokeMain = 9
+  const strokeTrail = 4
+  const circumference = 2 * Math.PI * R_RING
+  const arcMain = circumference * 0.29
   const arcTrail = circumference * 0.14
 
   const dashOffset = useMotionValue(0)
   const smoothOffset = useSpring(dashOffset, { stiffness: 72, damping: 24 })
-  const trailOffset = useTransform(
-    smoothOffset,
-    (v) => (v + circumference * 0.28) % circumference,
-  )
 
   useEffect(() => {
     let raf = 0
@@ -160,13 +108,39 @@ export function PortfolioHeroAvatar({
     return () => cancelAnimationFrame(raf)
   }, [circumference, dashOffset])
 
-  // ─── Órbita: ícones encostados na borda do avatar ───────────────────────
-  // O raio da órbita é o raio do face + metade do strokeMain + margem mínima.
-  const starOuterHalf = BOX * 0.06   // metade aprox. do tamanho do ícone-estrela
-  const orbitR = R_face + strokeMain / 2 + starOuterHalf + BOX * 0.00099
-  const orbitFrac = orbitR / BOX
+  // ─── Posições dos chips (memo) ───
+  const chips = useMemo(
+    () =>
+      SKILLS.map((s) => {
+        const chip = polar(s.angleDeg, R_CHIP)
+        const tickIn = polar(s.angleDeg, R_TICK_IN)
+        const tickOut = polar(s.angleDeg, R_TICK_OUT)
+        return {
+          ...s,
+          left: (chip.x / BOX) * 100,
+          top: (chip.y / BOX) * 100,
+          tickIn,
+          tickOut,
+        }
+      }),
+    [],
+  )
 
-  const starFrameClass = "size-[7rem] min-[480px]:size-[7.5rem]"
+  const corners = useMemo(
+    () =>
+      [
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1],
+      ].map(([sx, sy]) => ({
+        x: CENTER + sx * BRACKET_HALF,
+        y: CENTER + sy * BRACKET_HALF,
+        sx,
+        sy,
+      })),
+    [],
+  )
 
   return (
     <div
@@ -176,7 +150,7 @@ export function PortfolioHeroAvatar({
       )}
     >
       <div className="relative size-full max-h-[640px] max-w-[640px]">
-        {/* ── Anel SVG animado ─────────────────────────────────────────── */}
+        {/* ── Camada HUD: anel externo, brackets, ticks ─────────────── */}
         <svg
           className="pointer-events-none absolute inset-0 size-full"
           viewBox={`0 0 ${BOX} ${BOX}`}
@@ -205,11 +179,62 @@ export function PortfolioHeroAvatar({
             </filter>
           </defs>
 
-          {/* traço principal — mais grosso e mais longo */}
+          {/* anel externo discreto */}
+          <circle
+            cx={CENTER}
+            cy={CENTER}
+            r={R_OUTER}
+            fill="none"
+            stroke="rgba(255,255,255,0.07)"
+            strokeWidth={2}
+          />
+          {/* anel pontilhado que gira devagar */}
           <motion.circle
-            cx={cx}
-            cy={cy}
-            r={ringR}
+            cx={CENTER}
+            cy={CENTER}
+            r={R_OUTER - 26}
+            fill="none"
+            stroke={`url(#${gradId})`}
+            strokeWidth={2.4}
+            strokeDasharray="2 16"
+            opacity={0.55}
+            style={{ transformOrigin: "50% 50%" }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 90, ease: "linear", repeat: Infinity }}
+          />
+
+          {/* cantoneiras */}
+          {corners.map((c, i) => (
+            <path
+              key={i}
+              d={`M ${c.x} ${c.y + 34 * -c.sy} L ${c.x} ${c.y} L ${c.x + 34 * -c.sx} ${c.y}`}
+              stroke="rgba(255,255,255,0.28)"
+              strokeWidth={2.5}
+              fill="none"
+              strokeLinecap="round"
+            />
+          ))}
+
+          {/* tracinhos conectores anel → chip */}
+          {chips.map((c) => (
+            <g key={c.label}>
+              <line
+                x1={c.tickIn.x}
+                y1={c.tickIn.y}
+                x2={c.tickOut.x}
+                y2={c.tickOut.y}
+                stroke="rgba(255,255,255,0.22)"
+                strokeWidth={1.6}
+              />
+              <circle cx={c.tickOut.x} cy={c.tickOut.y} r={4} fill="#6366f1" />
+            </g>
+          ))}
+
+          {/* ── Anel de gradiente animado (justo ao avatar) ── */}
+          <motion.circle
+            cx={CENTER}
+            cy={CENTER}
+            r={R_RING}
             fill="none"
             stroke={`url(#${gradId})`}
             strokeWidth={strokeMain}
@@ -219,57 +244,60 @@ export function PortfolioHeroAvatar({
             filter={`url(#${filterId})`}
             opacity={0.96}
           />
-
-          {/* traço trail — mais grosso e mais longo */}
           <motion.circle
-            cx={cx}
-            cy={cy}
-            r={ringR}
+            cx={CENTER}
+            cy={CENTER}
+            r={R_RING}
             fill="none"
             stroke={`url(#${gradId})`}
             strokeWidth={strokeTrail}
             strokeLinecap="round"
             strokeDasharray={`${arcTrail} ${circumference - arcTrail}`}
-            style={{ strokeDashoffset: trailOffset }}
-            opacity={0.52}
+            style={{ strokeDashoffset: smoothOffset }}
+            opacity={0.5}
           />
         </svg>
 
-        {/* ── Ícones em órbita — rotação mais lenta (72 s) ─────────────── */}
-        <motion.div
-          className="absolute inset-0 z-5 flex items-center justify-center"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 72, repeat: Infinity, ease: "linear" }}
-        >
-          <div className="relative aspect-square size-full">
-            <OrbitSlot
-              angleDeg={0}
-              orbitFrac={orbitFrac}
-              starClassName={starFrameClass}
-              icon={<OrbitCenterIcon src={ORBIT_ICON_PHONE} alt="Mobile" />}
-            />
-            <OrbitSlot
-              angleDeg={120}
-              orbitFrac={orbitFrac}
-              starClassName={starFrameClass}
-              icon={<OrbitCenterIcon src={ORBIT_ICON_DESK} alt="Desktop" />}
-            />
-            <OrbitSlot
-              angleDeg={240}
-              orbitFrac={orbitFrac}
-              starClassName={starFrameClass}
-              icon={<OrbitCenterIcon src={ORBIT_ICON_CODE} alt="Code" />}
-            />
-          </div>
-        </motion.div>
+        {/* ── Chips de skill ───────────────────────────────────────── */}
+        {chips.map((c, i) => (
+          <motion.span
+            key={c.label}
+            custom={i}
+            variants={chipVariants}
+            initial="hidden"
+            animate="show"
+            className={cn(
+              "absolute z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full",
+              "border border-white/12 bg-[#0b0f1c]/75 px-3 py-1.5 font-mono text-[0.72rem] font-semibold tracking-wide text-white",
+              "shadow-[0_6px_18px_rgba(0,0,0,0.4)] backdrop-blur-md",
+            )}
+            style={{ left: `${c.left}%`, top: `${c.top}%` }}
+          >
+            <motion.span
+              className="block"
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 4 + i, ease: "easeInOut", repeat: Infinity }}
+            >
+              {c.label}
+            </motion.span>
+          </motion.span>
+        ))}
 
-        {/* ── Avatar central ───────────────────────────────────────────── */}
+        {/* telemetria */}
+        <span className="absolute left-[3%] top-[6%] z-20 font-mono text-[10px] tracking-[0.22em] text-white/40">
+          UI · 60FPS
+        </span>
+        <span className="absolute bottom-[5%] right-[3%] z-20 font-mono text-[10px] tracking-[0.22em] text-white/40">
+          BUILD v2026
+        </span>
+
+        {/* ── Avatar central (seu sprite idle ↔ hover, intacto) ────── */}
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div
             className={cn(
               "flex aspect-square items-center justify-center overflow-hidden rounded-full",
               "border border-white/18 bg-white/10",
-              "shadow-[0_0_0_01px_rgba(105,125,205,0.5),0_0_36px_rgba(105,125,255,0.5),0_0_56px_-14px_rgba(124,58,237,0.15)]",
+              "shadow-[0_0_0_1px_rgba(105,125,205,0.5),0_0_36px_rgba(105,125,255,0.5),0_0_56px_-14px_rgba(124,58,237,0.15)]",
               "backdrop-blur-xl",
             )}
             style={{

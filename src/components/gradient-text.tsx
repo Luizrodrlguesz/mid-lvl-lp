@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  type CSSProperties,
   type ReactNode,
 } from "react"
 import {
@@ -27,6 +28,7 @@ export interface GradientTextProps {
   yoyo?: boolean
   strokeColor?: string
   strokeWidth?: string
+  style?: CSSProperties
 }
 
 export default function GradientText({
@@ -40,6 +42,7 @@ export default function GradientText({
   yoyo = true,
   strokeColor = "#0B5AB5",
   strokeWidth = "2px",
+  style,
 }: GradientTextProps) {
   const [isPaused, setIsPaused] = useState(false)
   const progress = useMotionValue(0)
@@ -126,6 +129,7 @@ export default function GradientText({
         showBorder ? "rounded-[1.25rem] px-2 py-1 backdrop-blur" : "rounded-none",
         className,
       )}
+      style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -148,7 +152,7 @@ export default function GradientText({
       )}
 
       {/* Camada de stroke + camada de gradiente */}
-      <div className="relative z-[1] inline-block">
+      <div className="relative z-[1] inline-block overflow-visible pr-[0.08em]">
         {/* Camada de borda branca — fica atrás */}
         <span
           aria-hidden
@@ -163,7 +167,7 @@ export default function GradientText({
 
         {/* Camada do gradiente — fica na frente */}
         <motion.span
-          className="relative inline-block bg-clip-text text-transparent"
+          className="relative inline-block overflow-visible bg-clip-text pr-[0.08em] text-transparent"
           style={{
             ...gradientStyle,
             backgroundPosition,

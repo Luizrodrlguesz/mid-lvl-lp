@@ -14,8 +14,10 @@ import { BackgroundCanvas } from "@/components/background-canvas"
 import { Aurora, DEFAULT_COLOR_STOPS } from "@/components/aurora"
 import { HorizontalScrollGallery } from "@/components/horizontal-scroll-gallery"
 import { PortfolioHeader } from "@/components/portfolio-header"
-import { PortfolioHeroAvatar } from "@/components/portfolio-hero-avatar"
-import { PortfolioHeroIntro } from "@/components/portfolio-hero-intro"
+import {
+  PortfolioHeroIntro,
+  PortfolioHeroOrbital,
+} from "@/components/portfolio-hero-intro"
 import { ProjectsSection } from "@/components/projects/projects-section"
 import { SecondPageAboutSection } from "@/components/second-page-about-section"
 import {
@@ -226,7 +228,7 @@ export default function Home() {
             >
               <div className="grid items-center gap-12 py-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.9fr)] lg:gap-16 xl:gap-20">
                 <PortfolioHeroIntro onNavigateToSection={unlockScrollAndGoTo} />
-                <PortfolioHeroAvatar className="justify-self-center lg:justify-self-end" />
+                <PortfolioHeroOrbital className="hidden justify-self-center md:block lg:justify-self-end" />
               </div>
             </motion.div>
 

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import SplitText from "@/components/split-text"
 
 /**
  * Cabeçalho da secção: título + descrição introdutória.
@@ -13,15 +14,24 @@ export function ProjectsHeader({ title, description, eyebrow }) {
             {eyebrow}
           </p>
         ) : null}
-        <h2
+        <SplitText
           id="heading-projetos"
           className={cn(
             "font-orbitron-italic text-3xl font-bold text-foreground",
             eyebrow && "mt-2",
           )}
-        >
-          {title}
-        </h2>
+          text={title}
+          tag="h2"
+          delay={50}
+          duration={1.25}
+          ease="power3.out"
+          splitType="chars"
+          from={{ opacity: 0, y: 40 }}
+          to={{ opacity: 1, y: 0 }}
+          threshold={0.1}
+          rootMargin="-100px"
+          textAlign="left"
+        />
       </div>
       {description ? (
         <p className="max-w-3xl text-muted-foreground">{description}</p>

@@ -8,6 +8,7 @@ import {
   useTransform,
 } from "framer-motion"
 import { Briefcase, GraduationCap, Sparkles } from "lucide-react"
+import SplitText from "@/components/split-text"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Locale } from "@/components/language-switcher"
 import {
@@ -86,7 +87,7 @@ export function SecondPageAboutSection({
       className="relative z-10 overflow-hidden border-white/10 py-24 px-6 text-zinc-100"
     >
       <motion.div
-        className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-violet-600/20 blur-[100px]"
+        className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-blue-600/20 blur-[100px]"
         aria-hidden
         animate={{ opacity: [0.2, 0.38, 0.2], scale: [1, 1.06, 1] }}
         transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
@@ -109,12 +110,21 @@ export function SecondPageAboutSection({
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
               Sobre
             </p>
-            <h2
+            <SplitText
               id="heading-sobre"
               className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-white"
-            >
-              Quem sou eu?
-            </h2>
+              text="Quem sou eu?"
+              tag="h2"
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="left"
+            />
           </motion.div>
 
           <motion.p
@@ -134,7 +144,7 @@ export function SecondPageAboutSection({
             {HIGHLIGHTS.map(({ label, icon: Icon }) => (
               <motion.li key={label} variants={listItem}>
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-zinc-200 backdrop-blur-sm">
-                  <Icon className="h-4 w-4 shrink-0 text-violet-400" aria-hidden />
+                  <Icon className="h-4 w-4 shrink-0 text-blue-600" aria-hidden />
                   {label}
                 </span>
               </motion.li>
@@ -186,13 +196,13 @@ export function SecondPageAboutSection({
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4 }}
             >
-              <Briefcase className="h-5 w-5 text-violet-400" aria-hidden />
+              <Briefcase className="h-5 w-5 text-blue-600" aria-hidden />
               Experiência de mercado
             </motion.h3>
 
             <div className="relative pl-8">
               <motion.div
-                className="absolute left-[15px] top-3 bottom-3 w-px rounded-full bg-linear-to-b from-violet-500/90 via-sky-500/40 to-transparent"
+                className="absolute left-[15px] top-3 bottom-3 w-px rounded-full bg-linear-to-b from-blue-600/90 via-sky-500/40 to-transparent"
                 style={{
                   transformOrigin: "top",
                   scaleY: lineGrow,
@@ -215,7 +225,7 @@ export function SecondPageAboutSection({
                     }}
                   >
                     <span
-                      className="absolute left-[-23px] top-5 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 border-violet-400/90 bg-zinc-950 shadow-[0_0_12px_rgba(139,92,246,0.45)]"
+                      className="absolute left-[-23px] top-5 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 border-blue-600/90 bg-zinc-950 shadow-[0_0_12px_rgba(139,92,246,0.45)]"
                       aria-hidden
                     />
                     <Card className="rounded-[22px] border-white/10 bg-white/5 py-4 shadow-none backdrop-blur-[5px]">

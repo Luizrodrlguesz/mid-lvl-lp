@@ -9,6 +9,27 @@
   font-style: italic;
 }
 
+.hero-gradient-fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation-name: hero-gradient-fade-in;
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes hero-gradient-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

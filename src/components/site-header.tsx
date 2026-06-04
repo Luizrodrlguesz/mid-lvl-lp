@@ -86,7 +86,7 @@ export function SiteHeader({
   }
 
   return (
-    <header className="absolute inset-x-0 top-0 z-30 border-b border-border/60 bg-black/10 backdrop-blur-[25px]">
+    <header className="absolute inset-x-0 top-0 z-30 ">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link
           href="#inicio"

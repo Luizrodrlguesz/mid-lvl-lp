@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import SplitText from "@/components/split-text"
 import { skillShowcase } from "@/lib/content"
 import { HorizontalGalleryCategoryPanel } from "@/components/horizontal-gallery-category-panel"
 
@@ -77,12 +78,21 @@ export function HorizontalScrollGallery() {
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
             Habilidades
           </p>
-          <h2
+          <SplitText
             id="heading-habilidades"
             className="font-orbitron-italic mt-2 text-3xl font-bold"
-          >
-            Galeria horizontal
-          </h2>
+            text="Galeria horizontal"
+            tag="h2"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="left"
+          />
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
           Scroll vertical percorre os cards horizontalmente. Ao chegar no último, o scroll vertical
