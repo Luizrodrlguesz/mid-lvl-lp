@@ -7,7 +7,16 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion"
-import { Briefcase, GraduationCap, Sparkles } from "lucide-react"
+import {
+  Briefcase,
+  Code2,
+  GitBranch,
+  Globe2,
+  GraduationCap,
+  ServerCog,
+  Smartphone,
+  Sparkles,
+} from "lucide-react"
 import SplitText from "@/components/split-text"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Locale } from "@/components/language-switcher"
@@ -49,6 +58,14 @@ const HIGHLIGHTS = [
   { label: "2+ anos em produto digital", icon: Sparkles },
   { label: "React · TypeScript · Node", icon: Briefcase },
 ] as const
+
+const QUALIFICATION_ICONS = {
+  "Front-end": Code2,
+  "Back-end": ServerCog,
+  Mobile: Smartphone,
+  "Controle de versão e colaboração": GitBranch,
+  "Comunicação global": Globe2,
+} as const
 
 export function SecondPageAboutSection({
   locale = defaultLocale,
@@ -171,12 +188,25 @@ export function SecondPageAboutSection({
               whileInView="show"
               viewport={{ once: true, margin: "-50px" }}
             >
-              {uniqueQualifications.map((item) => (
-                <motion.div key={pickLocale(locale, item.title)} variants={listItem}>
+              {uniqueQualifications.map((item) => {
+                const title = pickLocale(locale, item.title)
+                const Icon =
+                  QUALIFICATION_ICONS[
+                    pickLocale(defaultLocale, item.title) as keyof typeof QUALIFICATION_ICONS
+                  ]
+
+                return (
+                <motion.div key={title} variants={listItem}>
                   <Card className="h-full rounded-[22px] border-white/10 bg-white/5 py-4 shadow-none backdrop-blur-[5px]">
                     <CardHeader>
-                      <CardTitle className="text-base text-zinc-100">
-                        {pickLocale(locale, item.title)}
+                      <CardTitle className="flex items-center gap-2 text-base text-zinc-100">
+                        {Icon ? (
+                          <Icon
+                            className="h-4 w-4 shrink-0 text-sky-400"
+                            aria-hidden
+                          />
+                        ) : null}
+                        <span>{title}</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm leading-relaxed text-zinc-400">
@@ -184,7 +214,8 @@ export function SecondPageAboutSection({
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))}
+                )
+              })}
             </motion.div>
           </div>
 

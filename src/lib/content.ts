@@ -284,7 +284,7 @@ export const projects: Project[] = [
     category: { "pt-br": "Sistema", "en-us": "System", "fr-fr": "Système" },
     skills: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Figma"],
     liveLink: "#",
-    image: "/assets/projects/aprova.png",
+    image: "/assets/projects/aprova-2.png",
     themeColor: "#22c55e",
   },
   {

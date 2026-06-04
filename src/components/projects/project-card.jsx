@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
@@ -34,6 +34,17 @@ const LABEL_CATEGORIA = {
 const LABEL_PLATAFORMA = {
   web: "Web",
   mobile: "Mobile",
+}
+
+const PROJECT_PREVIEW_SWAP_MS = 2000
+
+function previewImagesParaPlataforma(projeto, plataformaAtiva) {
+  const previewImages = projeto.previewImages
+  if (Array.isArray(previewImages)) {
+    return plataformaAtiva === "web" ? previewImages : null
+  }
+
+  return previewImages?.[plataformaAtiva] ?? null
 }
 
 const ctaMotion = {
@@ -74,6 +85,14 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
   const [plataformaAtiva, setPlataformaAtiva] = useState(() =>
     plataformaInicialParaProjeto(projeto),
   )
+  const [isPreviewHovered, setIsPreviewHovered] = useState(false)
+  const [previewFrame, setPreviewFrame] = useState(0)
+
+  const handlePlatformChange = (nextPlatform) => {
+    setIsPreviewHovered(false)
+    setPreviewFrame(0)
+    setPlataformaAtiva(nextPlatform)
+  }
 
   const opcoesPlataforma = useMemo(
     () =>
@@ -86,7 +105,9 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
 
   const visitUrl = visitUrlParaPlataforma(projeto.plataformas, plataformaAtiva)
   const imageSrc = imagemParaPlataforma(projeto.plataformas, plataformaAtiva)
-  const imageAnimKey = `${projeto.id}-${plataformaAtiva}-${imageSrc || "empty"}`
+  const previewImages = previewImagesParaPlataforma(projeto, plataformaAtiva)
+  const displayedImageSrc = previewImages?.[previewFrame] ?? imageSrc
+  const imageAnimKey = `${projeto.id}-${plataformaAtiva}-${displayedImageSrc || "empty"}`
 
   const platformHeadingId = `platform-label-${projeto.id}`
   const titleId = `project-card-title-${projeto.id}`
@@ -106,6 +127,16 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
       : 0
 
   const narrativeKey = `${projeto.id}-${viewMode}`
+
+  useEffect(() => {
+    if (!isPreviewHovered || !previewImages?.length) return
+
+    const id = window.setInterval(() => {
+      setPreviewFrame((frame) => (frame + 1) % previewImages.length)
+    }, PROJECT_PREVIEW_SWAP_MS)
+
+    return () => window.clearInterval(id)
+  }, [isPreviewHovered, previewImages])
 
   return (
     <motion.article
@@ -136,7 +167,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             <div className="flex flex-wrap items-start gap-3">
               <span
                 className={cn(
-                  "shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest",
+                  "hidden shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest sm:inline-flex",
                   tipo === "profissional"
                     ? "border-white/15 bg-white/4 text-muted-foreground"
                     : "border-violet-500/30 bg-violet-500/8 text-violet-800 dark:text-violet-100/90",
@@ -167,7 +198,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             </p>
             <ProjectPlatformSwitcher
               value={plataformaAtiva}
-              onChange={setPlataformaAtiva}
+              onChange={handlePlatformChange}
               options={opcoesPlataforma}
               labelledBy={platformHeadingId}
             />
@@ -264,10 +295,33 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             initial="hidden"
             animate="show"
           >
-            <figure className="relative mx-auto w-full max-w-lg lg:max-w-none">
-              <div className="relative aspect-4/3 min-h-[200px] overflow-hidden rounded-lg border border-border/80 bg-muted/25 shadow-inner sm:aspect-16/10 sm:min-h-[220px]">
+            <figure
+              className={cn(
+                "relative mx-auto w-full",
+                plataformaAtiva === "mobile"
+                  ? "max-w-[180px] sm:max-w-[220px]"
+                  : "max-w-lg lg:max-w-none",
+              )}
+            >
+              <div
+                className={cn(
+                  "relative min-h-[200px] overflow-hidden rounded-lg border border-border/80 bg-muted/25 shadow-inner sm:min-h-[220px]",
+                  plataformaAtiva === "mobile"
+                    ? "aspect-[8/16]"
+                    : "aspect-[4/2.88] sm:aspect-[16/9.7]",
+                )}
+                onPointerEnter={() => {
+                  if (!previewImages?.length) return
+                  setIsPreviewHovered(true)
+                  setPreviewFrame(previewImages.length > 1 ? 1 : 0)
+                }}
+                onPointerLeave={() => {
+                  setIsPreviewHovered(false)
+                  setPreviewFrame(0)
+                }}
+              >
                 <AnimatePresence initial={false} mode="sync">
-                  {imageSrc ? (
+                  {displayedImageSrc ? (
                     <motion.div
                       key={imageAnimKey}
                       role="group"
@@ -279,7 +333,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                       className="absolute inset-0"
                     >
                       <img
-                        src={imageSrc}
+                        src={displayedImageSrc}
                         alt={`Pré-visualização (${plataformaAtiva}) — ${projeto.nome}`}
                         className="h-full w-full object-cover object-top"
                         loading="lazy"

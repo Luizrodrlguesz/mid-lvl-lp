@@ -235,15 +235,16 @@ export function SecondPageContactSection({
   }. Entre em contato através do e-mail ${email.trim() || "[seu e-mail]"}.`
 
   return (
-    <section
-      id="contato"
-      aria-labelledby="heading-contato"
-      className={cn(
-        "relative z-10 min-h-[720px] border-border/60 bg-transparent px-6 pt-24 pb-0 text-zinc-100 lg:min-h-[680px] lg:px-0",
-        className,
-      )}
-    >
-      <div className="mx-auto flex w-full max-w-[92vw] flex-col gap-10 pb-12 lg:ml-[4vw] lg:mr-[min(48vw,44rem)] lg:min-h-[560px] lg:max-w-[42rem]">
+    <>
+      <section
+        id="contato"
+        aria-labelledby="heading-contato"
+        className={cn(
+          "relative z-10 border-border/60 bg-transparent px-4 py-20 text-zinc-100 sm:px-6 lg:px-8 lg:py-24",
+          className,
+        )}
+      >
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-10">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
             Contato
@@ -269,11 +270,11 @@ export function SecondPageContactSection({
           </p>
         </div>
 
-        <div className="grid gap-12 lg:flex-1">
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(24rem,1.1fr)] lg:gap-10 xl:grid-cols-[minmax(0,32rem)_minmax(30rem,1fr)]">
           {/* ── Cards compactos, foco na logo ───────────────────────── */}
           <nav
             aria-label="Links de contato e redes"
-            className="grid grid-cols-2 gap-3 sm:grid-cols-3"
+            className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2"
           >
             {CONTACT_LINKS.map(
               ({ id, label, detail, href, icon: Icon, external, color, featured }) => (
@@ -288,7 +289,7 @@ export function SecondPageContactSection({
                     borderColor: `${color}33`,
                   }}
                   className={cn(
-                    "group relative flex flex-col gap-4 overflow-hidden rounded-2xl border p-4 backdrop-blur-[14px]",
+                    "group relative flex min-w-0 flex-col gap-4 overflow-hidden rounded-2xl border p-4 backdrop-blur-[14px]",
                     "transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]",
                     featured && "ring-1 ring-inset ring-violet-300/25",
                   )}
@@ -331,7 +332,7 @@ export function SecondPageContactSection({
                     <span className="block text-[0.95rem] font-bold leading-tight text-white">
                       {label}
                     </span>
-                    <span className="mt-1 block font-mono text-[11px] text-zinc-400">
+                    <span className="mt-1 block break-words font-mono text-[11px] leading-snug text-zinc-400">
                       {detail}
                     </span>
                   </span>
@@ -341,10 +342,10 @@ export function SecondPageContactSection({
           </nav>
 
           {/* ── Formulário no tema + prévia da mensagem ──────────────── */}
-          <div className="relative overflow-hidden rounded-tl-[55px] border border-sky-300/10 bg-[radial-gradient(circle_at_20%_0%,rgba(56, 191, 248, 0.08),transparent_34%),radial-gradient(circle_at_88%_18%,rgba(124,58,237,0.20),transparent_30%),linear-gradient(145deg,rgba(3,7,18,0.98),rgba(8,13,28,0.94)_48%,rgba(2,6,23,0.98))] p-6 shadow-[0_30px_90px_-45px_rgba(56,189,248,0.55)] backdrop-blur-xl sm:p-8 lg:absolute lg:right-0 lg:bottom-0 lg:w-[min(48vw,44rem)] lg:p-10">
+          <div className="relative min-w-0 overflow-hidden rounded-tl-[40px] border border-sky-300/10 bg-[#262626]/5 p-5 shadow-[0_30px_90px_-45px_rgba(56,189,248,0.55)] backdrop-blur-xl sm:rounded-tl-[55px] sm:p-8 lg:p-10">
             <FormBorderGlow />
             <span
-              className="pointer-events-none absolute inset-x-8 top-0 z-40 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent"
+              className="pointer-events-none absolute inset-x-6 top-0 z-40 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent sm:inset-x-8"
               aria-hidden
             />
             <span
@@ -356,8 +357,8 @@ export function SecondPageContactSection({
               aria-hidden
             />
 
-            <div className="relative z-30 flex items-center justify-center gap-2.5 pl-3 py-1 mb-2 text-sm text-cyan-50/75">
-                 <MessageCircle
+            <div className="relative z-30 mb-4 flex items-start justify-center gap-2.5 py-1 text-sm leading-relaxed text-cyan-50/75 sm:items-center sm:pl-3">
+              <MessageCircle
                 className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300/80"
                 aria-hidden
               />
@@ -431,7 +432,7 @@ export function SecondPageContactSection({
               <p className="mb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-300/90">
                 Prévia da mensagem
               </p>
-              <div className="flex gap-2.5">
+              <div className="flex min-w-0 gap-2.5">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/15">
                   <Image
                     src="/assets/wpp.png"
@@ -442,7 +443,7 @@ export function SecondPageContactSection({
                     aria-hidden
                   />
                 </span>
-                <p className="rounded-[4px_14px_14px_14px] bg-emerald-500/12 px-3 py-2 text-[13px] leading-relaxed text-emerald-50/90">
+                <p className="min-w-0 break-words rounded-[4px_14px_14px_14px] bg-emerald-500/12 px-3 py-2 text-[13px] leading-relaxed text-emerald-50/90">
                   {previewText}
                 </p>
               </div>
@@ -463,16 +464,18 @@ export function SecondPageContactSection({
           </div>
         </div>
 
-        <footer className="mt-auto border-t border-white/10 pt-6 text-sm text-muted-foreground">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <p>
-              © {new Date().getFullYear()} Luiz Henrique. Todos os direitos
-              reservados.
-            </p>
-            <p className="text-xs">Feito com Next.js, Tailwind, shadcn/ui e Three.js.</p>
-          </div>
-        </footer>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      <footer className="relative z-10 border-t border-white/10 bg-gradient-to-b from-transparent to-black px-4 pt-6 pb-6 text-sm text-muted-foreground sm:px-6">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} Luiz Henrique. Todos os direitos
+            reservados.
+          </p>
+          <p className="text-xs">Feito com Next.js, Tailwind, shadcn/ui e Three.js.</p>
+        </div>
+      </footer>
+    </>
   )
 }

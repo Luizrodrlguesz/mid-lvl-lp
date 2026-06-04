@@ -57,7 +57,7 @@ export function ProjectsTimeline({
             </Fragment>
           ))}
         </ol>
-        <p className="px-3 pb-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/70 md:px-4">
+        <p className="hidden px-3 pb-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/70 sm:block md:px-4">
           Evolução · constelação de projetos
         </p>
       </nav>

@@ -1,6 +1,32 @@
 /**
  * Lista de tecnologias usadas no projeto.
  */
+import Image from "next/image"
+
+import { cn } from "@/lib/utils"
+
+const TECH_ICON_MAP = {
+  "HTML5 & CSS3": "/assets/skills/htmlcss.png",
+  Bootstrap: "/assets/skills/bootstrap.png",
+  Dart: "/assets/skills/dart.png",
+  Figma: "/assets/skills/figma.png",
+  Flutter: "/assets/skills/flutter.png",
+  Git: "/assets/skills/git.png",
+  GitHub: "/assets/skills/github.png",
+  JavaScript: "/assets/skills/js.png",
+  "Laravel (PHP)": "/assets/skills/laravel.png",
+  MUI: "/assets/skills/mui.png",
+  "Next.js": "/assets/skills/next.png",
+  "Node.js": "/assets/skills/node.png",
+  Postman: "/assets/skills/postman.png",
+  React: "/assets/skills/react.png",
+  "React Native": "/assets/skills/react.png",
+  "shadcn/ui": "/assets/skills/shadcn.png",
+  "Tailwind CSS": "/assets/skills/tailwind.png",
+  TypeScript: "/assets/skills/ts.png",
+  Vercel: "/assets/skills/vercel.png",
+}
+
 export function ProjectTechnologies({ projectId, tecnologias }) {
   if (!tecnologias?.length) return null
 
@@ -12,14 +38,36 @@ export function ProjectTechnologies({ projectId, tecnologias }) {
         Tecnologias
       </h4>
       <ul className="flex flex-wrap gap-2">
-        {tecnologias.map((t) => (
+        {tecnologias.map((t) => {
+          const iconSrc = TECH_ICON_MAP[t]
+
+          return (
           <li
             key={t}
-            className="rounded-md border border-border/60 bg-muted/25 px-2.5 py-1 text-xs text-foreground"
+            className={cn(
+              "grid h-10 w-10 place-items-center rounded-md border border-border/60 bg-muted/25",
+              "transition-colors hover:border-white/25 hover:bg-white/8",
+            )}
+            title={t}
           >
-            {t}
+            {iconSrc ? (
+              <Image
+                src={iconSrc}
+                alt=""
+                width={24}
+                height={24}
+                className="h-6 w-6 object-contain"
+                aria-hidden
+              />
+            ) : (
+              <span className="text-[10px] font-semibold text-foreground">
+                {t.slice(0, 2).toUpperCase()}
+              </span>
+            )}
+            <span className="sr-only">{t}</span>
           </li>
-        ))}
+          )
+        })}
       </ul>
     </section>
   )
