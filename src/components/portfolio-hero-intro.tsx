@@ -114,11 +114,26 @@ export function PortfolioHeroIntro({
           className="text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:max-w-xl lg:text-[2.8rem] lg:leading-[1.12]"
         >
           <SplitText
-            text="Desenvolvedor Front-end focado em"
+            text="Desenvolvedor"
+            tag="span"
+            className="block align-baseline"
+            delay={28}
+            startDelay={HERO_TEXT_ANIMATION_DELAY}
+            duration={0.8}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 22 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-80px"
+            textAlign="left"
+          />
+          <SplitText
+            text="Front-end focado em"
             tag="span"
             className="align-baseline"
             delay={28}
-            startDelay={HERO_TEXT_ANIMATION_DELAY}
+            startDelay={HERO_TEXT_ANIMATION_DELAY + 0.32}
             duration={0.8}
             ease="power3.out"
             splitType="chars"
