@@ -424,6 +424,46 @@ export const skillShowcase: ShowcaseSkill[] = [
     nivel: { "pt-br": "Intermediário", "en-us": "Intermediate", "fr-fr": "Intermédiaire" },
   },
   {
+    id: "nest",
+    category: "back",
+    label: { "pt-br": "Nest.js", "en-us": "Nest.js", "fr-fr": "Nest.js" },
+    description: {
+      "pt-br": "Framework Node.js para APIs estruturadas, modularizadas e prontas para crescer.",
+      "en-us": "Node.js framework for structured, modular APIs ready to scale.",
+      "fr-fr": "Framework Node.js pour APIs structurées, modulaires et prêtes à évoluer.",
+    },
+    image: "/assets/nest.png",
+    usos: {
+      "pt-br": [
+        "Módulos, controllers e providers",
+        "APIs REST com validação tipada",
+        "Integração com bancos e serviços externos",
+        "Arquitetura organizada para projetos full-stack",
+      ],
+      "en-us": [
+        "Modules, controllers, providers",
+        "REST APIs with typed validation",
+        "Database and third-party service integrations",
+        "Organized architecture for full-stack projects",
+      ],
+      "fr-fr": [
+        "Modules, contrôleurs et providers",
+        "APIs REST avec validation typée",
+        "Intégration BDD et services externes",
+        "Architecture organisée pour projets full-stack",
+      ],
+    },
+    aplicacao: {
+      "pt-br":
+        "Uso para estruturar backends Node com padrões claros, separando regras de negócio, rotas e integrações.",
+      "en-us":
+        "Used to structure Node backends with clear patterns, separating business rules, routes, and integrations.",
+      "fr-fr":
+        "Utilisé pour structurer des backends Node avec des patterns clairs, séparant règles métier, routes et intégrations.",
+    },
+    nivel: { "pt-br": "Em evolução", "en-us": "Growing", "fr-fr": "En progression" },
+  },
+  {
     id: "laravel",
     category: "back",
     label: { "pt-br": "Laravel (PHP)", "en-us": "Laravel (PHP)", "fr-fr": "Laravel (PHP)" },
@@ -507,6 +547,50 @@ export const skillShowcase: ShowcaseSkill[] = [
         "Base de cette landing et de projets où performance, SEO et DX vont ensemble.",
     },
     nivel: { "pt-br": "Forte", "en-us": "Strong", "fr-fr": "Solide" },
+  },
+  {
+    id: "react-native",
+    category: "front",
+    label: {
+      "pt-br": "React Native",
+      "en-us": "React Native",
+      "fr-fr": "React Native",
+    },
+    description: {
+      "pt-br": "Framework para criar interfaces mobile nativas usando React e componentes declarativos.",
+      "en-us": "Framework for building native mobile interfaces with React and declarative components.",
+      "fr-fr": "Framework pour créer des interfaces mobiles natives avec React et composants déclaratifs.",
+    },
+    image: "/assets/skills/react.png",
+    usos: {
+      "pt-br": [
+        "Componentes mobile reutilizáveis",
+        "Navegação entre telas",
+        "Estados e hooks no contexto mobile",
+        "Protótipos de apps com experiência nativa",
+      ],
+      "en-us": [
+        "Reusable mobile components",
+        "Screen navigation",
+        "State and hooks in mobile context",
+        "App prototypes with native experience",
+      ],
+      "fr-fr": [
+        "Composants mobiles réutilisables",
+        "Navigation entre écrans",
+        "État et hooks en contexte mobile",
+        "Prototypes d’apps avec expérience native",
+      ],
+    },
+    aplicacao: {
+      "pt-br":
+        "Exploração para expandir interfaces React para mobile, conectando boas práticas de UI com apps nativos.",
+      "en-us":
+        "Exploring how to extend React interfaces to mobile, connecting UI practices with native apps.",
+      "fr-fr":
+        "Exploration pour étendre les interfaces React au mobile, reliant bonnes pratiques UI et apps natives.",
+    },
+    nivel: { "pt-br": "Em evolução", "en-us": "Growing", "fr-fr": "En progression" },
   },
   {
     id: "flutter",

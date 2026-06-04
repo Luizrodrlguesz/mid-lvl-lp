@@ -10,8 +10,17 @@ import { cn } from "@/lib/utils"
  * @param {string} props.subtitle
  * @param {import("@/lib/skill-showcase-items").ShowcaseSkill[]} props.skills
  * @param {"pt-br" | "en-us" | "fr-fr"} props.locale
+ * @param {import("lucide-react").LucideIcon} props.icon
+ * @param {string} props.iconClassName
  */
-export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale }) {
+export function HorizontalGalleryCategoryPanel({
+  title,
+  subtitle,
+  skills,
+  locale,
+  icon: Icon,
+  iconClassName,
+}) {
   const cardRef = useRef(null)
   const firstId = skills[0]?.id
   const [selectedId, setSelectedId] = useState(firstId)
@@ -50,7 +59,10 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
           hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
         )}
       >
-        <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h2>
+        <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+          {Icon ? <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden /> : null}
+          {title}
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">Nenhuma habilidade nesta categoria.</p>
       </article>
     )
@@ -77,7 +89,10 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
         )}
         style={{ transitionDelay: hasEntered ? "80ms" : "0ms" }}
       >
-        <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h2>
+        <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+          {Icon ? <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden /> : null}
+          {title}
+        </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
       </header>
 
@@ -111,9 +126,12 @@ export function HorizontalGalleryCategoryPanel({ title, subtitle, skills, locale
         </nav>
 
         <div
+          key={selected.id}
           className={cn(
             "relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] border border-border/80 bg-black/10 shadow-inner backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out sm:min-h-[260px] lg:min-h-[300px]",
-            hasEntered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+            hasEntered
+              ? "animate-in fade-in slide-in-from-bottom-2 translate-y-0 opacity-100 duration-300"
+              : "translate-y-2 opacity-0",
           )}
           style={{ transitionDelay: hasEntered ? "190ms" : "0ms" }}
         >

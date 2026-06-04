@@ -27,15 +27,33 @@ const MICRO_INFOS = [
   },
 ] as const
 
-type Skill = { label: string; angleDeg: number }
+type SkillSlot = { angleDeg: number }
 
-const ORBITAL_SKILLS: readonly Skill[] = [
-  { label: "React", angleDeg: -125 },
-  { label: "TypeScript", angleDeg: -62 },
-  { label: "Next.js", angleDeg: 2 },
-  { label: "Laravel", angleDeg: 64 },
-  { label: "Tailwind", angleDeg: 142 },
+const ORBITAL_SKILL_SLOTS: readonly SkillSlot[] = [
+  { angleDeg: -128 },
+  { angleDeg: -72 },
+  { angleDeg: -16 },
+  { angleDeg: 40 },
+  { angleDeg: 96 },
+  { angleDeg: 152 },
 ] as const
+
+const ORBITAL_SKILL_LABELS = [
+  "React",
+  "TypeScript",
+  "Next.js",
+  "Laravel",
+  "Tailwind",
+  "Nest.js",
+  "Flutter",
+  "Dart",
+  "React Native",
+] as const
+
+const INITIAL_ORBITAL_SKILLS = ORBITAL_SKILL_LABELS.slice(
+  0,
+  ORBITAL_SKILL_SLOTS.length,
+)
 
 const VIEW = 600
 const CENTER = VIEW / 2
@@ -52,8 +70,28 @@ const ORBITAL_HOVER_SPRITE_FRAMES = [
 ] as const
 const ORBITAL_SPRITE_FRAME_MS = 260
 const ORBITAL_SPRITE_CROSSFADE_MS = 320
+const ORBITAL_SKILL_SWAP_MS = 2400
 const HERO_TEXT_ANIMATION_DELAY = 3.15
 const HERO_GRADIENT_TEXT_DELAY_MS = 4550
+
+function pickRandomIndex(length: number) {
+  return Math.floor(Math.random() * length)
+}
+
+function getNextOrbitalSkills(currentSkills: readonly string[]) {
+  const nextSkills = [...currentSkills]
+  const slotIndex = pickRandomIndex(nextSkills.length)
+  const visibleSkills = new Set(nextSkills)
+  const currentLabel = nextSkills[slotIndex]
+  const candidates = ORBITAL_SKILL_LABELS.filter(
+    (label) => label !== currentLabel && !visibleSkills.has(label),
+  )
+
+  if (!candidates.length) return nextSkills
+
+  nextSkills[slotIndex] = candidates[pickRandomIndex(candidates.length)]
+  return nextSkills
+}
 
 function polar(angleDeg: number, radius: number) {
   const a = (angleDeg * Math.PI) / 180
@@ -214,6 +252,9 @@ export function PortfolioHeroOrbital({
 }: PortfolioHeroOrbitalProps) {
   const [isCharacterHovered, setIsCharacterHovered] = useState(false)
   const [spriteFrame, setSpriteFrame] = useState(0)
+  const [skillLabels, setSkillLabels] = useState<readonly string[]>(
+    INITIAL_ORBITAL_SKILLS,
+  )
 
   useEffect(() => {
     if (!isCharacterHovered) return
@@ -225,18 +266,27 @@ export function PortfolioHeroOrbital({
     return () => window.clearInterval(id)
   }, [isCharacterHovered])
 
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setSkillLabels((currentSkills) => getNextOrbitalSkills(currentSkills))
+    }, ORBITAL_SKILL_SWAP_MS)
+
+    return () => window.clearInterval(id)
+  }, [])
+
   const chips = useMemo(
     () =>
-      ORBITAL_SKILLS.map((skill) => {
-        const position = polar(skill.angleDeg, CHIP_RADIUS)
+      ORBITAL_SKILL_SLOTS.map((slot, index) => {
+        const position = polar(slot.angleDeg, CHIP_RADIUS)
         return {
-          ...skill,
+          id: `skill-slot-${index}`,
+          label: skillLabels[index] ?? ORBITAL_SKILL_LABELS[index] ?? "",
           svg: position,
           left: (position.x / VIEW) * 100,
           top: (position.y / VIEW) * 100,
         }
       }),
-    [],
+    [skillLabels],
   )
 
   return (
@@ -315,7 +365,7 @@ export function PortfolioHeroOrbital({
 
         {chips.map((chip) => (
           <line
-            key={chip.label}
+            key={chip.id}
             x1={CENTER}
             y1={CENTER}
             x2={chip.svg.x}
@@ -390,7 +440,7 @@ export function PortfolioHeroOrbital({
 
       {chips.map((chip, index) => (
         <motion.span
-          key={chip.label}
+          key={chip.id}
           className={cn(
             "absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full",
             "border border-white/12 bg-[#0b0f1c]/70 px-3.5 py-2 text-[0.78rem] font-semibold tracking-wide text-white",
@@ -405,7 +455,15 @@ export function PortfolioHeroOrbital({
             y: { duration: 4 + index, ease: "easeInOut", repeat: Infinity },
           }}
         >
-          {chip.label}
+          <motion.span
+            key={chip.label}
+            className="block"
+            initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {chip.label}
+          </motion.span>
         </motion.span>
       ))}
 
