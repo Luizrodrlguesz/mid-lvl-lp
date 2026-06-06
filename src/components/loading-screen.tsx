@@ -26,14 +26,14 @@ export function LoadingScreen({ show }: LoadingScreenProps) {
             <motion.div
               className="relative h-28 w-28"
               animate={{
-                x: [-22, 22],
-                rotate: [-8, 8],
+                x: [-34, 34],
+                rotate: [-1.5, 1.5],
               }}
               transition={{
-                duration: 2.6,
+                duration: 3.6,
                 repeat: Infinity,
-                repeatType: "reverse",
-                ease: [0.45, 0, 0.55, 1],
+                repeatType: "loop",
+                ease: "linear",
               }}
             >
               <Image
@@ -51,4 +51,3 @@ export function LoadingScreen({ show }: LoadingScreenProps) {
     </AnimatePresence>
   )
 }
-
