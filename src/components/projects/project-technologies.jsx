@@ -21,6 +21,7 @@ const TECH_ICON_MAP = {
   Postman: "/assets/skills/postman.png",
   React: "/assets/skills/react.png",
   "React Native": "/assets/skills/react.png",
+  "REST API": "/assets/skills/apirest.png",
   "shadcn/ui": "/assets/skills/shadcn.png",
   "Tailwind CSS": "/assets/skills/tailwind.png",
   TypeScript: "/assets/skills/ts.png",

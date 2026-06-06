@@ -164,17 +164,46 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
           className="order-2 flex min-w-0 flex-col gap-6 lg:order-1 lg:gap-7"
         >
           <motion.header variants={narrativeItem} className="space-y-3">
-            <div className="flex flex-wrap items-start gap-3">
-              <span
-                className={cn(
-                  "hidden shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest sm:inline-flex",
-                  tipo === "profissional"
-                    ? "border-white/15 bg-white/4 text-muted-foreground"
-                    : "border-violet-500/30 bg-violet-500/8 text-violet-800 dark:text-violet-100/90",
+            {projeto.destaque && (
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs text-muted-foreground/70">{projeto.destaque}</span>
+                {projeto.status && (
+                  <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] font-medium text-primary/90">
+                    {projeto.status}
+                  </span>
                 )}
-              >
-                {LABEL_CATEGORIA[projeto.categoria] ?? projeto.categoria}
-              </span>
+              </div>
+            )}
+            <div className="flex flex-wrap items-start gap-3">
+              {projeto.logoEmpresa ? (
+                <span
+                  className={cn(
+                    "flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/95 shadow-sm ring-1 ring-black/5 sm:h-12 sm:w-12",
+                    projeto.logoEmpresaSemPadding ? "p-0" : "p-2",
+                  )}
+                >
+                  <img
+                    src={projeto.logoEmpresa}
+                    alt={`Logo ${projeto.nome}`}
+                    className={cn(
+                      "h-full w-full",
+                      projeto.logoEmpresaSemPadding ? "object-cover" : "object-contain",
+                    )}
+                    loading="lazy"
+                  />
+                </span>
+              ) : (
+                <span
+                  className={cn(
+                    "hidden shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest sm:inline-flex",
+                    tipo === "profissional"
+                      ? "border-white/15 bg-white/4 text-muted-foreground"
+                      : "border-violet-500/30 bg-violet-500/8 text-violet-800 dark:text-violet-100/90",
+                  )}
+                >
+                  {LABEL_CATEGORIA[projeto.categoria] ?? projeto.categoria}
+                </span>
+              )}
               <div className="min-w-0 flex-1 space-y-2">
                 <h3
                   id={titleId}
@@ -225,6 +254,36 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             </p>
           </motion.div>
 
+          {!isTecnico && projeto.metricas?.length > 0 && (
+            <motion.div variants={narrativeItem} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {projeto.metricas.map((m) => (
+                <div
+                  key={m.label}
+                  className="flex flex-col gap-1 rounded-xl bg-foreground/6 px-4 py-3 dark:bg-white/4"
+                >
+                  <span className="text-[11px] text-muted-foreground/70">{m.label}</span>
+                  <span className="text-lg font-bold leading-tight tracking-tight text-foreground">{m.valor}</span>
+                </div>
+              ))}
+            </motion.div>
+          )}
+
+          {!isTecnico && projeto.responsabilidade?.length > 0 && (
+            <motion.div variants={narrativeItem} className="space-y-3">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
+                Minha responsabilidade
+              </h4>
+              <ul className="space-y-2.5">
+                {projeto.responsabilidade.map((item, i) => (
+                  <li key={i} className="flex gap-3 text-sm text-muted-foreground/85">
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-primary/50" />
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
           {isTecnico ? (
             <>
               <motion.div variants={narrativeItem}>
@@ -257,38 +316,11 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             </motion.div>
           )}
 
-          <motion.footer
-            variants={narrativeItem}
-            className="flex flex-wrap gap-3 border-t border-border/70 pt-5"
-          >
-            <CtaWrap disabled={!visitUrl}>
-              {visitUrl ? (
-                <Button asChild variant="default" size="sm" className="shadow-sm">
-                  <a href={visitUrl} target="_blank" rel="noopener noreferrer">
-                    Visitar projeto
-                  </a>
-                </Button>
-              ) : (
-                <Button type="button" size="sm" disabled variant="secondary">
-                  Visitar projeto
-                </Button>
-              )}
-            </CtaWrap>
-            {projeto.figmaLink?.trim() ? (
-              <CtaWrap>
-                <Button asChild variant="outline" size="sm" className="border-border/80 bg-transparent">
-                  <a href={projeto.figmaLink} target="_blank" rel="noopener noreferrer">
-                    Ver no Figma
-                  </a>
-                </Button>
-              </CtaWrap>
-            ) : null}
-          </motion.footer>
         </motion.div>
 
         <motion.div
           key={`media-${narrativeKey}`}
-          className="order-1 flex min-w-0 flex-col gap-6 lg:order-2 lg:sticky lg:top-24 lg:self-start"
+          className="order-1 flex min-w-0 flex-col gap-6 lg:order-2 lg:self-start"
         >
           <motion.div
             variants={narrativeImageColumn}
@@ -368,6 +400,85 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               className="min-w-0"
             >
               <ProjectInsights projectId={projeto.id} insights={projeto.insights} />
+            </motion.div>
+          ) : null}
+
+          {isTecnico ? (
+            <motion.footer
+              key={`technical-actions-${projeto.id}`}
+              variants={narrativeItem}
+              initial="hidden"
+              animate="show"
+              className="flex flex-wrap gap-3 border-t border-border/70 pt-5"
+            >
+              <CtaWrap disabled={!visitUrl}>
+                {visitUrl ? (
+                  <Button asChild variant="default" size="sm" className="shadow-sm">
+                    <a href={visitUrl} target="_blank" rel="noopener noreferrer">
+                      Visitar projeto
+                    </a>
+                  </Button>
+                ) : (
+                  <Button type="button" size="sm" disabled variant="secondary">
+                    Visitar projeto
+                  </Button>
+                )}
+              </CtaWrap>
+              {projeto.figmaLink?.trim() ? (
+                <CtaWrap>
+                  <Button asChild variant="outline" size="sm" className="border-border/80 bg-transparent">
+                    <a href={projeto.figmaLink} target="_blank" rel="noopener noreferrer">
+                      Ver no Figma
+                    </a>
+                  </Button>
+                </CtaWrap>
+              ) : null}
+            </motion.footer>
+          ) : null}
+
+          {!isTecnico ? (
+            <motion.div
+              key={`visual-actions-${projeto.id}`}
+              variants={narrativeItem}
+              initial="hidden"
+              animate="show"
+              className="space-y-5"
+            >
+              {projeto.insights?.resultado ? (
+                <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
+                    Resultado
+                  </h4>
+                  <p className="text-sm leading-relaxed text-muted-foreground/85">
+                    {projeto.insights.resultado}
+                  </p>
+                </div>
+              ) : null}
+
+              <footer className="flex flex-wrap gap-3 border-t border-border/70 pt-5">
+                <CtaWrap disabled={!visitUrl}>
+                  {visitUrl ? (
+                    <Button asChild variant="default" size="sm" className="shadow-sm">
+                      <a href={visitUrl} target="_blank" rel="noopener noreferrer">
+                        Visitar projeto
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button type="button" size="sm" disabled variant="secondary">
+                      Visitar projeto
+                    </Button>
+                  )}
+                </CtaWrap>
+                {projeto.figmaLink?.trim() ? (
+                  <CtaWrap>
+                    <Button asChild variant="outline" size="sm" className="border-border/80 bg-transparent">
+                      <a href={projeto.figmaLink} target="_blank" rel="noopener noreferrer">
+                        Ver no Figma
+                      </a>
+                    </Button>
+                  </CtaWrap>
+                ) : null}
+              </footer>
             </motion.div>
           ) : null}
         </motion.div>
