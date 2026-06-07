@@ -46,6 +46,7 @@
  * @property {string} [destaque] Eyebrow para projeto em destaque
  * @property {string} [status] Badge de status (ex: "Entregue · em produção")
  * @property {string} [logoEmpresa] Logo exibida antes do título do projeto
+ * @property {string} [logoEmpresaBackground] Cor de fundo aplicada ao invólucro da logo
  * @property {boolean} [logoEmpresaSemPadding] Remove respiro interno quando o arquivo da logo já tem fundo
  * @property {Metrica[]} [metricas] Métricas de escala/impacto do projeto
  * @property {string[]} [responsabilidade] O que foi responsabilidade direta do dev
@@ -202,43 +203,79 @@ export const MOCK_PROJECTS = [
     id: "levita-massagens",
     tipo: "profissional",
     categoria: "web",
+    destaque: "Primeiro serviço internacional — Lisboa",
+    status: "Entregue · 7 dias úteis",
+    logoEmpresa: "/assets/projects/levita-icon.png",
+    logoEmpresaBackground: "#2a4937",
     nome: "Levita Massagens",
     resumo: "Landing page para apresentação de serviços e captação de contatos.",
     descricao:
-      "Landing page com foco em conversão, apresentação de serviços, diferenciais, contato rápido e uma experiência visual acolhedora para o público da marca.",
+      "Cliente em Lisboa operava com site feito no Canva — limitado visualmente e sem estrutura para crescer. Desenvolvi uma landing page profissional com arquitetura preparada para escalar, permitindo adicionar páginas e módulos futuros como agendamento e CRM sem necessidade de refatoração.",
     descricaoResumida:
-      "LP de serviços com foco em apresentação, confiança e contato rápido.",
+      "Cliente em Lisboa operava com site feito no Canva. Desenvolvi uma landing page profissional com arquitetura preparada para escalar, permitindo adicionar páginas e módulos futuros sem refatoração.",
+    metricas: [
+      { label: "Mercado", valor: "Portugal 🇵🇹" },
+      { label: "Prazo", valor: "7 dias úteis" },
+      { label: "Revisões", valor: "2 rodadas" },
+      { label: "Plataforma", valor: "Web" },
+    ],
+    responsabilidade: [
+      "Projeto completo — do levantamento de requisitos à entrega, incluindo contrato, comunicação com o cliente e gestão de prazo",
+      "Layout responsivo para mobile e desktop, fiel à identidade visual do negócio",
+      "Arquitetura do projeto estruturada para escalar — novas páginas e módulos como agendamento e CRM sem refatoração",
+      "Primeiro serviço internacional — cliente em Lisboa, contrato em euros, comunicação em português europeu",
+    ],
     plataformas: {
       web: { imagem: "/assets/projects/levita-1.png", link: "" },
       mobile: { imagem: "", link: "" },
     },
     previewImages: ["/assets/projects/levita-1.png"],
-    tecnologias: ["TypeScript", "React", "Next.js", "Tailwind CSS"],
+    tecnologias: ["TypeScript", "React", "Vite", "Tailwind CSS"],
     insights: {
-      desafio: "Traduzir um serviço sensorial para uma experiência digital simples.",
-      solucao: "Hierarquia visual direta, CTAs evidentes e conteúdo orientado à confiança.",
-      resultado: "Página objetiva para comunicar serviços e facilitar contato.",
+      desafio: "Substituir um site feito no Canva por uma presença digital profissional, com visual mais consistente e estrutura pronta para crescimento.",
+      solucao: "Landing page responsiva, fiel à identidade do negócio, com arquitetura preparada para receber novas páginas e módulos sem refatoração.",
+      resultado: "Substituiu um site Canva por uma landing page profissional entregue em 7 dias úteis, com estrutura técnica preparada para evoluir conforme o negócio cresce.",
     },
     evolucao: ["Copy para conversão", "Estruturação de landing pages", "Design responsivo"],
     conteudoTecnico: {
-      stackDetalhada: ["TypeScript", "React", "Next.js", "Tailwind CSS"],
+      stackDetalhada: ["TypeScript", "React", "Vite", "Tailwind CSS"],
       decisoesTecnicas: [
-        "Seções curtas para leitura rápida em mobile.",
-        "CTAs posicionados para reduzir atrito no contato.",
+        "Arquitetura preparada para expansão futura com novas páginas e módulos, como agendamento e CRM.",
+        "Seções curtas para leitura rápida em mobile, mantendo fidelidade à identidade visual do negócio.",
+        "CTAs posicionados para reduzir atrito no contato e apoiar conversão.",
       ],
-      desafiosExtras: ["Manter leveza visual sem perder clareza comercial."],
+      desafiosExtras: [
+        "Transformar um site Canva limitado em uma landing page profissional sem perder o tom acolhedor da marca.",
+        "Conduzir contrato, comunicação e entrega internacional com cliente em Lisboa.",
+      ],
     },
   },
   {
     id: "newline-persianas",
     tipo: "profissional",
     categoria: "web",
+    destaque: "Landing page comercial — presença digital",
+    status: "Entregue · do zero",
+    logoEmpresa: "/assets/projects/newline-icon.png",
+    logoEmpresaSemPadding: true,
     nome: "NewLine Persianas",
     resumo: "Landing page para catálogo, materiais e pedido de orçamento.",
     descricao:
-      "Landing page para fabricante de persianas com catálogo visual, destaques de materiais, diferenciais e CTA de orçamento para captar leads qualificados.",
+      "Empresa de persianas, cortinas e toldos em Curitiba e região ainda não tinha um site concreto para apresentar sua atuação. Criei uma landing page do zero para organizar produtos, serviços de manutenção, aplicações, diferenciais e canais de orçamento em uma presença digital clara, ajudando a ampliar o alcance comercial da marca.",
     descricaoResumida:
-      "LP com catálogo visual, materiais e chamada para orçamento.",
+      "Empresa sem site concreto. Criei uma landing page do zero para organizar produtos, manutenção, aplicações e canais de orçamento, ampliando a presença digital da marca.",
+    metricas: [
+      { label: "Construção", valor: "Do zero" },
+      { label: "Experiência", valor: "25+ anos" },
+      { label: "Alcance", valor: "PR + SC" },
+      { label: "Plataforma", valor: "Web" },
+    ],
+    responsabilidade: [
+      "Desenvolvimento completo da landing page — estrutura, layout, responsividade e publicação do site",
+      "Organização do conteúdo institucional para apresentar produtos, manutenção, aplicações, diferenciais e orçamento em uma jornada única",
+      "Criação de uma presença digital concreta para uma empresa que ainda não tinha site estruturado",
+      "Foco em ampliar alcance e facilitar o primeiro contato comercial por formulário, WhatsApp e canais diretos",
+    ],
     plataformas: {
       web: { imagem: "/assets/projects/nl-1.png", link: "https://newlinepersianas.com.br/" },
       mobile: { imagem: "", link: "" },
@@ -250,18 +287,22 @@ export const MOCK_PROJECTS = [
     ],
     tecnologias: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "React"],
     insights: {
-      desafio: "Mostrar variedade de produtos sem transformar a página em catálogo pesado.",
-      solucao: "Blocos visuais enxutos, hierarquia clara e CTA de orçamento em destaque.",
-      resultado: "Página mais direta para explicar produtos e gerar contato.",
+      desafio: "Criar um site concreto para uma empresa com atuação ampla, reunindo produtos, serviços e diferenciais sem transformar a landing page em um catálogo pesado.",
+      solucao: "Estrutura de LP com blocos visuais enxutos, hierarquia clara, seções para produtos, manutenção, aplicações e CTAs de orçamento por formulário e WhatsApp.",
+      resultado: "A empresa ganhou uma presença digital profissional para apresentar seus serviços, mostrar variedade de produtos e ampliar o alcance comercial junto a novos clientes.",
     },
     evolucao: ["Landing pages comerciais", "Organização de catálogo", "Design responsivo"],
     conteudoTecnico: {
       stackDetalhada: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "React"],
       decisoesTecnicas: [
-        "Conteúdo dividido por intenção de compra.",
-        "Componentes simples para facilitar manutenção do conteúdo.",
+        "Conteúdo dividido por intenção de compra: produtos, manutenção, aplicações, diferenciais e contato.",
+        "Componentes simples para facilitar manutenção do conteúdo e preservar performance visual.",
+        "CTAs distribuídos para orçamento sem criar uma automação de serviço que não fazia parte do escopo da LP.",
       ],
-      desafiosExtras: ["Equilibrar apelo visual e performance em imagens de produto."],
+      desafiosExtras: [
+        "Transformar uma atuação comercial ampla em uma página objetiva, sem excesso de informação.",
+        "Equilibrar apelo visual e performance em imagens de produto.",
+      ],
     },
   },
   {

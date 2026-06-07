@@ -178,9 +178,15 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               {projeto.logoEmpresa ? (
                 <span
                   className={cn(
-                    "flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/95 shadow-sm ring-1 ring-black/5 sm:h-12 sm:w-12",
+                    "flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/15 shadow-sm ring-1 ring-black/5 sm:h-12 sm:w-12",
+                    projeto.logoEmpresaBackground ? "" : "bg-white/95",
                     projeto.logoEmpresaSemPadding ? "p-0" : "p-2",
                   )}
+                  style={
+                    projeto.logoEmpresaBackground
+                      ? { backgroundColor: projeto.logoEmpresaBackground }
+                      : undefined
+                  }
                 >
                   <img
                     src={projeto.logoEmpresa}
