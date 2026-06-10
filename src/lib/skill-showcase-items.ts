@@ -375,13 +375,13 @@ export const skillShowcase: ShowcaseSkill[] = [
     },
     aplicacao: {
       "pt-br":
-        "Uso em protótipos e telas Flutter enquanto aprofundo arquitetura e padrões mobile.",
+        "Uso em telas e fluxos Flutter, com base prática em UI, estado local e integrações simples enquanto aprofundo arquitetura mobile.",
       "en-us":
-        "Used in Flutter prototypes and screens while I deepen mobile architecture patterns.",
+        "Used in Flutter screens and flows, with practical basics in UI, local state, and simple integrations while I deepen mobile architecture.",
       "fr-fr":
-        "Utilisé dans des prototypes Flutter pendant que j’approfondis l’architecture mobile.",
+        "Utilisé dans des écrans et flux Flutter, avec des bases pratiques en UI, état local et intégrations simples pendant que j’approfondis l’architecture mobile.",
     },
-    nivel: { "pt-br": "Em evolução", "en-us": "Growing", "fr-fr": "En progression" },
+    nivel: { "pt-br": "Base prática", "en-us": "Practical basics", "fr-fr": "Bases pratiques" },
   },
   {
     id: "node",
@@ -584,13 +584,13 @@ export const skillShowcase: ShowcaseSkill[] = [
     },
     aplicacao: {
       "pt-br":
-        "Exploração para expandir interfaces React para mobile, conectando boas práticas de UI com apps nativos.",
+        "Já usei para levar padrões de React ao mobile em protótipos e telas iniciais, com foco em componentes, navegação e estado.",
       "en-us":
-        "Exploring how to extend React interfaces to mobile, connecting UI practices with native apps.",
+        "Used to bring React patterns into mobile prototypes and early screens, focused on components, navigation, and state.",
       "fr-fr":
-        "Exploration pour étendre les interfaces React au mobile, reliant bonnes pratiques UI et apps natives.",
+        "Utilisé pour porter des patterns React vers des prototypes et premiers écrans mobiles, avec focus sur composants, navigation et état.",
     },
-    nivel: { "pt-br": "Em evolução", "en-us": "Growing", "fr-fr": "En progression" },
+    nivel: { "pt-br": "Base prática", "en-us": "Practical basics", "fr-fr": "Bases pratiques" },
   },
   {
     id: "flutter",
@@ -624,13 +624,13 @@ export const skillShowcase: ShowcaseSkill[] = [
     },
     aplicacao: {
       "pt-br":
-        "Exploro para ampliar entrega mobile além do web, em paralelo ao trabalho principal em React.",
+        "Já atuei em manutenção e telas Flutter, com base prática em widgets, navegação e ajustes de interface além do trabalho principal em React.",
       "en-us":
-        "Exploring to extend mobile delivery beyond the web, alongside my main React work.",
+        "Used in Flutter maintenance and screens, with practical basics in widgets, navigation, and interface adjustments alongside my main React work.",
       "fr-fr":
-        "J’explore pour étendre le mobile au-delà du web, en parallèle de mon travail React principal.",
+        "Utilisé en maintenance et écrans Flutter, avec des bases pratiques en widgets, navigation et ajustements d’interface en parallèle de mon travail React principal.",
     },
-    nivel: { "pt-br": "Em evolução", "en-us": "Growing", "fr-fr": "En progression" },
+    nivel: { "pt-br": "Base prática", "en-us": "Practical basics", "fr-fr": "Bases pratiques" },
   },
   {
     id: "git",

@@ -79,12 +79,13 @@ export const MOCK_PROJECTS = [
     descricaoResumida:
       "A imobiliária controlava atendimentos por planilha e WhatsApp. Desenvolvi o front-end completo do sistema que centralizou a operação, histórico de clientes e funil de vendas.",
     metricas: [
-      { label: "Valor do projeto", valor: "R$ 50k" },
-      { label: "Equipe", valor: "3 devs" },
+      { label: "Equipe", valor: "3 sócios" },
+      { label: "Escopo", valor: "Ponta a ponta" },
       { label: "Construção", valor: "Do zero" },
       { label: "Plataforma", valor: "Web" },
     ],
     responsabilidade: [
+      "Projeto conduzido por mim e mais dois sócios, sem staff externo — do acerto de contrato à entrega em produção",
       "Arquitetura e desenvolvimento completo do front-end — estrutura de componentes, roteamento e fluxos de navegação",
       "Integração com API REST construída pelos devs back-end, incluindo autenticação e tratamento de estados",
       "Decisões de UI/UX — prototipagem das telas principais e validação com o cliente durante o desenvolvimento",
@@ -309,17 +310,34 @@ export const MOCK_PROJECTS = [
     id: "aprova-legal",
     tipo: "profissional",
     categoria: "sistema",
+    destaque: "Projeto — sistema empresarial",
+    status: "Entregue · em produção",
+    logoEmpresa: "/assets/projects/aprova-icon.png",
+    logoEmpresaBackground: "#123d2a",
     nome: "Aprova Legal",
-    resumo: "Sistema para seguro imobiliário e gestão de processos.",
+    resumo: "Sistema para gestão de garantias locatícias, contratos e análise de inquilinos.",
     descricao:
-      "Sistema de seguro imobiliário com interface para clientes, apólices, sinistros, relatórios e fluxos operacionais, priorizando clareza e organização das informações.",
+      "A Aprova Legal operava processos de garantia locatícia de forma manual e fragmentada. Desenvolvi o front-end do sistema interno que digitalizou e centralizou o fluxo completo — da análise de inquilino à gestão de contratos ativos.",
     descricaoResumida:
-      "Sistema imobiliário para clientes, apólices, sinistros e relatórios.",
+      "Desenvolvi o front-end do sistema interno que centralizou garantias locatícias, análise de inquilinos e gestão de contratos ativos.",
+    metricas: [
+      { label: "Equipe", valor: "3 sócios" },
+      { label: "Escopo", valor: "Ponta a ponta" },
+      { label: "Construção", valor: "Do zero" },
+      { label: "Plataforma", valor: "Web" },
+    ],
+    responsabilidade: [
+      "Projeto conduzido por mim e mais dois sócios, sem staff externo — do acerto de contrato à entrega em produção",
+      "Desenvolvimento do front-end integrado ao back-end Laravel — interfaces de cadastro, fluxo de análise e painel operacional",
+      "Construção dos fluxos de navegação e estrutura de componentes dentro da arquitetura PHP/Laravel",
+      "Telas entregues: gestão de contratos, painel de imobiliárias parceiras, fluxo de análise de inquilino e acompanhamento de garantias ativas",
+      "Projeto que antecedeu minha especialização em arquitetura desacoplada — aprendizado que direcionou o uso de API REST e TypeScript nos projetos seguintes",
+    ],
     plataformas: {
       web: { imagem: "/assets/projects/aprova-0.png", link: "https://aprovalegal.com/" },
       mobile: { imagem: "", link: "" },
     },
-     previewImages: {
+    previewImages: {
       web: [
         "/assets/projects/aprova-0.png",
         "/assets/projects/aprova-1.png",
@@ -328,49 +346,73 @@ export const MOCK_PROJECTS = [
     },
     tecnologias: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Figma"],
     insights: {
-      desafio: "Organizar processos com muitos dados e etapas distintas.",
-      solucao: "Telas segmentadas por fluxo, formulários claros e navegação objetiva.",
-      resultado: "Melhor leitura das etapas e mais previsibilidade no uso do sistema.",
+      desafio: "Processos de garantia locatícia ainda manuais e fragmentados, com análise de inquilinos, contratos e imobiliárias parceiras sem centralização operacional.",
+      solucao: "Front-end integrado ao Laravel, com telas de cadastro, fluxo de análise, gestão de contratos, painel de imobiliárias e acompanhamento de garantias ativas.",
+      resultado: "Sistema em produção com mais de 1.000 contratos ativos e 95+ imobiliárias parceiras, gerenciando R$45 milhões em capital garantido. Digitalizou um processo antes manual, com análise 100% digital e reconhecimento facial antifraude.",
     },
-    evolucao: ["Fluxos de sistema", "Laravel em aplicações reais", "Validação de formulários"],
+    evolucao: ["Fluxos de sistema empresarial", "Laravel em aplicações reais", "Evolução para arquitetura desacoplada"],
     conteudoTecnico: {
       stackDetalhada: ["HTML5", "CSS3", "Bootstrap", "JavaScript", "PHP/Laravel"],
       decisoesTecnicas: [
-        "Separação visual entre entidades do domínio.",
-        "Padronização de componentes de listagem e formulário.",
+        "Estrutura de componentes e navegação construída dentro da arquitetura PHP/Laravel existente.",
+        "Telas segmentadas por fluxo operacional: análise de inquilino, contratos, imobiliárias parceiras e garantias ativas.",
+        "Experiência que evidenciou os limites do front-end acoplado ao Laravel e direcionou a adoção de API REST e TypeScript nos projetos seguintes.",
       ],
-      desafiosExtras: ["Manter consistência em telas de cadastro, consulta e relatório."],
+      desafiosExtras: [
+        "Centralizar processos de garantia locatícia que antes dependiam de etapas manuais.",
+        "Manter consistência em telas de cadastro, análise, acompanhamento e painel operacional.",
+      ],
     },
   },
   {
     id: "lunarbot",
     tipo: "profissional",
     categoria: "sistema",
+    destaque: "Sistema",
+    status: "Primeiro ano de carreira",
+    logoEmpresa: "/assets/projects/lunar-icon.png",
+    logoEmpresaBackground: "#050505",
     nome: "LunarBot.io",
-    resumo: "Sistema para gerenciamento de bot, comandos, usuários e grupos.",
+    resumo: "Sistema administrativo para plataforma de vendas via Telegram.",
     descricao:
-      "Sistema administrativo para bot do Telegram com controle de usuários, mensagens, comandos, grupos, estatísticas, configurações e logs operacionais.",
+      "Startup de vendas via Telegram precisava de um painel administrativo para gerenciar bots, usuários, grupos, comandos e métricas operacionais. Primeiro sistema com dashboard que desenvolvi — entregue dentro das limitações de stack do meu primeiro ano como dev front-end.",
     descricaoResumida:
-      "Dashboard administrativo para bot com usuários, comandos, grupos e estatísticas.",
+      "Primeiro dashboard administrativo que desenvolvi: painel para bots, usuários, grupos, comandos e métricas operacionais de uma startup de vendas via Telegram.",
+    metricas: [
+      { label: "Equipe", valor: "3 devs" },
+      { label: "Construção", valor: "Do zero" },
+      { label: "Contexto", valor: "Startup" },
+      { label: "Plataforma", valor: "Web" },
+    ],
+    responsabilidade: [
+      "Desenvolvimento do front-end completo do painel administrativo — sem framework moderno, com HTML, CSS e JavaScript puros",
+      "Construção de componentes reutilizáveis com controle de estados manual, sem React ou biblioteca equivalente",
+      "Seções administrativas separadas por responsabilidade: usuários, grupos, comandos, logs, estatísticas e configurações",
+      "Integração com back-end Laravel e implementação de scripts de tracking UTM para rastreamento de campanhas entre páginas de venda e o bot",
+    ],
     plataformas: {
       web: { imagem: "/assets/projects/lunar.png", link: "https://lunarbot.com.br/" },
       mobile: { imagem: "", link: "" },
     },
     tecnologias: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Postman", "Figma"],
     insights: {
-      desafio: "Criação de interface sem framework, com muito uso de css e JS puros para controle de estados e interações.",
-      solucao: "Implementação de componentes reutilizáveis com controle de estados manual.",
-      resultado: "Sistema funcional e organizado, mesmo sem o uso de frameworks modernos, com foco em usabilidade e clareza para o usuário final.",
+      desafio: "Startup de vendas via Telegram precisava centralizar bots, usuários, grupos, comandos e métricas em um painel administrativo construído com uma stack limitada.",
+      solucao: "Front-end completo em HTML, CSS e JavaScript puros, com componentes reutilizáveis, controle de estados manual e integração ao back-end Laravel.",
+      resultado: "Sistema funcional entregue em produção para uma startup em operação. Construir dashboard sem framework moderno exigiu domínio real de CSS e JS puros — base técnica que consolidou meu entendimento de estado, componentes e interação antes de migrar para React.",
     },
-    evolucao: ["Dashboards administrativos", "Integração com back-end Laravel", "Organização de logs e estatísticas"],
+    evolucao: ["Dashboard sem framework moderno", "Integração com back-end Laravel", "Fundamentos de estado e componentes"],
     figmaLink: "https://www.figma.com/design/0gHgezIDrlEidd1cYQymAY/lunarbot?node-id=8-134&t=9CtnBgcuyuGNeN0I-0",
     conteudoTecnico: {
       stackDetalhada: ["HTML5", "CSS3", "Bootstrap", "JavaScript", "PHP/Laravel", "Postman", "Figma"],
       decisoesTecnicas: [
-        "Seções administrativas separadas por responsabilidade.",
-        "Fluxos pensados para reduzir cliques em tarefas recorrentes.",
+        "Componentes reutilizáveis construídos sem React, com controle de estados e interações em JavaScript puro.",
+        "Seções administrativas separadas por responsabilidade: usuários, grupos, comandos, logs, estatísticas e configurações.",
+        "Scripts de tracking UTM para conectar campanhas, páginas de venda e fluxo do bot.",
       ],
-      desafiosExtras: ["Conectar informação operacional com uma interface simples para administração."],
+      desafiosExtras: [
+        "Construir um dashboard funcional dentro das limitações técnicas do primeiro ano de carreira.",
+        "Conectar informação operacional da startup com uma interface simples para administração diária.",
+      ],
     },
   },
   {

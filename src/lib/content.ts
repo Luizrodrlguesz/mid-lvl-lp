@@ -242,17 +242,17 @@ export const projects: Project[] = [
     id: 2,
     title: { "pt-br": "LunarBot.io", "en-us": "LunarBot.io", "fr-fr": "LunarBot.io" },
     subtitle: {
-      "pt-br": "Dashboard Administrativo e Landing Page",
-      "en-us": "Admin Dashboard and Landing Page",
-      "fr-fr": "Tableau de bord Administratif et Landing Page",
+      "pt-br": "Sistema administrativo para Telegram",
+      "en-us": "Telegram admin system",
+      "fr-fr": "Système administratif pour Telegram",
     },
     description: {
       "pt-br":
-        "Sistema de gerenciamento para bot do Telegram com interface intuitiva. Controle de usuários, mensagens, comandos, grupos e monitoramento de estatísticas, configurações e logs. Foco em usabilidade e eficiência operacional.",
+        "Sistema administrativo para plataforma de vendas via Telegram. Primeiro dashboard que desenvolvi, com bots, usuários, grupos, comandos, logs, estatísticas, configurações e tracking UTM integrado ao fluxo entre páginas de venda e bot.",
       "en-us":
-        "Telegram bot management system with intuitive interface. User, message, command, and group control, plus monitoring of stats, settings, and logs. Focused on usability and operational efficiency.",
+        "Admin system for a Telegram sales platform. My first dashboard project, with bots, users, groups, commands, logs, statistics, settings, and UTM tracking integrated between sales pages and the bot flow.",
       "fr-fr":
-        "Système de gestion pour bot Telegram avec interface intuitive. Contrôle des utilisateurs, messages, commandes, groupes et suivi des statistiques, configurations et logs. Centré sur l’utilisabilité et l’efficacité opérationnelle.",
+        "Système administratif pour une plateforme de vente via Telegram. Mon premier dashboard, avec bots, utilisateurs, groupes, commandes, logs, statistiques, configurations et tracking UTM intégré entre les pages de vente et le bot.",
     },
     category: {
       "pt-br": "Sistema e Landing Page",
@@ -269,17 +269,17 @@ export const projects: Project[] = [
     id: 3,
     title: { "pt-br": "Aprova Legal", "en-us": "Aprova Legal", "fr-fr": "Aprova Legal" },
     subtitle: {
-      "pt-br": "Sistema de Seguro Imobiliário",
-      "en-us": "Real Estate Insurance System",
-      "fr-fr": "Système d’assurance immobilière",
+      "pt-br": "Sistema de garantias locatícias",
+      "en-us": "Rental guarantee management system",
+      "fr-fr": "Système de garanties locatives",
     },
     description: {
       "pt-br":
-        "Sistema de seguro imobiliário com interface intuitiva e funcionalidades avançadas: clientes, apólices, sinistros, relatórios e mais.",
+        "Sistema interno para gestão de garantias locatícias, contratos e análise de inquilinos. Digitalizou fluxos antes manuais e centralizou a operação com mais de 1.000 contratos ativos, 95+ imobiliárias parceiras e R$45 milhões em capital garantido.",
       "en-us":
-        "Real estate insurance system with intuitive interface and advanced features: customers, policies, claims, reports, and more.",
+        "Internal system for rental guarantee management, contracts, and tenant analysis. It digitized formerly manual workflows and centralized operations with 1,000+ active contracts, 95+ partner real estate agencies, and R$45 million in guaranteed capital.",
       "fr-fr":
-        "Système d’assurance immobilière avec interface intuitive et fonctionnalités avancées : clients, polices, sinistres, rapports et plus.",
+        "Système interne de gestion des garanties locatives, des contrats et de l’analyse des locataires. Il a numérisé des flux auparavant manuels et centralisé l’opération avec plus de 1 000 contrats actifs, 95+ agences immobilières partenaires et 45 millions R$ de capital garanti.",
     },
     category: { "pt-br": "Sistema", "en-us": "System", "fr-fr": "Système" },
     skills: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Figma"],
@@ -350,4 +350,3 @@ export const projects: Project[] = [
      subtitle: "Disponible pour opportunités, freelances et collaborations.",
    },
  }
-
