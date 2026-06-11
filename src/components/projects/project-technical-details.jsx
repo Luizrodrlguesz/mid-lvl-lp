@@ -33,7 +33,7 @@ export function ProjectTechnicalDetails({ projectId, conteudo }) {
             {stackDetalhada.map((item) => (
               <li
                 key={item}
-                className="rounded border border-border/60 bg-background/60 px-2 py-0.5 font-mono text-[11px] text-foreground/90"
+                className="rounded border border-transparent bg-background/60 px-2 py-0.5 font-mono text-[11px] text-foreground/90 dark:border-border/60"
               >
                 {item}
               </li>

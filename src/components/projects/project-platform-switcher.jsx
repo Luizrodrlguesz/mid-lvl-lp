@@ -32,7 +32,7 @@ export function ProjectPlatformSwitcher({
             transition={springTransition}
             className={
               selected
-                ? "relative z-10 rounded-md bg-foreground px-3.5 py-1.5 text-sm font-medium text-background shadow-sm ring-1 ring-foreground/10"
+                ? "relative z-10 rounded-md bg-slate-800 px-3.5 py-1.5 text-sm font-medium text-white shadow-sm ring-1 ring-slate-800/10 dark:bg-foreground dark:text-background dark:ring-foreground/10"
                 : "rounded-md px-3.5 py-1.5 text-sm text-muted-foreground transition-colors duration-200 hover:bg-muted/60 hover:text-foreground"
             }
           >

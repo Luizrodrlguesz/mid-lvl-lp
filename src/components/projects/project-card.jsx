@@ -148,9 +148,9 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
       transition={cardPresenceTransition}
       className={cn(
         "overflow-hidden rounded-[32px] border p-6 shadow-sm sm:p-8",
-        "bg-black/10 backdrop-blur-[25px]",
+        "bg-white/10 backdrop-blur-[25px] dark:bg-black/10",
         tipo === "profissional" &&
-          "border-white/10 shadow-black/20 ring-1 ring-white/5",
+          "border-border shadow-black/20 ring-1 ring-black/5 dark:ring-white/5",
         tipo === "pessoal" &&
           "border-violet-500/20 shadow-violet-900/10 ring-1 ring-violet-500/15 dark:shadow-violet-950/25",
       )}
@@ -178,7 +178,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               {projeto.logoEmpresa ? (
                 <span
                   className={cn(
-                    "flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/15 shadow-sm ring-1 ring-black/5 sm:h-12 sm:w-12",
+                    "flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-transparent shadow-sm ring-1 ring-black/5 dark:border-border sm:h-12 sm:w-12",
                     projeto.logoEmpresaBackground ? "" : "bg-white/95",
                     projeto.logoEmpresaSemPadding ? "p-0" : "p-2",
                   )}
@@ -201,10 +201,10 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               ) : (
                 <span
                   className={cn(
-                    "hidden shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest sm:inline-flex",
+                    "hidden shrink-0 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest sm:inline-flex",
                     tipo === "profissional"
-                      ? "border-white/15 bg-white/4 text-muted-foreground"
-                      : "border-violet-500/30 bg-violet-500/8 text-violet-800 dark:text-violet-100/90",
+                      ? "bg-slate-800/5 text-muted-foreground dark:bg-foreground/5"
+                      : "border border-violet-500/30 bg-violet-500/8 text-violet-800 dark:text-violet-100/90",
                   )}
                 >
                   {LABEL_CATEGORIA[projeto.categoria] ?? projeto.categoria}
@@ -265,7 +265,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               {projeto.metricas.map((m) => (
                 <div
                   key={m.label}
-                  className="flex flex-col gap-1 rounded-xl bg-foreground/6 px-4 py-3 dark:bg-white/4"
+                  className="flex flex-col gap-1 rounded-xl bg-slate-800/6 px-4 py-3 dark:bg-white/4"
                 >
                   <span className="text-[11px] text-muted-foreground/70">{m.label}</span>
                   <span className="text-lg font-bold leading-tight tracking-tight text-foreground">{m.valor}</span>
@@ -343,7 +343,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             >
               <div
                 className={cn(
-                  "relative min-h-[200px] overflow-hidden rounded-lg border border-border/80 bg-muted/25 shadow-inner sm:min-h-[220px]",
+                  "relative min-h-[200px] overflow-hidden rounded-lg border border-transparent bg-muted/25 shadow-inner dark:border-border/80 sm:min-h-[220px]",
                   plataformaAtiva === "mobile"
                     ? "aspect-[8/16]"
                     : "aspect-[4/2.88] sm:aspect-[16/9.7]",
@@ -451,7 +451,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               className="space-y-5"
             >
               {projeto.insights?.resultado ? (
-                <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                <div className="space-y-2 rounded-xl border border-transparent bg-slate-800/[0.03] p-4 dark:border-border/60 dark:bg-foreground/[0.03]">
                   <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
                     Resultado
                   </h4>

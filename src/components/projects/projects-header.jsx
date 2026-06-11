@@ -10,14 +10,14 @@ export function ProjectsHeader({ title, description, eyebrow }) {
     <header className="space-y-3">
       <div>
         {eyebrow ? (
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             {eyebrow}
           </p>
         ) : null}
         <SplitText
           id="heading-projetos"
           className={cn(
-            "font-orbitron-italic text-3xl font-bold text-foreground",
+            "font-orbitron-italic text-3xl font-bold text-slate-800 dark:text-foreground",
             eyebrow && "mt-2",
           )}
           text={title}

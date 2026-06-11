@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
+  animate,
   motion,
   useMotionValue,
   useMotionValueEvent,
   useScroll,
-  useSpring,
   useTransform,
 } from "framer-motion"
 import { ArrowDown } from "lucide-react"
@@ -29,31 +29,17 @@ import { SecondPageContactSection } from "@/components/second-page-contact-secti
 import { LoadingScreen } from "@/components/loading-screen"
 import { cn } from "@/lib/utils"
 
-/** Fração do zoom total só com wheel (portão fechado); o resto vem do scroll no trilho do hero. */
-const ZOOM_FIRST_PHASE_RATIO = 0.35
 const ZOOM_MIN = 1
 const ZOOM_MAX = 1.58
-const ZOOM_WHEEL_SENS = 0.0022
-/**
- * Altura total do hero em vh (sticky + trilho). O runway útil ≈ (valor − 100) vh.
- * Ajustado em conjunto com `HERO_ZOOM_COMPLETES_AT` para manter a mesma distância de scroll
- * até o zoom máximo e acrescentar uma “pausa” no fim.
- */
+/** Altura total do hero em vh (sticky + trilho). O runway útil ≈ (valor − 100) vh. */
 const HERO_SCROLL_TRACK_VH = 158
-/**
- * Fracção do progresso de scroll no hero (0–1) em que o zoom já está no máximo.
- * O restante do trilho consome scroll sem mudar escala — evita saltar logo para a secção seguinte.
- */
-const HERO_ZOOM_COMPLETES_AT = 0.7
+/** Suaviza o zoom só ao voltar pro topo (scroll up); descendo, acompanha o scroll sem atraso. */
+const ZOOM_RETURN_SPRING = { type: "spring", stiffness: 88, damping: 28 } as const
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null)
-  /** True depois que o utilizador desceu o suficiente; ao voltar ao topo do hero, o zoom em duas fases reinicia. */
-  const hasLeftHeroStart = useRef(false)
   const [particleScroll, setParticleScroll] = useState(0)
 
-  const zoomLockProgress = useMotionValue(0)
-  const zoomGateOpen = useMotionValue(0)
   const [locale, setLocale] = useState<Locale>("pt-br")
   const [loading, setLoading] = useState(true)
   const headerItems = useMemo(
@@ -82,102 +68,31 @@ export default function Home() {
     offset: ["start start", "end start"],
   })
 
-  const rawScale = useTransform(() => {
-    const gate = zoomGateOpen.get()
-    const lock = zoomLockProgress.get()
-    const scroll = heroScrollProgress.get()
-    const span = ZOOM_MAX - ZOOM_MIN
-    if (gate < 0.5) {
-      return ZOOM_MIN + span * ZOOM_FIRST_PHASE_RATIO * lock
+  const rawScale = useTransform(heroScrollProgress, [0, 1], [ZOOM_MIN, ZOOM_MAX])
+  const scale = useMotionValue(ZOOM_MIN)
+  const opacity = useTransform(heroScrollProgress, [0, 1], [1, 0])
+
+  const previousProgressRef = useRef(0)
+  useMotionValueEvent(rawScale, "change", (latest) => {
+    const progress = heroScrollProgress.get()
+    if (progress >= previousProgressRef.current) {
+      scale.jump(latest)
+    } else {
+      animate(scale, latest, ZOOM_RETURN_SPRING)
     }
-    const zoomScroll = Math.min(1, scroll / HERO_ZOOM_COMPLETES_AT)
-    return (
-      ZOOM_MIN +
-      span * ZOOM_FIRST_PHASE_RATIO +
-      span * (1 - ZOOM_FIRST_PHASE_RATIO) * zoomScroll
-    )
+    previousProgressRef.current = progress
   })
 
-  const scale = useSpring(rawScale, { stiffness: 88, damping: 28 })
-  /** Opacidade acompanha o zoom em todo o percurso (wheel + scroll), não só no fim do trilho. */
-  const opacity = useTransform(scale, (s) => {
-    const t = (s - ZOOM_MIN) / (ZOOM_MAX - ZOOM_MIN)
-    return Math.max(0, Math.min(1, 1 - t))
-  })
-
-  useEffect(() => {
-    let raf = 0
-    const onScroll = () => {
-      const y = window.scrollY
-      const hp = heroScrollProgress.get()
-
-      if (y > 72 || hp > 0.06) {
-        hasLeftHeroStart.current = true
-      }
-
-      if (hasLeftHeroStart.current && y < 28 && hp < 0.08) {
-        zoomGateOpen.set(0)
-        zoomLockProgress.set(0)
-        hasLeftHeroStart.current = false
-      }
-
-      if (zoomGateOpen.get() < 0.5 && y > 0) {
-        cancelAnimationFrame(raf)
-        raf = requestAnimationFrame(() => {
-          window.scrollTo({ top: 0, left: 0, behavior: "instant" })
-        })
-      }
-    }
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener("scroll", onScroll)
-    }
-  }, [heroScrollProgress, zoomGateOpen, zoomLockProgress])
-
-  useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      if (zoomGateOpen.get() >= 0.5) return
-      if (window.scrollY > 1) return
-
-      if (e.deltaY < 0) {
-        const lock = zoomLockProgress.get()
-        if (lock > 0) {
-          e.preventDefault()
-          zoomLockProgress.set(Math.max(0, lock + e.deltaY * ZOOM_WHEEL_SENS))
-        }
-        return
-      }
-
-      e.preventDefault()
-      const lock = zoomLockProgress.get()
-      const next = Math.min(1, lock + e.deltaY * ZOOM_WHEEL_SENS)
-      zoomLockProgress.set(next)
-      if (next >= 1) zoomGateOpen.set(1)
-    }
-    window.addEventListener("wheel", onWheel, { passive: false })
-    return () => window.removeEventListener("wheel", onWheel)
-  }, [zoomGateOpen, zoomLockProgress])
-
-  const unlockScrollAndGoTo = useCallback(
-    (sectionId: string, offset = 8) => {
-      zoomLockProgress.set(1)
-      zoomGateOpen.set(1)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const el = document.getElementById(sectionId)
-          if (!el) return
-          const top = el.getBoundingClientRect().top + window.scrollY - offset
-          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" })
-        })
-      })
-    },
-    [zoomGateOpen, zoomLockProgress],
-  )
+  const scrollToSection = useCallback((sectionId: string, offset = 8) => {
+    const el = document.getElementById(sectionId)
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY - offset
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" })
+  }, [])
 
   const scrollToNextSection = useCallback(() => {
-    unlockScrollAndGoTo("sobre")
-  }, [unlockScrollAndGoTo])
+    scrollToSection("sobre")
+  }, [scrollToSection])
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
@@ -193,7 +108,7 @@ export default function Home() {
           locale={locale}
           items={headerItems}
           onNavigateToSection={(sectionId) =>
-            unlockScrollAndGoTo(sectionId, sectionId === "inicio" ? 0 : 80)
+            scrollToSection(sectionId, sectionId === "inicio" ? 0 : 80)
           }
         />
 
@@ -205,7 +120,7 @@ export default function Home() {
         <div
           id="inicio"
           ref={containerRef}
-          className="relative z-10 bg-black/85"
+          className="relative z-10 bg-[#58a1fc]/85 dark:bg-black/85"
           style={{ height: `${HERO_SCROLL_TRACK_VH}vh` }}
         >
           <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
@@ -227,7 +142,7 @@ export default function Home() {
               }}
             >
               <div className="grid items-center gap-12 py-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.9fr)] lg:gap-16 xl:gap-20">
-                <PortfolioHeroIntro onNavigateToSection={unlockScrollAndGoTo} />
+                <PortfolioHeroIntro onNavigateToSection={scrollToSection} />
                 <PortfolioHeroOrbital className="hidden justify-self-center md:block lg:justify-self-end" />
               </div>
             </motion.div>
@@ -259,7 +174,7 @@ export default function Home() {
 
         <div className="relative z-10">
           <div
-            className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-black/85 to-transparent"
+            className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-[#58a1fc]/85 to-transparent dark:from-black/85"
             aria-hidden="true"
           />
 

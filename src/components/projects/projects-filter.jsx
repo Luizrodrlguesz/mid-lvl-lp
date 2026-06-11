@@ -30,7 +30,7 @@ export function ProjectsFilter({ value, onChange }) {
             className={cn(
               "relative rounded-md px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors duration-200",
               on
-                ? "bg-foreground text-background shadow-sm"
+                ? "bg-slate-800 text-white shadow-sm dark:bg-foreground dark:text-background"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

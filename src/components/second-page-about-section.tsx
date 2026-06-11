@@ -101,7 +101,7 @@ export function SecondPageAboutSection({
       ref={sectionRef}
       id="sobre"
       aria-labelledby="heading-sobre"
-      className="relative z-10 overflow-hidden border-white/10 py-24 px-6 text-zinc-100"
+      className="relative z-10 overflow-hidden border-border/60 py-24 px-6 text-foreground"
     >
       <motion.div
         className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-blue-600/20 blur-[100px]"
@@ -124,12 +124,12 @@ export function SecondPageAboutSection({
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Sobre
             </p>
             <SplitText
               id="heading-sobre"
-              className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-white"
+              className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-slate-800 dark:text-foreground"
               text="Quem sou eu?"
               tag="h2"
               delay={50}
@@ -145,7 +145,7 @@ export function SecondPageAboutSection({
           </motion.div>
 
           <motion.p
-            className="max-w-3xl text-pretty text-lg leading-relaxed text-zinc-400"
+            className="max-w-3xl text-pretty text-lg leading-relaxed text-muted-foreground"
             style={{ opacity: introOpacity, y: introY }}
           >
             {aboutCopy[locale]}
@@ -160,7 +160,7 @@ export function SecondPageAboutSection({
           >
             {HIGHLIGHTS.map(({ label, icon: Icon }) => (
               <motion.li key={label} variants={listItem}>
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm text-zinc-200 backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-foreground/5 px-4 py-2 text-sm text-foreground/80 backdrop-blur-sm">
                   <Icon className="h-4 w-4 shrink-0 text-blue-600" aria-hidden />
                   {label}
                 </span>
@@ -172,7 +172,7 @@ export function SecondPageAboutSection({
         <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
           <div className="space-y-5">
             <motion.h3
-              className="flex items-center gap-2 text-lg font-semibold text-white"
+              className="flex items-center gap-2 text-lg font-semibold text-foreground"
               initial={{ opacity: 0, x: -12 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -197,9 +197,9 @@ export function SecondPageAboutSection({
 
                 return (
                 <motion.div key={title} variants={listItem}>
-                  <Card className="h-full rounded-[22px] border-white/10 bg-white/5 py-4 shadow-none backdrop-blur-[5px]">
+                  <Card className="h-full rounded-[22px] border-border/60 bg-foreground/5 py-4 shadow-none backdrop-blur-[5px]">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-base text-zinc-100">
+                      <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         {Icon ? (
                           <Icon
                             className="h-4 w-4 shrink-0 text-sky-400"
@@ -209,7 +209,7 @@ export function SecondPageAboutSection({
                         <span>{title}</span>
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm leading-relaxed text-zinc-400">
+                    <CardContent className="text-sm leading-relaxed text-muted-foreground">
                       {pickLocale(locale, item.description)}
                     </CardContent>
                   </Card>
@@ -221,7 +221,7 @@ export function SecondPageAboutSection({
 
           <div className="space-y-5">
             <motion.h3
-              className="flex items-center gap-2 text-lg font-semibold text-white"
+              className="flex items-center gap-2 text-lg font-semibold text-foreground"
               initial={{ opacity: 0, x: -12 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -256,19 +256,19 @@ export function SecondPageAboutSection({
                     }}
                   >
                     <span
-                      className="absolute left-[-23px] top-5 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 border-blue-600/90 bg-zinc-950 shadow-[0_0_12px_rgba(139,92,246,0.45)]"
+                      className="absolute left-[-23px] top-5 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 border-blue-600/90 bg-background shadow-[0_0_12px_rgba(139,92,246,0.45)]"
                       aria-hidden
                     />
-                    <Card className="rounded-[22px] border-white/10 bg-white/5 py-4 shadow-none backdrop-blur-[5px]">
+                    <Card className="rounded-[22px] border-border/60 bg-foreground/5 py-4 shadow-none backdrop-blur-[5px]">
                       <CardHeader>
-                        <CardTitle className="flex flex-col gap-1 text-base text-zinc-100 sm:flex-row sm:items-center sm:justify-between">
+                        <CardTitle className="flex flex-col gap-1 text-base text-foreground sm:flex-row sm:items-center sm:justify-between">
                           <span>{pickLocale(locale, item.role)}</span>
-                          <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                             {pickLocale(locale, item.period)}
                           </span>
                         </CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm leading-relaxed text-zinc-400">
+                      <CardContent className="text-sm leading-relaxed text-muted-foreground">
                         {pickLocale(locale, item.description)}
                       </CardContent>
                     </Card>

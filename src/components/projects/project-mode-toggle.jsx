@@ -32,7 +32,7 @@ export function ProjectModeToggle({ value, onChange }) {
             className={cn(
               "relative basis-1/2 rounded-md px-3.5 py-1.5 text-center text-xs font-semibold uppercase tracking-wider transition-colors duration-200 sm:basis-auto",
               on
-                ? "bg-foreground text-background shadow-sm"
+                ? "bg-slate-800 text-white shadow-sm dark:bg-foreground dark:text-background"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

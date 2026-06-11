@@ -55,7 +55,7 @@ export function HorizontalGalleryCategoryPanel({
       <article
         ref={cardRef}
         className={cn(
-          "flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out md:p-8",
+          "flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-transparent bg-foreground/5 p-7 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 md:p-8",
           hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
         )}
       >
@@ -78,7 +78,7 @@ export function HorizontalGalleryCategoryPanel({
     <article
       ref={cardRef}
       className={cn(
-        "flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 p-7 shadow-sm backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out md:p-8",
+        "flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-transparent bg-foreground/5 p-7 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 md:p-8",
         hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
       )}
     >
@@ -113,10 +113,10 @@ export function HorizontalGalleryCategoryPanel({
                 type="button"
                 onClick={() => setSelectedId(skill.id)}
                 className={cn(
-                  "rounded-lg border px-2.5 py-2 text-left text-sm font-medium transition-colors",
+                  "rounded-lg px-2.5 py-2 text-left text-sm font-medium transition-colors",
                   active
-                    ? "border-primary/50 bg-primary/10 text-foreground"
-                    : "border-border/70 bg-background/40 text-muted-foreground hover:border-border hover:bg-muted/40 hover:text-foreground",
+                    ? "bg-slate-800/10 text-foreground dark:bg-primary/10"
+                    : "bg-background/40 text-muted-foreground hover:bg-muted/40 hover:text-foreground",
                 )}
               >
                 {skill.label[locale]}
@@ -128,7 +128,7 @@ export function HorizontalGalleryCategoryPanel({
         <div
           key={selected.id}
           className={cn(
-            "relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] border border-border/80 bg-black/10 shadow-inner backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out sm:min-h-[260px] lg:min-h-[300px]",
+            "relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] bg-slate-800/5 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:bg-foreground/5 sm:min-h-[260px] lg:min-h-[300px]",
             hasEntered
               ? "animate-in fade-in slide-in-from-bottom-2 translate-y-0 opacity-100 duration-300"
               : "translate-y-2 opacity-0",
@@ -172,7 +172,7 @@ export function HorizontalGalleryCategoryPanel({
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
                   Domínio
                 </p>
-                <p className="mt-2 inline-flex rounded-full border border-border bg-black/10 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-[25px] sm:text-sm">
+                <p className="mt-2 inline-flex rounded-full bg-slate-800/5 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-[25px] dark:bg-foreground/5 sm:text-sm">
                   {nivel}
                 </p>
               </section>

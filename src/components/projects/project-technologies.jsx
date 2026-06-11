@@ -46,8 +46,8 @@ export function ProjectTechnologies({ projectId, tecnologias }) {
           <li
             key={t}
             className={cn(
-              "grid h-10 w-10 place-items-center rounded-md border border-border/60 bg-muted/25",
-              "transition-colors hover:border-white/25 hover:bg-white/8",
+              "grid h-10 w-10 place-items-center rounded-md border border-transparent bg-muted/25 dark:border-border/60",
+              "transition-colors hover:border-foreground/25 hover:bg-foreground/8",
             )}
             title={t}
           >

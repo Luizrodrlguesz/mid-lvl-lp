@@ -86,7 +86,7 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.279 0.041 260.031);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -114,6 +114,17 @@
   --aurora-quaternary: #059669;
   --aurora-glow: 0.4;
   --aurora-speed: 1;
+
+  /* Contact form border-glow strokes */
+  --fbg-border-1: rgba(0, 0, 0, 0.1);
+  --fbg-border-2: rgba(0, 0, 0, 0.16);
+  --fbg-border-3: rgba(0, 0, 0, 0.06);
+
+  /* Social/contact card brand-color tint strength */
+  --social-card-strong: 32%;
+  --social-card-soft: 14%;
+  --social-card-border: 48%;
+  --social-card-base: #0b1220;
 }
 
 .dark {
@@ -148,6 +159,17 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Contact form border-glow strokes */
+  --fbg-border-1: rgba(255, 255, 255, 0.14);
+  --fbg-border-2: rgba(255, 255, 255, 0.22);
+  --fbg-border-3: rgba(255, 255, 255, 0.09);
+
+  /* Social/contact card brand-color tint strength */
+  --social-card-strong: 12%;
+  --social-card-soft: 3%;
+  --social-card-border: 20%;
+  --social-card-base: transparent;
 }
 
 @layer base {

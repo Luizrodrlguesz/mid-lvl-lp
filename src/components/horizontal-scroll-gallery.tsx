@@ -16,7 +16,7 @@ const GALLERY_CATEGORIES = [
     category: "linguagens" as const,
     title: "Linguagens",
     icon: Code,
-    iconClassName: "text-white",
+    iconClassName: "text-foreground",
     subtitle:
       "Apresentação das linguagens que uso no dia a dia: o papel de cada uma, onde aplico e como encaixam no meu fluxo de trabalho.",
   },
@@ -116,12 +116,12 @@ export function HorizontalScrollGallery() {
     <div>
       <div className="mx-auto w-full max-w-[95vw] space-y-3 px-6 pb-12 pt-24">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Habilidades
           </p>
           <SplitText
             id="heading-habilidades"
-            className="font-orbitron-italic mt-2 text-3xl font-bold"
+            className="font-orbitron-italic mt-2 text-3xl font-bold text-slate-800 dark:text-foreground"
             text="Galeria horizontal"
             tag="h2"
             delay={50}
@@ -177,7 +177,7 @@ export function HorizontalScrollGallery() {
               iconClassName={iconClassName}
             />
             <nav
-              className="flex items-center justify-center gap-1 rounded-full border border-white/12 bg-black/20 p-1 backdrop-blur-[1px]"
+              className="flex items-center justify-center gap-1 rounded-full bg-slate-800/10 p-1 backdrop-blur-[1px] dark:bg-foreground/10"
               aria-label="Navegação das categorias de habilidades"
             >
               {GALLERY_CATEGORIES.map(({ category: itemCategory, title: itemTitle, icon: ItemIcon, iconClassName: itemIconClassName }, itemIndex) => {
@@ -189,10 +189,10 @@ export function HorizontalScrollGallery() {
                     type="button"
                     onClick={() => navigateToPanel(itemIndex)}
                     className={cn(
-                      "grid h-11 w-11 place-items-center rounded-full border border-white/12 backdrop-blur-md transition",
+                      "grid h-11 w-11 place-items-center rounded-full backdrop-blur-md transition",
                       active
-                        ? "bg-white/12 shadow-[0_0_24px_rgba(255,255,255,0.12)]"
-                        : "bg-black/20 hover:bg-white/8",
+                        ? "bg-slate-800/15 shadow-[0_0_24px_rgba(0,0,0,0.12)] dark:bg-foreground/15 dark:shadow-[0_0_24px_rgba(255,255,255,0.12)]"
+                        : "bg-slate-800/5 hover:bg-slate-800/10 dark:bg-foreground/5 dark:hover:bg-foreground/10",
                     )}
                     aria-label={`Ir para ${itemTitle}`}
                     aria-current={active ? "true" : undefined}

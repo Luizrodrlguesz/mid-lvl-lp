@@ -87,7 +87,7 @@ export function PortfolioHeader({
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
           >
-            <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-black/10 px-1 py-1 shadow-md backdrop-blur-[25px]">
+            <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-white/10 px-1 py-1 shadow-md backdrop-blur-[25px] dark:bg-black/10">
               <div className="flex items-center gap-1">
                 {navItems.map(({ id, label }) => (
                   <Button
@@ -98,8 +98,8 @@ export function PortfolioHeader({
                     className={cn(
                       "rounded-full px-3 text-xs",
                       activeId === id
-                        ? "bg-foreground text-background"
-                        : "text-muted-foreground hover:text-foreground",
+                        ? "bg-slate-800 text-white dark:bg-foreground dark:text-background"
+                        : "text-slate-800/80 hover:text-slate-800 dark:text-muted-foreground dark:hover:text-foreground",
                     )}
                   >
                     <Link href={`#${id}`} onClick={(e) => handleAnchorClick(e, id)}>

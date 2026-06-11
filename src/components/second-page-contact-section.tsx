@@ -165,12 +165,12 @@ function FormBorderGlow() {
         </defs>
 
         {/* static base border */}
-        <path d={pathD} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth={2} />
+        <path d={pathD} fill="none" stroke="var(--fbg-border-1)" strokeWidth={2} />
 
         {/* corner brackets at the open ends */}
-        <path d={`M ${endX - 25},${start} L ${endX},${start} L ${endX},${start + 25}`} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth={2} strokeLinecap="round" />
-        <path d={`M ${start},${endY - 25} L ${start},${endY} L ${start + 25},${endY}`} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth={2} strokeLinecap="round" />
-        <path d={`M ${endX - 25},${endY} L ${endX},${endY} L ${endX},${endY - 25}`} fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth={2} strokeLinecap="round" />
+        <path d={`M ${endX - 25},${start} L ${endX},${start} L ${endX},${start + 25}`} fill="none" stroke="var(--fbg-border-2)" strokeWidth={2} strokeLinecap="round" />
+        <path d={`M ${start},${endY - 25} L ${start},${endY} L ${start + 25},${endY}`} fill="none" stroke="var(--fbg-border-2)" strokeWidth={2} strokeLinecap="round" />
+        <path d={`M ${endX - 25},${endY} L ${endX},${endY} L ${endX},${endY - 25}`} fill="none" stroke="var(--fbg-border-3)" strokeWidth={2} strokeLinecap="round" />
 
         {/* trail arc */}
         <motion.path
@@ -240,18 +240,18 @@ export function SecondPageContactSection({
         id="contato"
         aria-labelledby="heading-contato"
         className={cn(
-          "relative z-10 border-border/60 bg-transparent px-4 py-20 text-zinc-100 sm:px-6 lg:px-8 lg:py-24",
+          "relative z-10 border-border/60 bg-transparent px-4 py-20 text-foreground sm:px-6 lg:px-8 lg:py-24",
           className,
         )}
       >
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-10">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Contato
           </p>
           <SplitText
             id="heading-contato"
-            className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-white"
+            className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-slate-800 dark:text-foreground"
             text="Vamos conversar?"
             tag="h2"
             delay={50}
@@ -285,8 +285,8 @@ export function SecondPageContactSection({
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                   style={{
-                    background: `linear-gradient(160deg, ${color}1f, ${color}08)`,
-                    borderColor: `${color}33`,
+                    background: `linear-gradient(160deg, color-mix(in srgb, ${color} var(--social-card-strong), var(--social-card-base)), color-mix(in srgb, ${color} var(--social-card-soft), var(--social-card-base)))`,
+                    borderColor: `color-mix(in srgb, ${color} var(--social-card-border), transparent)`,
                   }}
                   className={cn(
                     "group relative flex min-w-0 flex-col gap-4 overflow-hidden rounded-2xl border p-4 backdrop-blur-[14px]",
@@ -332,7 +332,7 @@ export function SecondPageContactSection({
                     <span className="block text-[0.95rem] font-bold leading-tight text-white">
                       {label}
                     </span>
-                    <span className="mt-1 block break-words font-mono text-[11px] leading-snug text-zinc-400">
+                    <span className="mt-1 block break-words font-mono text-[11px] leading-snug text-white/70">
                       {detail}
                     </span>
                   </span>
@@ -342,7 +342,7 @@ export function SecondPageContactSection({
           </nav>
 
           {/* ── Formulário no tema + prévia da mensagem ──────────────── */}
-          <div className="relative min-w-0 overflow-hidden rounded-tl-[40px] border border-sky-300/10 bg-[#262626]/5 p-5 shadow-[0_30px_90px_-45px_rgba(56,189,248,0.55)] backdrop-blur-xl sm:rounded-tl-[55px] sm:p-8 lg:p-10">
+          <div className="relative min-w-0 overflow-hidden rounded-tl-[40px] border border-border/60 bg-white/40 p-5 shadow-[0_30px_90px_-45px_rgba(56,189,248,0.55)] backdrop-blur-xl dark:border-sky-300/10 dark:bg-foreground/5 sm:rounded-tl-[55px] sm:p-8 lg:p-10">
             <FormBorderGlow />
             <span
               className="pointer-events-none absolute inset-x-6 top-0 z-40 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent sm:inset-x-8"
@@ -357,14 +357,14 @@ export function SecondPageContactSection({
               aria-hidden
             />
 
-            <div className="relative z-30 mb-4 flex items-start justify-center gap-2.5 py-1 text-sm leading-relaxed text-cyan-50/75 sm:items-center sm:pl-3">
+            <div className="relative z-30 mb-4 flex items-start justify-center gap-2.5 py-1 text-sm leading-relaxed text-cyan-900/75 dark:text-cyan-50/75 sm:items-center sm:pl-3">
               <MessageCircle
-                className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300/80"
+                className="mt-0.5 h-4 w-4 shrink-0 text-cyan-600/80 dark:text-cyan-300/80"
                 aria-hidden
               />
               <p>
                 Canal para{" "}
-                <strong className="font-medium text-cyan-50/95">
+                <strong className="font-medium text-cyan-900 dark:text-cyan-50/95">
                   contatos profissionais
                 </strong>{" "}
                 — oportunidades, projetos e parcerias.
@@ -375,7 +375,7 @@ export function SecondPageContactSection({
               <div className="space-y-2">
                 <label
                   htmlFor="contato-nome"
-                  className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400"
+                  className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
                 >
                   Nome
                 </label>
@@ -387,13 +387,13 @@ export function SecondPageContactSection({
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
                   placeholder="Seu nome completo"
-                  className="w-full border-b border-white/15 bg-transparent px-0 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 transition-colors duration-200 focus-visible:border-blue-400/60 focus-visible:outline-none"
+                  className="w-full border-b border-border bg-transparent px-0 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:border-blue-400/60 focus-visible:outline-none"
                 />
               </div>
               <div className="space-y-2">
                 <label
                   htmlFor="contato-email"
-                  className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400"
+                  className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
                 >
                   E-mail
                 </label>
@@ -405,13 +405,13 @@ export function SecondPageContactSection({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="seu@email.com"
-                  className="w-full border-b border-white/15 bg-transparent px-0 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 transition-colors duration-200 focus-visible:border-blue-400/60 focus-visible:outline-none"
+                  className="w-full border-b border-border bg-transparent px-0 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:border-blue-400/60 focus-visible:outline-none"
                 />
               </div>
               <div className="space-y-2">
                 <label
                   htmlFor="contato-mensagem"
-                  className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400"
+                  className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
                 >
                   Mensagem
                 </label>
@@ -422,14 +422,14 @@ export function SecondPageContactSection({
                   value={mensagem}
                   onChange={(e) => setMensagem(e.target.value)}
                   placeholder="Em poucas linhas: o que você precisa ou como posso ajudar."
-                  className="w-full resize-none rounded-lg bg-white/[0.04] px-3 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 transition-colors duration-200 focus-visible:bg-white/[0.07] focus-visible:outline-none"
+                  className="w-full resize-none rounded-lg bg-foreground/[0.04] px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:bg-foreground/[0.07] focus-visible:outline-none"
                 />
               </div>
             </div>
 
             {/* prévia da mensagem (atualiza em tempo real) */}
             <div className="relative z-30 rounded-xl">
-              <p className="mb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-300/90">
+              <p className="mb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300/90">
                 Prévia da mensagem
               </p>
               <div className="flex min-w-0 gap-2.5">
@@ -443,7 +443,7 @@ export function SecondPageContactSection({
                     aria-hidden
                   />
                 </span>
-                <p className="min-w-0 break-words rounded-[4px_14px_14px_14px] bg-emerald-500/12 px-3 py-2 text-[13px] leading-relaxed text-emerald-50/90">
+                <p className="min-w-0 break-words rounded-[4px_14px_14px_14px] bg-emerald-500/12 px-3 py-2 text-[13px] leading-relaxed text-emerald-900 dark:text-emerald-50/90">
                   {previewText}
                 </p>
               </div>
@@ -467,7 +467,7 @@ export function SecondPageContactSection({
         </div>
       </section>
 
-      <footer className="relative z-10 border-t border-white/10 bg-gradient-to-b from-transparent to-black px-4 pt-6 pb-6 text-sm text-muted-foreground sm:px-6">
+      <footer className="relative z-10  border-transparent bg-gradient-to-b from-transparent to-background px-4 pt-6 pb-6 text-sm text-muted-foreground dark:border-border/60 sm:px-6">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <p>
             © {new Date().getFullYear()} Luiz Henrique. Todos os direitos
