@@ -1,13 +1,13 @@
 const SECTION_LABELS = {
-  "pt-br": {
-    whatIDo: "O que eu faço com isso",
-    realWorld: "Aplicação real",
-    level: "Nível de domínio",
-  },
   "en-us": {
     whatIDo: "What I do with it",
     realWorld: "Real-world use",
     level: "Proficiency",
+  },
+  "pt-br": {
+    whatIDo: "O que eu faço com isso",
+    realWorld: "Aplicação real",
+    level: "Nível de domínio",
   },
   "fr-fr": {
     whatIDo: "Ce que j’en fais",
@@ -19,23 +19,23 @@ const SECTION_LABELS = {
 /**
  * @param {object} props
  * @param {import("@/lib/skill-showcase-items").ShowcaseSkill | null | undefined} props.skill
- * @param {"pt-br" | "en-us" | "fr-fr"} props.locale
+ * @param {"en-us" | "pt-br" | "fr-fr"} props.locale
  * @param {string} [props.className]
  * @param {"comfortable" | "compact"} [props.density]
  */
 export function SkillShowcaseCard({ skill, locale, className = "", density = "comfortable" }) {
-  const labels = SECTION_LABELS[locale] ?? SECTION_LABELS["pt-br"]
+  const labels = SECTION_LABELS[locale] ?? SECTION_LABELS["en-us"]
 
   if (!skill) {
     return (
       <article
-        className={`relative flex min-h-[200px] flex-col justify-center overflow-hidden rounded-[32px] border border-border bg-black/10 p-8 text-center text-sm text-muted-foreground shadow-sm backdrop-blur-[25px] ${className}`}
+        className={`relative flex min-h-[200px] flex-col justify-center overflow-hidden rounded-[32px] border border-border bg-white/10 p-8 text-center text-sm text-muted-foreground shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] dark:bg-black/10 dark:ring-white/5 ${className}`}
       >
         {locale === "pt-br"
           ? "Escolha uma habilidade para ver os detalhes."
-          : locale === "en-us"
-            ? "Pick a skill to see details."
-            : "Choisissez une compétence pour voir les détails."}
+          : locale === "fr-fr"
+            ? "Choisissez une compétence pour voir les détails."
+            : "Pick a skill to see details."}
       </article>
     )
   }
@@ -46,7 +46,7 @@ export function SkillShowcaseCard({ skill, locale, className = "", density = "co
 
   return (
     <article
-      className={`relative flex max-h-full min-h-0 w-full max-w-2xl flex-col overflow-hidden rounded-[32px] border border-border bg-black/10 text-left shadow-sm backdrop-blur-[25px] ${pad} ${className}`}
+      className={`relative flex max-h-full min-h-0 w-full max-w-2xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 text-left shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] dark:bg-black/10 dark:ring-white/5 ${pad} ${className}`}
     >
       <div
         className="pointer-events-none absolute inset-0 bg-no-repeat opacity-[0.07]"

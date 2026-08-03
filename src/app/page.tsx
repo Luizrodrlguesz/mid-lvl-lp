@@ -14,19 +14,18 @@ import { BackgroundCanvas } from "@/components/background-canvas"
 import { Aurora, DEFAULT_COLOR_STOPS } from "@/components/aurora"
 import { HorizontalScrollGallery } from "@/components/horizontal-scroll-gallery"
 import { PortfolioHeader } from "@/components/portfolio-header"
+import { defaultSections } from "@/components/site-header"
 import {
   PortfolioHeroIntro,
   PortfolioHeroOrbital,
 } from "@/components/portfolio-hero-intro"
 import { ProjectsSection } from "@/components/projects/projects-section"
 import { SecondPageAboutSection } from "@/components/second-page-about-section"
-import {
-  LanguageSwitcher,
-  type Locale,
-} from "@/components/language-switcher"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { BackToTop } from "@/components/back-to-top"
 import { SecondPageContactSection } from "@/components/second-page-contact-section"
 import { LoadingScreen } from "@/components/loading-screen"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 const ZOOM_MIN = 1
@@ -40,17 +39,11 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [particleScroll, setParticleScroll] = useState(0)
 
-  const [locale, setLocale] = useState<Locale>("pt-br")
+  const t = useT()
   const [loading, setLoading] = useState(true)
   const headerItems = useMemo(
-    () => [
-      { id: "inicio", label: "Início" },
-      { id: "sobre", label: "Sobre" },
-      { id: "habilidades", label: "Habilidades" },
-      { id: "projetos", label: "Projetos" },
-      { id: "contato", label: "Contato" },
-    ],
-    [],
+    () => defaultSections.map((id) => ({ id, label: t.nav[id] })),
+    [t],
   )
 
   const { scrollYProgress: pageScrollProgress } = useScroll()
@@ -105,7 +98,6 @@ export default function Home() {
         )}
       >
         <PortfolioHeader
-          locale={locale}
           items={headerItems}
           onNavigateToSection={(sectionId) =>
             scrollToSection(sectionId, sectionId === "inicio" ? 0 : 80)
@@ -159,7 +151,7 @@ export default function Home() {
               transition={{ delay: 0.8 }}
             >
               <span className="text-xs uppercase tracking-widest">
-                Continuar
+                {t.hero.scrollHint}
               </span>
               <motion.span
                 animate={{ y: [0, 8, 0] }}
@@ -178,7 +170,7 @@ export default function Home() {
             aria-hidden="true"
           />
 
-          <SecondPageAboutSection locale={locale} />
+          <SecondPageAboutSection />
 
           <section
             id="habilidades"
@@ -200,7 +192,7 @@ export default function Home() {
         <SecondPageContactSection />
 
         <div className="fixed bottom-6 right-6 z-30 flex flex-col items-end gap-3">
-          <LanguageSwitcher value={locale} onChange={setLocale} />
+          <LanguageSwitcher />
           <BackToTop />
         </div>
       </div>

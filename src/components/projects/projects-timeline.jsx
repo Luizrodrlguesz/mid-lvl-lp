@@ -3,6 +3,7 @@
 import { Fragment } from "react"
 import { motion } from "framer-motion"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { useT } from "@/lib/i18n"
 import { TimelineItem } from "./timeline-item"
 
 /**
@@ -15,10 +16,12 @@ export function ProjectsTimeline({
   tipo,
   scrollLineGlow,
 }) {
+  const t = useT()
+
   if (!items.length) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
-        Nenhum projeto nesta categoria.
+        {t.projects.timeline.empty}
       </p>
     )
   }
@@ -26,7 +29,7 @@ export function ProjectsTimeline({
   return (
     <TooltipProvider delayDuration={200}>
       <nav
-        aria-label="Linha do tempo dos projetos: mais recente à esquerda, mais antigo à direita"
+        aria-label={t.projects.timeline.aria}
         className="relative overflow-x-auto bg-transparent pt-1 pb-0"
       >
         <ol className="relative mx-auto flex min-w-[min(100%,640px)] max-w-4xl list-none items-center gap-0 px-3 pt-5 pb-0 md:min-w-0 md:px-4 md:pt-6 md:pb-0">
@@ -58,7 +61,7 @@ export function ProjectsTimeline({
           ))}
         </ol>
         <p className="hidden px-3 pb-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/70 sm:block md:px-4">
-          Evolução · constelação de projetos
+          {t.projects.timeline.caption}
         </p>
       </nav>
     </TooltipProvider>

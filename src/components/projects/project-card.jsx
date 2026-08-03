@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 import {
   descricaoParaModoVisual,
@@ -24,17 +25,6 @@ import { ProjectInsights } from "./project-insights"
 import { ProjectPlatformSwitcher } from "./project-platform-switcher"
 import { ProjectTechnicalDetails } from "./project-technical-details"
 import { ProjectTechnologies } from "./project-technologies"
-
-const LABEL_CATEGORIA = {
-  web: "Web",
-  app: "App",
-  sistema: "Sistema",
-}
-
-const LABEL_PLATAFORMA = {
-  web: "Web",
-  mobile: "Mobile",
-}
 
 const PROJECT_PREVIEW_SWAP_MS = 2000
 
@@ -75,7 +65,9 @@ function plataformaInicialParaProjeto(projeto) {
  * Card do projeto: grelha, stagger narrativo (texto → imagem) e modo visual/técnico.
  */
 function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" }) {
+  const t = useT()
   const isTecnico = viewMode === "tecnico"
+  const labelPlataforma = t.projects.platformLabels
 
   const disponiveis = useMemo(
     () => plataformasDisponiveis(projeto),
@@ -98,9 +90,9 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
     () =>
       disponiveis.map((id) => ({
         id,
-        label: LABEL_PLATAFORMA[id] ?? id,
+        label: labelPlataforma[id] ?? id,
       })),
-    [disponiveis],
+    [disponiveis, labelPlataforma],
   )
 
   const visitUrl = visitUrlParaPlataforma(projeto.plataformas, plataformaAtiva)
@@ -190,7 +182,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                 >
                   <img
                     src={projeto.logoEmpresa}
-                    alt={`Logo ${projeto.nome}`}
+                    alt={t.projects.card.logoAlt(projeto.nome)}
                     className={cn(
                       "h-full w-full",
                       projeto.logoEmpresaSemPadding ? "object-cover" : "object-contain",
@@ -207,7 +199,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                       : "border border-violet-500/30 bg-violet-500/8 text-violet-800 dark:text-violet-100/90",
                   )}
                 >
-                  {LABEL_CATEGORIA[projeto.categoria] ?? projeto.categoria}
+                  {t.projects.categoryLabels[projeto.categoria] ?? projeto.categoria}
                 </span>
               )}
               <div className="min-w-0 flex-1 space-y-2">
@@ -229,7 +221,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               id={platformHeadingId}
               className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
             >
-              Plataforma
+              {t.projects.card.platform}
             </p>
             <ProjectPlatformSwitcher
               value={plataformaAtiva}
@@ -240,14 +232,16 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             {opcoesPlataforma.length < 2 ? (
               <p className="text-xs text-muted-foreground/90">
                 {disponiveis.length === 0
-                  ? "Sem referência web ou mobile neste registo."
-                  : `Conteúdo mostrado para ${LABEL_PLATAFORMA[disponiveis[0]] ?? disponiveis[0]}.`}
+                  ? t.projects.card.noPlatformRef
+                  : t.projects.card.contentShownFor(
+                      labelPlataforma[disponiveis[0]] ?? disponiveis[0],
+                    )}
               </p>
             ) : null}
           </motion.div>
 
           <motion.div variants={narrativeItem}>
-            <h4 className="sr-only">Sobre o projeto</h4>
+            <h4 className="sr-only">{t.projects.card.aboutHeading}</h4>
             <p
               className={cn(
                 "max-w-2xl leading-relaxed",
@@ -277,7 +271,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
           {!isTecnico && projeto.responsabilidade?.length > 0 && (
             <motion.div variants={narrativeItem} className="space-y-3">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                Minha responsabilidade
+                {t.projects.card.responsibility}
               </h4>
               <ul className="space-y-2.5">
                 {projeto.responsabilidade.map((item, i) => (
@@ -316,7 +310,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               />
               {techHidden > 0 ? (
                 <p className="mt-2 text-xs text-muted-foreground">
-                  +{techHidden} tecnologias na vista técnica
+                  {t.projects.card.techHidden(techHidden)}
                 </p>
               ) : null}
             </motion.div>
@@ -363,7 +357,9 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                     <motion.div
                       key={imageAnimKey}
                       role="group"
-                      aria-label={`Pré-visualização ${plataformaAtiva}`}
+                      aria-label={t.projects.card.previewGroup(
+                        labelPlataforma[plataformaAtiva] ?? plataformaAtiva,
+                      )}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -372,7 +368,10 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                     >
                       <img
                         src={displayedImageSrc}
-                        alt={`Pré-visualização (${plataformaAtiva}) — ${projeto.nome}`}
+                        alt={t.projects.card.previewAlt(
+                          labelPlataforma[plataformaAtiva] ?? plataformaAtiva,
+                          projeto.nome,
+                        )}
                         className="h-full w-full object-cover object-top"
                         loading="lazy"
                       />
@@ -387,8 +386,9 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                       className="absolute inset-0 flex items-center justify-center p-4 text-center"
                     >
                       <p className="text-sm leading-relaxed text-muted-foreground">
-                        Sem imagem para esta plataforma. Adicione URL em{" "}
-                        <code className="rounded bg-muted px-1 py-0.5 text-xs">plataformas</code>.
+                        {t.projects.card.noImageBefore}{" "}
+                        <code className="rounded bg-muted px-1 py-0.5 text-xs">plataformas</code>
+                        {t.projects.card.noImageAfter}
                       </p>
                     </motion.div>
                   )}
@@ -421,12 +421,12 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                 {visitUrl ? (
                   <Button asChild variant="default" size="sm" className="shadow-sm">
                     <a href={visitUrl} target="_blank" rel="noopener noreferrer">
-                      Visitar projeto
+                      {t.projects.card.visit}
                     </a>
                   </Button>
                 ) : (
                   <Button type="button" size="sm" disabled variant="secondary">
-                    Visitar projeto
+                    {t.projects.card.visit}
                   </Button>
                 )}
               </CtaWrap>
@@ -434,7 +434,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                 <CtaWrap>
                   <Button asChild variant="outline" size="sm" className="border-border/80 bg-transparent">
                     <a href={projeto.figmaLink} target="_blank" rel="noopener noreferrer">
-                      Ver no Figma
+                      {t.projects.card.viewFigma}
                     </a>
                   </Button>
                 </CtaWrap>
@@ -453,7 +453,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               {projeto.insights?.resultado ? (
                 <div className="space-y-2 rounded-xl border border-transparent bg-slate-800/[0.03] p-4 dark:border-border/60 dark:bg-foreground/[0.03]">
                   <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                    Resultado
+                    {t.projects.card.result}
                   </h4>
                   <p className="text-sm leading-relaxed text-muted-foreground/85">
                     {projeto.insights.resultado}
@@ -466,12 +466,12 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                   {visitUrl ? (
                     <Button asChild variant="default" size="sm" className="shadow-sm">
                       <a href={visitUrl} target="_blank" rel="noopener noreferrer">
-                        Visitar projeto
+                        {t.projects.card.visit}
                       </a>
                     </Button>
                   ) : (
                     <Button type="button" size="sm" disabled variant="secondary">
-                      Visitar projeto
+                      {t.projects.card.visit}
                     </Button>
                   )}
                 </CtaWrap>
@@ -479,7 +479,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
                   <CtaWrap>
                     <Button asChild variant="outline" size="sm" className="border-border/80 bg-transparent">
                       <a href={projeto.figmaLink} target="_blank" rel="noopener noreferrer">
-                        Ver no Figma
+                        {t.projects.card.viewFigma}
                       </a>
                     </Button>
                   </CtaWrap>

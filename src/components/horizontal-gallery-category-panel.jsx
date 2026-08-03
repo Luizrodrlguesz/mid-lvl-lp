@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 /**
@@ -21,6 +22,7 @@ export function HorizontalGalleryCategoryPanel({
   icon: Icon,
   iconClassName,
 }) {
+  const t = useT()
   const cardRef = useRef(null)
   const firstId = skills[0]?.id
   const [selectedId, setSelectedId] = useState(firstId)
@@ -55,7 +57,7 @@ export function HorizontalGalleryCategoryPanel({
       <article
         ref={cardRef}
         className={cn(
-          "flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-transparent bg-foreground/5 p-7 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 md:p-8",
+          "flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 p-7 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 dark:bg-foreground/5 dark:shadow-none dark:ring-white/5 md:p-8",
           hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
         )}
       >
@@ -63,7 +65,7 @@ export function HorizontalGalleryCategoryPanel({
           {Icon ? <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden /> : null}
           {title}
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">Nenhuma habilidade nesta categoria.</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t.skills.panel.empty}</p>
       </article>
     )
   }
@@ -78,7 +80,7 @@ export function HorizontalGalleryCategoryPanel({
     <article
       ref={cardRef}
       className={cn(
-        "flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-transparent bg-foreground/5 p-7 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 md:p-8",
+        "flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 p-7 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 dark:bg-foreground/5 dark:shadow-none dark:ring-white/5 md:p-8",
         hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
       )}
     >
@@ -103,7 +105,7 @@ export function HorizontalGalleryCategoryPanel({
             hasEntered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
           )}
           style={{ transitionDelay: hasEntered ? "140ms" : "0ms" }}
-          aria-label="Habilidades da categoria"
+          aria-label={t.skills.panel.skillsNavAria}
         >
           {skills.map((skill) => {
             const active = skill.id === selectedId
@@ -128,7 +130,7 @@ export function HorizontalGalleryCategoryPanel({
         <div
           key={selected.id}
           className={cn(
-            "relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] bg-slate-800/5 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:bg-foreground/5 sm:min-h-[260px] lg:min-h-[300px]",
+            "relative flex min-h-[220px] flex-col overflow-hidden rounded-[24px] bg-white/10 shadow-none backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:bg-foreground/5 sm:min-h-[260px] lg:min-h-[300px]",
             hasEntered
               ? "animate-in fade-in slide-in-from-bottom-2 translate-y-0 opacity-100 duration-300"
               : "translate-y-2 opacity-0",
@@ -148,14 +150,14 @@ export function HorizontalGalleryCategoryPanel({
             <div className="space-y-3 text-sm leading-relaxed">
               <section>
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                  O que é
+                  {t.skills.panel.whatIs}
                 </p>
                 <p className="mt-1.5 text-foreground/95">{desc}</p>
               </section>
 
               <section>
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                  Como uso
+                  {t.skills.panel.howIUse}
                 </p>
                 <ul className="mt-2 space-y-1.5 text-foreground/95">
                   {usos.map((u) => (
@@ -170,7 +172,7 @@ export function HorizontalGalleryCategoryPanel({
 
               <section className="mt-auto border-t border-border/60 pt-3">
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                  Domínio
+                  {t.skills.panel.level}
                 </p>
                 <p className="mt-2 inline-flex rounded-full bg-slate-800/5 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-[25px] dark:bg-foreground/5 sm:text-sm">
                   {nivel}

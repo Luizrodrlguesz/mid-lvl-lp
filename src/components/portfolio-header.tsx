@@ -5,35 +5,29 @@ import { useEffect, useMemo, useState, type MouseEvent } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ThemeToggle } from "./theme-toggle"
 import {
-  defaultSiteHeaderLabels,
+  defaultSections,
   SiteHeader,
   type SiteHeaderItem,
 } from "./site-header"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import type { Locale } from "./language-switcher"
+import { useT } from "@/lib/i18n"
 
 type PortfolioHeaderProps = {
-  locale: Locale
   items?: SiteHeaderItem[]
   floatingThreshold?: number
   onNavigateToSection?: (sectionId: string) => void
 }
 
 export function PortfolioHeader({
-  locale,
   items,
   floatingThreshold = 140,
   onNavigateToSection,
 }: PortfolioHeaderProps) {
+  const t = useT()
   const navItems = useMemo(
-    () =>
-      items ??
-      (["inicio", "sobre", "habilidades", "projetos", "contato"] as const).map((id) => ({
-        id,
-        label: defaultSiteHeaderLabels[locale][id],
-      })),
-    [items, locale],
+    () => items ?? defaultSections.map((id) => ({ id, label: t.nav[id] })),
+    [items, t],
   )
   const [activeId, setActiveId] = useState(navItems[0]?.id ?? "inicio")
   const [showFloatingNav, setShowFloatingNav] = useState(false)
@@ -72,7 +66,6 @@ export function PortfolioHeader({
   return (
     <>
       <SiteHeader
-        locale={locale}
         items={navItems}
         activeId={activeId}
         onNavigateToSection={onNavigateToSection}

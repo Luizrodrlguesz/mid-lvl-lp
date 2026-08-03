@@ -1,23 +1,25 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-import { projectsTransition, springTransition } from "@/lib/projects-motion"
+import { springTransition } from "@/lib/projects-motion"
 
 /**
  * Alterna entre visão resumida e visão técnica detalhada.
  */
 export function ProjectModeToggle({ value, onChange }) {
+  const t = useT()
   const options = [
-    { id: "visual", label: "Visual" },
-    { id: "tecnico", label: "Técnico" },
+    { id: "visual", label: t.projects.mode.visual },
+    { id: "tecnico", label: t.projects.mode.tecnico },
   ]
 
   return (
     <div
       className="flex w-full rounded-lg border border-border/80 bg-muted/20 p-1 sm:inline-flex sm:w-auto"
       role="group"
-      aria-label="Modo de apresentação do projeto"
+      aria-label={t.projects.mode.aria}
     >
       {options.map((opt) => {
         const on = value === opt.id

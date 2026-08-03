@@ -15,6 +15,7 @@ export function ProjectsHeader({ title, description, eyebrow }) {
           </p>
         ) : null}
         <SplitText
+          key={title}
           id="heading-projetos"
           className={cn(
             "font-orbitron-italic text-3xl font-bold text-slate-800 dark:text-foreground",

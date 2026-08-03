@@ -1,20 +1,21 @@
-import { insightsTemConteudo } from "@/lib/project-helpers"
+"use client"
 
-const CAMPOS = [
-  { key: "desafio", label: "Desafio" },
-  { key: "solucao", label: "Solução" },
-  { key: "resultado", label: "Resultado" },
-]
+import { insightsTemConteudo } from "@/lib/project-helpers"
+import { useT } from "@/lib/i18n"
+
+const CAMPOS = ["desafio", "solucao", "resultado"]
 
 /**
  * Bloco opcional com separação visual suave (painel discreto).
  */
 export function ProjectInsights({ projectId, insights }) {
+  const t = useT()
+
   if (!insightsTemConteudo(insights)) return null
 
-  const linhas = CAMPOS.map(({ key, label }) => ({
+  const linhas = CAMPOS.map((key) => ({
     key,
-    label,
+    label: t.projects.insights[key],
     texto: insights[key]?.trim() ?? "",
   })).filter((l) => l.texto)
 
@@ -28,7 +29,7 @@ export function ProjectInsights({ projectId, insights }) {
       className="space-y-3 rounded-lg border border-transparent bg-muted/15 p-4 ring-1 ring-black/[0.03] dark:border-border/70 dark:ring-white/[0.04]"
     >
       <h4 id={headingId} className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        Diferencial técnico
+        {t.projects.insights.heading}
       </h4>
       <dl className="grid gap-3.5 text-sm text-muted-foreground">
         {linhas.map(({ key, label, texto }) => (

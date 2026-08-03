@@ -1,4 +1,4 @@
-import type { Locale } from "@/components/language-switcher"
+import type { Locale } from "@/lib/i18n/locale-context"
 
 export type ShowcaseSkill = {
   id: string
@@ -176,7 +176,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "fr-fr":
         "Utilisé sur des admins et tableaux de bord où l’équipe s’est standardisée sur Bootstrap.",
     },
-    nivel: { "pt-br": "Intermediário", "en-us": "Intermediate", "fr-fr": "Intermédiaire" },
+    nivel: { "pt-br": "Forte", "en-us": "Strong", "fr-fr": "Solide" },
   },
   {
     id: "mui",
@@ -545,6 +545,46 @@ export const skillShowcase: ShowcaseSkill[] = [
         "Foundation for this landing and projects where performance, SEO, and DX must move together.",
       "fr-fr":
         "Base de cette landing et de projets où performance, SEO et DX vont ensemble.",
+    },
+    nivel: { "pt-br": "Forte", "en-us": "Strong", "fr-fr": "Solide" },
+  },
+  {
+    id: "vite",
+    category: "front",
+    label: { "pt-br": "Vite", "en-us": "Vite", "fr-fr": "Vite" },
+    description: {
+      "pt-br": "Build tool moderna com servidor de desenvolvimento instantâneo e bundling otimizado para produção.",
+      "en-us": "Modern build tool with an instant dev server and optimized production bundling.",
+      "fr-fr": "Outil de build moderne avec serveur de développement instantané et bundling optimisé pour la production.",
+    },
+    image: "/assets/skills/vite.png",
+    usos: {
+      "pt-br": [
+        "Servidor de desenvolvimento com HMR instantâneo",
+        "Bundling otimizado com Rollup",
+        "Configuração enxuta para apps React/TS",
+        "Plugins para SVG, PWA e variáveis de ambiente",
+      ],
+      "en-us": [
+        "Dev server with instant HMR",
+        "Optimized bundling with Rollup",
+        "Lean setup for React/TS apps",
+        "Plugins for SVG, PWA, and env variables",
+      ],
+      "fr-fr": [
+        "Serveur de développement avec HMR instantané",
+        "Bundling optimisé avec Rollup",
+        "Configuration légère pour apps React/TS",
+        "Plugins pour SVG, PWA et variables d’environnement",
+      ],
+    },
+    aplicacao: {
+      "pt-br":
+        "Usado em SPAs e landing pages React quando não preciso de SSR, priorizando setup rápido e build leve.",
+      "en-us":
+        "Used in React SPAs and landing pages when SSR isn't needed, prioritizing fast setup and lightweight builds.",
+      "fr-fr":
+        "Utilisé dans des SPA et landing pages React quand le SSR n’est pas nécessaire, pour un setup rapide et un build léger.",
     },
     nivel: { "pt-br": "Forte", "en-us": "Strong", "fr-fr": "Solide" },
   },

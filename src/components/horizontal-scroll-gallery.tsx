@@ -7,58 +7,34 @@ import { Bolt, Code, Computer, PaintbrushVertical } from "lucide-react"
 import SplitText from "@/components/split-text"
 import { skillShowcase } from "@/lib/content"
 import { HorizontalGalleryCategoryPanel } from "@/components/horizontal-gallery-category-panel"
+import { useLocale, useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
-const GALLERY_LOCALE = "pt-br" as const
-
+/** Categorias na ordem de exibição; títulos e subtítulos vêm do dicionário. */
 const GALLERY_CATEGORIES = [
-  {
-    category: "linguagens" as const,
-    title: "Linguagens",
-    icon: Code,
-    iconClassName: "text-foreground",
-    subtitle:
-      "Apresentação das linguagens que uso no dia a dia: o papel de cada uma, onde aplico e como encaixam no meu fluxo de trabalho.",
-  },
-  {
-    category: "front",
-    title: "Front-end",
-    icon: PaintbrushVertical,
-    iconClassName: "text-blue-400",
-    subtitle:
-      "Ferramentas com que estruturo telas, navegação e experiência do utilizador — da marcação às frameworks que entregam o produto.",
-  },
-  {
-    category: "back",
-    title: "Back-end",
-    icon: Computer,
-    iconClassName: "text-red-400",
-    subtitle:
-      "Camada em que apoio integrações, APIs e validação de dados, alinhando o que a interface promete com o que o servidor garante.",
-  },
-  {
-    category: "outros",
-    title: "Outros",
-    icon: Bolt,
-    iconClassName: "text-green-400",
-    subtitle:
-      "Ecossistema em volta do código: estilização utilitária, design system, versionamento, deploy e tudo o que acelera a entrega com qualidade.",
-  },
-]
+  { category: "linguagens", icon: Code, iconClassName: "text-foreground" },
+  { category: "front", icon: PaintbrushVertical, iconClassName: "text-blue-400" },
+  { category: "back", icon: Computer, iconClassName: "text-red-400" },
+  { category: "outros", icon: Bolt, iconClassName: "text-green-400" },
+] as const
 
 export function HorizontalScrollGallery() {
   const containerRef = useRef<HTMLDivElement>(null)
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null)
   const [activePanel, setActivePanel] = useState(0)
+  const { locale } = useLocale()
+  const t = useT()
   const panelCount = GALLERY_CATEGORIES.length
 
   const panelsData = useMemo(
     () =>
       GALLERY_CATEGORIES.map((row) => ({
         ...row,
+        title: t.skills.categories[row.category].title,
+        subtitle: t.skills.categories[row.category].subtitle,
         skills: skillShowcase.filter((s) => s.category === row.category),
       })),
-    [],
+    [t],
   )
 
   useEffect(() => {
@@ -117,12 +93,13 @@ export function HorizontalScrollGallery() {
       <div className="mx-auto w-full max-w-[95vw] space-y-3 px-6 pb-12 pt-24">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Habilidades
+            {t.skills.eyebrow}
           </p>
           <SplitText
+            key={t.skills.title}
             id="heading-habilidades"
             className="font-orbitron-italic mt-2 text-3xl font-bold text-slate-800 dark:text-foreground"
-            text="Galeria horizontal"
+            text={t.skills.title}
             tag="h2"
             delay={50}
             duration={1.25}
@@ -135,10 +112,7 @@ export function HorizontalScrollGallery() {
             textAlign="left"
           />
         </div>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Scroll vertical percorre os cards horizontalmente. Ao chegar no último, o scroll vertical
-          volta ao normal.
-        </p>
+        <p className="max-w-2xl text-sm text-muted-foreground">{t.skills.intro}</p>
       </div>
 
       <div
@@ -172,15 +146,15 @@ export function HorizontalScrollGallery() {
               title={title}
               subtitle={subtitle}
               skills={skills}
-              locale={GALLERY_LOCALE}
+              locale={locale}
               icon={Icon}
               iconClassName={iconClassName}
             />
             <nav
-              className="flex items-center justify-center gap-1 rounded-full bg-slate-800/10 p-1 backdrop-blur-[1px] dark:bg-foreground/10"
-              aria-label="Navegação das categorias de habilidades"
+              className="flex items-center justify-center gap-1 rounded-full bg-white/10 p-1 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[1px] dark:bg-foreground/10 dark:shadow-none dark:ring-white/5"
+              aria-label={t.skills.categoriesNavAria}
             >
-              {GALLERY_CATEGORIES.map(({ category: itemCategory, title: itemTitle, icon: ItemIcon, iconClassName: itemIconClassName }, itemIndex) => {
+              {panelsData.map(({ category: itemCategory, title: itemTitle, icon: ItemIcon, iconClassName: itemIconClassName }, itemIndex) => {
                 const active = itemIndex === activePanel
 
                 return (
@@ -191,10 +165,10 @@ export function HorizontalScrollGallery() {
                     className={cn(
                       "grid h-11 w-11 place-items-center rounded-full backdrop-blur-md transition",
                       active
-                        ? "bg-slate-800/15 shadow-[0_0_24px_rgba(0,0,0,0.12)] dark:bg-foreground/15 dark:shadow-[0_0_24px_rgba(255,255,255,0.12)]"
-                        : "bg-slate-800/5 hover:bg-slate-800/10 dark:bg-foreground/5 dark:hover:bg-foreground/10",
+                        ? "bg-white/25 shadow-[0_0_24px_rgba(0,0,0,0.12)] dark:bg-foreground/15 dark:shadow-[0_0_24px_rgba(255,255,255,0.12)]"
+                        : "bg-white/10 hover:bg-white/20 dark:bg-foreground/5 dark:hover:bg-foreground/10",
                     )}
-                    aria-label={`Ir para ${itemTitle}`}
+                    aria-label={t.skills.goToCategory(itemTitle)}
                     aria-current={active ? "true" : undefined}
                   >
                     <ItemIcon className={cn("h-5 w-5", itemIconClassName)} aria-hidden />

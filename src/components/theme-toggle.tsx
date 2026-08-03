@@ -3,6 +3,7 @@
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Switch } from "@/components/ui/switch"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 type ThemeToggleProps = {
@@ -10,6 +11,7 @@ type ThemeToggleProps = {
 }
 
 export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
+  const t = useT()
   const { theme, setTheme, resolvedTheme } = useTheme()
   const isDark = (theme ?? resolvedTheme ?? "dark") === "dark"
   const isHero = variant === "hero"
@@ -28,7 +30,7 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
           "h-5 w-5 translate-x-0.5 data-[state=checked]:translate-x-[22px] transition-transform",
           isHero && "bg-slate-800",
         )}
-        aria-label="Alternar tema"
+        aria-label={t.common.toggleTheme}
       />
       <Moon
         className={cn("h-4 w-4 dark:text-muted-foreground", isHero ? "text-white" : "text-slate-800")}

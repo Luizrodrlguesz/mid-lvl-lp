@@ -7,25 +7,8 @@ import Image from "next/image"
 import GradientText from "@/components/gradient-text"
 import SplitText from "@/components/split-text"
 import { Button } from "@/components/ui/button"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-
-const MICRO_INFOS = [
-  {
-    label: "Desenvolvimento Web & Apps",
-    iconSrc: "/assets/laptop-icon.png",
-    iconAlt: "",
-  },
-  {
-    label: "Ativo na área desde 2023",
-    iconSrc: "/assets/clock-icon.png",
-    iconAlt: "",
-  },
-  {
-    label: "Foco em performance e UI moderna",
-    iconSrc: "/assets/pencil-icon.png",
-    iconAlt: "",
-  },
-] as const
 
 type SkillSlot = { angleDeg: number }
 
@@ -107,6 +90,8 @@ export function PortfolioHeroIntro({
   className,
   onNavigateToSection,
 }: PortfolioHeroIntroProps) {
+  const t = useT()
+
   return (
     <div className={cn("flex flex-col justify-center gap-10 text-white", className)}>
       <div className="space-y-5">
@@ -114,7 +99,8 @@ export function PortfolioHeroIntro({
           className="text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:max-w-xl lg:text-[2.8rem] lg:leading-[1.12]"
         >
           <SplitText
-            text="Desenvolvedor"
+            key={`hero-line-1-${t.hero.titleLine1}`}
+            text={t.hero.titleLine1}
             tag="span"
             className="block align-baseline"
             delay={28}
@@ -129,7 +115,8 @@ export function PortfolioHeroIntro({
             textAlign="left"
           />
           <SplitText
-            text="Front-end focado em"
+            key={`hero-line-2-${t.hero.titleLine2}`}
+            text={t.hero.titleLine2}
             tag="span"
             className="align-baseline"
             delay={28}
@@ -153,10 +140,11 @@ export function PortfolioHeroIntro({
             )}
             style={{ animationDelay: `${HERO_GRADIENT_TEXT_DELAY_MS}ms` }}
           >
-            interfaces modernas
+            {t.hero.titleGradient1}
           </GradientText>{" "}
           <SplitText
-            text="e"
+            key={`hero-connector-${t.hero.titleConnector}`}
+            text={t.hero.titleConnector}
             tag="span"
             className="align-baseline"
             delay={28}
@@ -180,7 +168,7 @@ export function PortfolioHeroIntro({
             )}
             style={{ animationDelay: `${HERO_GRADIENT_TEXT_DELAY_MS + 250}ms` }}
           >
-            experiências fluidas
+            {t.hero.titleGradient2}
           </GradientText>
         </h1>
 
@@ -190,8 +178,7 @@ export function PortfolioHeroIntro({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
         >
-          Eu sou o Luiz Rodrigues, desenvolvedor Front-end com experiência em React, Laravel e
-          construção de interfaces modernas para web.
+          {t.hero.paragraph}
         </motion.p>
       </div>
 
@@ -210,7 +197,7 @@ export function PortfolioHeroIntro({
           )}
           onClick={() => onNavigateToSection("projetos")}
         >
-          Ver projetos
+          {t.hero.ctaProjects}
         </Button>
         <Button
           type="button"
@@ -222,7 +209,7 @@ export function PortfolioHeroIntro({
           )}
           onClick={() => onNavigateToSection("contato")}
         >
-          Falar comigo
+          {t.hero.ctaContact}
         </Button>
       </motion.div>
 

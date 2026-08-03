@@ -1,7 +1,29 @@
 /**
- * Helpers puros para projetos (filtros, URLs, plataformas).
+ * Helpers puros para projetos (filtros, URLs, plataformas, tradução).
  * Mantidos fora dos componentes para testes e reutilização futura.
  */
+
+import { DEFAULT_LOCALE } from "@/lib/i18n/locale-context"
+
+/**
+ * Achata um projeto no idioma pedido: campos neutros da raiz + textos de
+ * `i18n[locale]`, com fallback para o idioma principal quando faltar tradução.
+ * `conteudoTecnico` é remontado a partir da stack (neutra) + textos traduzidos.
+ *
+ * @param {import("@/data/projects").Projeto} projeto
+ * @param {'en-us' | 'pt-br' | 'fr-fr'} locale
+ */
+export function localizeProject(projeto, locale) {
+  const { i18n, stackDetalhada = [], ...base } = projeto
+  const traduzido = i18n?.[locale] ?? i18n?.[DEFAULT_LOCALE] ?? {}
+  const { decisoesTecnicas = [], desafiosExtras = [], ...conteudo } = traduzido
+
+  return {
+    ...base,
+    ...conteudo,
+    conteudoTecnico: { stackDetalhada, decisoesTecnicas, desafiosExtras },
+  }
+}
 
 /**
  * @param {{ link?: string, imagem?: string } | undefined} entrada

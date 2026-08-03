@@ -1,21 +1,23 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 import { springTransition } from "@/lib/projects-motion"
 
 /** Alterna o conjunto de projetos visíveis (profissional vs pessoal). */
 export function ProjectsFilter({ value, onChange }) {
+  const t = useT()
   const options = [
-    { id: "profissional", label: "Projetos profissionais" },
-    { id: "pessoal", label: "Projetos pessoais" },
+    { id: "profissional", label: t.projects.filter.profissional },
+    { id: "pessoal", label: t.projects.filter.pessoal },
   ]
 
   return (
     <div
       className="inline-flex rounded-lg mb-3 border border-border/80 bg-muted/20 p-1"
       role="group"
-      aria-label="Filtrar projetos por tipo"
+      aria-label={t.projects.filter.aria}
     >
       {options.map((opt) => {
         const on = value === opt.id

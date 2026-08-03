@@ -104,9 +104,16 @@ const pseudoRandom = (seed: number) => {
 
   if (!mounted) return null
 
-  const lightBase = "#818199"
-  const lightOverlay =
-    "radial-gradient(circle at 20% 20%, rgba(140,170,210,0.20), transparent 45%), radial-gradient(circle at 80% 10%, rgba(150,180,220,0.12), transparent 35%), radial-gradient(circle at 50% 80%, rgba(130,160,200,0.16), transparent 42%)"
+  const lightBase = "#123b52"
+  const lightOverlay = [
+    "radial-gradient(circle at 62% 24%, rgba(220, 38, 38, 0.55), transparent 24%)",
+    "radial-gradient(circle at 18% 78%, rgba(34, 197, 94, 0.55), transparent 34%)",
+    "radial-gradient(circle at 88% 55%, rgba(34, 211, 238, 0.65), transparent 46%)",
+    "radial-gradient(circle at 12% 18%, rgba(56, 189, 248, 0.6), transparent 48%)",
+    "radial-gradient(circle at 70% 85%, rgba(37, 99, 235, 0.6), transparent 46%)",
+    "radial-gradient(circle at 32% 42%, rgba(29, 78, 216, 0.55), transparent 55%)",
+    "linear-gradient(135deg, #1d4ed8 0%, #0891b2 50%, #0e7490 100%)",
+  ].join(", ")
   const darkOverlay =
     "radial-gradient(circle at 20% 20%, rgba(49, 225, 142, 0.1), transparent 45%), radial-gradient(circle at 80% 10%, rgba(241, 84, 215, 0.07), transparent 35%), radial-gradient(circle at 50% 80%, rgba(39, 152, 238, 0.12), transparent 40%)"
 

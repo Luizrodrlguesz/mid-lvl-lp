@@ -1,69 +1,68 @@
- "use client"
+"use client"
 
- import { useState } from "react"
- import { Button } from "@/components/ui/button"
- import { cn } from "@/lib/utils"
- import { Languages } from "lucide-react"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Languages } from "lucide-react"
+import { LOCALES, useLocale, useT, type Locale } from "@/lib/i18n"
 
- export type Locale = "pt-br" | "en-us" | "fr-fr"
+export type { Locale }
 
- interface LanguageSwitcherProps {
-   value: Locale
-   onChange: (locale: Locale) => void
- }
+const labels: Record<Locale, string> = {
+  "en-us": "EN-US",
+  "pt-br": "PT-BR",
+  "fr-fr": "FR-FR",
+}
 
- const labels: Record<Locale, string> = {
-   "pt-br": "PT-BR",
-   "en-us": "EN-US",
-   "fr-fr": "FR-FR",
- }
+/** Bandeiras (emoji) alinhadas ao locale — EUA, Brasil, França. */
+const flags: Record<Locale, string> = {
+  "en-us": "🇺🇸",
+  "pt-br": "🇧🇷",
+  "fr-fr": "🇫🇷",
+}
 
- /** Bandeiras (emoji) alinhadas ao locale — Brasil, EUA, França. */
- const flags: Record<Locale, string> = {
-   "pt-br": "🇧🇷",
-   "en-us": "🇺🇸",
-   "fr-fr": "🇫🇷",
- }
+export function LanguageSwitcher() {
+  const { locale, setLocale } = useLocale()
+  const t = useT()
+  const [open, setOpen] = useState(false)
 
- export function LanguageSwitcher({ value, onChange }: LanguageSwitcherProps) {
-   const [open, setOpen] = useState(false)
-
-   return (
-     <div className="relative">
-       <Button
-         variant="outline"
-         size="sm"
-         className="group flex items-center gap-2 whitespace-nowrap rounded-full border-border/70 bg-black/10 px-3 text-xs font-semibold shadow-sm backdrop-blur-[25px]"
-         onClick={() => setOpen((s) => !s)}
-       >
-         <Languages className="h-4 w-4 text-muted-foreground transition-transform group-hover:scale-105" />
-         {labels[value]}
-       </Button>
-       {open ? (
-         <div className="absolute bottom-11 right-0 z-20 flex min-w-max flex-col gap-1 rounded-2xl border border-border/70 bg-black/10 p-2 shadow-lg backdrop-blur-[25px]">
-           {(Object.keys(labels) as Locale[]).map((locale) => (
-             <button
-               key={locale}
-               onClick={() => {
-                 onChange(locale)
-                 setOpen(false)
-               }}
-               className={cn(
-                 "flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-semibold transition-colors",
-                 value === locale
-                   ? "bg-foreground text-background"
-                   : "text-foreground hover:bg-muted",
-               )}
-             >
-               <span className="text-base leading-none" aria-hidden>
-                 {flags[locale]}
-               </span>
-               {labels[locale]}
-             </button>
-           ))}
-         </div>
-       ) : null}
-     </div>
-   )
- }
-
+  return (
+    <div className="relative">
+      <Button
+        variant="outline"
+        size="sm"
+        className="group flex items-center gap-2 whitespace-nowrap rounded-full border-border/70 bg-white/10 px-3 text-xs font-semibold shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] dark:bg-black/10 dark:ring-white/5"
+        onClick={() => setOpen((s) => !s)}
+        aria-expanded={open}
+        aria-label={t.common.languageMenu}
+      >
+        <Languages className="h-4 w-4 text-muted-foreground transition-transform group-hover:scale-105" />
+        {labels[locale]}
+      </Button>
+      {open ? (
+        <div className="absolute bottom-11 right-0 z-20 flex min-w-max flex-col gap-1 rounded-2xl border border-border/70 bg-white/10 p-2 shadow-lg shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] dark:bg-black/10 dark:ring-white/5">
+          {LOCALES.map((option) => (
+            <button
+              key={option}
+              onClick={() => {
+                setLocale(option)
+                setOpen(false)
+              }}
+              className={cn(
+                "flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-semibold transition-colors",
+                locale === option
+                  ? "bg-foreground text-background"
+                  : "text-foreground hover:bg-muted",
+              )}
+            >
+              <span className="text-base leading-none" aria-hidden>
+                {flags[option]}
+              </span>
+              {labels[option]}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  )
+}

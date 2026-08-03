@@ -3,6 +3,7 @@
  */
 import Image from "next/image"
 
+import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 const TECH_ICON_MAP = {
@@ -26,9 +27,12 @@ const TECH_ICON_MAP = {
   "Tailwind CSS": "/assets/skills/tailwind.png",
   TypeScript: "/assets/skills/ts.png",
   Vercel: "/assets/skills/vercel.png",
+  Vite: "/assets/skills/vite.png",
 }
 
 export function ProjectTechnologies({ projectId, tecnologias }) {
+  const t = useT()
+
   if (!tecnologias?.length) return null
 
   const headingId = `tech-heading-${projectId}`
@@ -36,7 +40,7 @@ export function ProjectTechnologies({ projectId, tecnologias }) {
   return (
     <section aria-labelledby={headingId}>
       <h4 id={headingId} className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        Tecnologias
+        {t.projects.technologies}
       </h4>
       <ul className="flex flex-wrap gap-2">
         {tecnologias.map((t) => {

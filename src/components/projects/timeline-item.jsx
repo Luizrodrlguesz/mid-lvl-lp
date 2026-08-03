@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { springTransition } from "@/lib/projects-motion"
+import { useT } from "@/lib/i18n"
 import { TooltipContent } from "@/components/ui/tooltip"
 
 /**
@@ -17,6 +18,7 @@ export function TimelineItem({
   index,
   onSelect,
 }) {
+  const t = useT()
   const isProf = tipo === "profissional"
 
   return (
@@ -26,7 +28,7 @@ export function TimelineItem({
           type="button"
           id={`timeline-proj-${id}`}
           aria-current={active ? "true" : undefined}
-          aria-label={`Projeto: ${nome}${active ? " (selecionado)" : ""}`}
+          aria-label={t.projects.timeline.itemAria(nome, active)}
           onClick={() => onSelect(id)}
           whileHover={{ scale: active ? 1.12 : 1.08 }}
           whileTap={{ scale: 0.93 }}
@@ -41,7 +43,7 @@ export function TimelineItem({
                     : "bg-linear-to-br from-violet-200/50 to-violet-300/40 text-violet-900 dark:from-violet-400/25 dark:to-violet-950/40 dark:text-violet-50",
                 )
               : cn(
-                  "border-border/70 bg-muted/30 text-muted-foreground backdrop-blur-[2px] hover:border-primary/25 hover:text-foreground/90",
+                  "border-border/70 bg-white/10 text-muted-foreground shadow-black/20 ring-1 ring-black/5 backdrop-blur-[2px] hover:border-primary/25 hover:text-foreground/90 dark:bg-muted/30 dark:ring-white/5",
                   "shadow-sm",
                 ),
           )}
@@ -67,7 +69,9 @@ export function TimelineItem({
       <TooltipContent side="top" sideOffset={8} className="max-w-[220px] text-balance">
         <span className="font-medium">{nome}</span>
         <span className="mt-0.5 block text-[10px] uppercase tracking-wider text-background/70">
-          {index === 0 ? "Mais recente" : `Posição ${index + 1}`}
+          {index === 0
+            ? t.projects.timeline.mostRecent
+            : t.projects.timeline.position(index + 1)}
         </span>
       </TooltipContent>
     </TooltipPrimitive.Root>

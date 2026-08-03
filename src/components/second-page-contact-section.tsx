@@ -9,20 +9,41 @@ import {
   Linkedin,
   Mail,
   MessageCircle,
+  type LucideIcon,
 } from "lucide-react"
 import { motion, useMotionValue, useSpring } from "framer-motion"
 import Image from "next/image"
 import SplitText from "@/components/split-text"
 import { Button } from "@/components/ui/button"
+import { useT, type Dictionary } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 /** Número internacional sem símbolos — wa.me/5541988657834 */
 const WHATSAPP_PHONE = "5541988657834"
 
-const CONTACT_LINKS = [
+type ContactCopyKey = keyof Dictionary["contact"]
+
+/**
+ * Nomes de marca ficam literais; o que é traduzível aponta para uma chave do
+ * dicionário via `labelKey`/`detailKey`.
+ */
+type ContactLink = {
+  id: string
+  label?: string
+  labelKey?: ContactCopyKey
+  detail?: string
+  detailKey?: ContactCopyKey
+  href: string
+  icon: LucideIcon
+  external: boolean
+  color: string
+  featured: boolean
+}
+
+const CONTACT_LINKS: ContactLink[] = [
   {
     id: "email",
-    label: "E-mail",
+    labelKey: "emailLabel",
     detail: "luizh4321@gmail.com",
     href: "mailto:luizh4321@gmail.com",
     icon: Mail,
@@ -73,15 +94,15 @@ const CONTACT_LINKS = [
   },
   {
     id: "curriculum",
-    label: "Currículo",
-    detail: "download PDF",
+    labelKey: "resumeLabel",
+    detailKey: "resumeDetail",
     href: "/LuizRodriguesCV.pdf",
     icon: FileDown,
     external: true,
     color: "#8b7bff",
     featured: true,
   },
-] as const
+]
 
 // ── Animated L-shaped border glow ─────────────────────────────────────────
 const FORM_R = 63 // matches rounded-tl-[63px]
@@ -201,8 +222,13 @@ function FormBorderGlow() {
   )
 }
 
-function buildWhatsAppHref(nome: string, email: string, mensagem: string) {
-  const body = `Olá, sou ${nome.trim()}, e ${mensagem.trim()}. Entre em contato através do e-mail ${email.trim()}.`
+function buildWhatsAppHref(
+  t: Dictionary,
+  nome: string,
+  email: string,
+  mensagem: string,
+) {
+  const body = t.contact.messageTemplate(nome.trim(), mensagem.trim(), email.trim())
   const params = new URLSearchParams({ text: body })
   return `https://wa.me/${WHATSAPP_PHONE}?${params.toString()}`
 }
@@ -212,6 +238,7 @@ export function SecondPageContactSection({
 }: {
   className?: string
 }) {
+  const t = useT()
   const [nome, setNome] = useState("")
   const [email, setEmail] = useState("")
   const [mensagem, setMensagem] = useState("")
@@ -223,16 +250,16 @@ export function SecondPageContactSection({
 
   const handleSendWhatsApp = useCallback(() => {
     if (!canSubmit) return
-    const url = buildWhatsAppHref(nome, email, mensagem)
+    const url = buildWhatsAppHref(t, nome, email, mensagem)
     window.open(url, "_blank", "noopener,noreferrer")
-  }, [canSubmit, nome, email, mensagem])
+  }, [canSubmit, t, nome, email, mensagem])
 
   // Prévia ao vivo — mesmo template do buildWhatsAppHref, com placeholders.
-  const previewText = `Olá, sou ${
-    nome.trim() || "[seu nome]"
-  }, e ${
-    mensagem.trim() || "[sua mensagem]"
-  }. Entre em contato através do e-mail ${email.trim() || "[seu e-mail]"}.`
+  const previewText = t.contact.messageTemplate(
+    nome.trim() || t.contact.templatePlaceholders.name,
+    mensagem.trim() || t.contact.templatePlaceholders.message,
+    email.trim() || t.contact.templatePlaceholders.email,
+  )
 
   return (
     <>
@@ -247,12 +274,13 @@ export function SecondPageContactSection({
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-10">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Contato
+            {t.contact.eyebrow}
           </p>
           <SplitText
+            key={t.contact.title}
             id="heading-contato"
             className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-slate-800 dark:text-foreground"
-            text="Vamos conversar?"
+            text={t.contact.title}
             tag="h2"
             delay={50}
             duration={1.25}
@@ -265,79 +293,87 @@ export function SecondPageContactSection({
             textAlign="left"
           />
           <p className="mt-3 max-w-2xl text-pretty text-muted-foreground">
-            Escolha um canal abaixo ou envie o formulário — ele abre o WhatsApp
-            com a mensagem já montada com os seus dados.
+            {t.contact.intro}
           </p>
         </div>
 
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(24rem,1.1fr)] lg:gap-10 xl:grid-cols-[minmax(0,32rem)_minmax(30rem,1fr)]">
           {/* ── Cards compactos, foco na logo ───────────────────────── */}
           <nav
-            aria-label="Links de contato e redes"
+            aria-label={t.contact.linksAria}
             className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2"
           >
             {CONTACT_LINKS.map(
-              ({ id, label, detail, href, icon: Icon, external, color, featured }) => (
-                <a
-                  key={id}
-                  href={href}
-                  {...(external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  style={{
-                    background: `linear-gradient(160deg, color-mix(in srgb, ${color} var(--social-card-strong), var(--social-card-base)), color-mix(in srgb, ${color} var(--social-card-soft), var(--social-card-base)))`,
-                    borderColor: `color-mix(in srgb, ${color} var(--social-card-border), transparent)`,
-                  }}
-                  className={cn(
-                    "group relative flex min-w-0 flex-col gap-4 overflow-hidden rounded-2xl border p-4 backdrop-blur-[14px]",
-                    "transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]",
-                    featured && "ring-1 ring-inset ring-violet-300/25",
-                  )}
-                >
-                  {/* glow da marca */}
-                  <span
-                    className="pointer-events-none absolute -right-7 -top-7 h-24 w-24 rounded-full"
-                    style={{
-                      background: `radial-gradient(circle, ${color}33, transparent 70%)`,
-                    }}
-                    aria-hidden
-                  />
-                  <ArrowUpRight
-                    className="absolute right-3.5 top-3.5 h-4 w-4 text-white/30 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white/70"
-                    aria-hidden
-                  />
+              ({ id, href, icon: Icon, external, color, featured, ...link }) => {
+                const label = link.labelKey
+                  ? (t.contact[link.labelKey] as string)
+                  : link.label
+                const detail = link.detailKey
+                  ? (t.contact[link.detailKey] as string)
+                  : link.detail
 
-                  {/* logo em destaque */}
-                  <span
-                    className="flex h-16 w-16 items-center justify-center rounded-2xl"
+                return (
+                  <a
+                    key={id}
+                    href={href}
+                    {...(external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     style={{
-                      color,
+                      background: `linear-gradient(160deg, color-mix(in srgb, ${color} var(--social-card-strong), var(--social-card-base)), color-mix(in srgb, ${color} var(--social-card-soft), var(--social-card-base)))`,
+                      borderColor: `color-mix(in srgb, ${color} var(--social-card-border), transparent)`,
                     }}
-                  >
-                    {id === "whatsapp" ? (
-                      <Image
-                        src="/assets/wpp.png"
-                        alt=""
-                        width={50}
-                        height={50}
-                        className="h-10 w-10 object-contain drop-shadow-[0_0_18px_rgba(34,197,94,0.85)]"
-                        aria-hidden
-                      />
-                    ) : (
-                      <Icon className="h-10 w-10 drop-shadow-[0_0_18px_currentColor]" aria-hidden />
+                    className={cn(
+                      "group relative flex min-w-0 flex-col gap-4 overflow-hidden rounded-2xl border p-4 backdrop-blur-[14px]",
+                      "transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]",
+                      featured && "ring-1 ring-inset ring-violet-300/25",
                     )}
-                  </span>
+                  >
+                    {/* glow da marca */}
+                    <span
+                      className="pointer-events-none absolute -right-7 -top-7 h-24 w-24 rounded-full"
+                      style={{
+                        background: `radial-gradient(circle, ${color}33, transparent 70%)`,
+                      }}
+                      aria-hidden
+                    />
+                    <ArrowUpRight
+                      className="absolute right-3.5 top-3.5 h-4 w-4 text-white/30 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white/70"
+                      aria-hidden
+                    />
 
-                  <span className="relative z-10">
-                    <span className="block text-[0.95rem] font-bold leading-tight text-white">
-                      {label}
+                    {/* logo em destaque */}
+                    <span
+                      className="flex h-16 w-16 items-center justify-center rounded-2xl"
+                      style={{
+                        color,
+                      }}
+                    >
+                      {id === "whatsapp" ? (
+                        <Image
+                          src="/assets/wpp.png"
+                          alt=""
+                          width={50}
+                          height={50}
+                          className="h-10 w-10 object-contain drop-shadow-[0_0_18px_rgba(34,197,94,0.85)]"
+                          aria-hidden
+                        />
+                      ) : (
+                        <Icon className="h-10 w-10 drop-shadow-[0_0_18px_currentColor]" aria-hidden />
+                      )}
                     </span>
-                    <span className="mt-1 block break-words font-mono text-[11px] leading-snug text-white/70">
-                      {detail}
+
+                    <span className="relative z-10">
+                      <span className="block text-[0.95rem] font-bold leading-tight text-white">
+                        {label}
+                      </span>
+                      <span className="mt-1 block break-words font-mono text-[11px] leading-snug text-white/70">
+                        {detail}
+                      </span>
                     </span>
-                  </span>
-                </a>
-              ),
+                  </a>
+                )
+              },
             )}
           </nav>
 
@@ -363,11 +399,11 @@ export function SecondPageContactSection({
                 aria-hidden
               />
               <p>
-                Canal para{" "}
+                {t.contact.formNoteBefore}{" "}
                 <strong className="font-medium text-cyan-900 dark:text-cyan-50/95">
-                  contatos profissionais
+                  {t.contact.formNoteStrong}
                 </strong>{" "}
-                — oportunidades, projetos e parcerias.
+                {t.contact.formNoteAfter}
               </p>
             </div>
 
@@ -377,7 +413,7 @@ export function SecondPageContactSection({
                   htmlFor="contato-nome"
                   className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
                 >
-                  Nome
+                  {t.contact.nameLabel}
                 </label>
                 <input
                   id="contato-nome"
@@ -386,7 +422,7 @@ export function SecondPageContactSection({
                   autoComplete="name"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
-                  placeholder="Seu nome completo"
+                  placeholder={t.contact.namePlaceholder}
                   className="w-full border-b border-border bg-transparent px-0 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:border-blue-400/60 focus-visible:outline-none"
                 />
               </div>
@@ -395,7 +431,7 @@ export function SecondPageContactSection({
                   htmlFor="contato-email"
                   className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
                 >
-                  E-mail
+                  {t.contact.emailLabel}
                 </label>
                 <input
                   id="contato-email"
@@ -404,7 +440,7 @@ export function SecondPageContactSection({
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
+                  placeholder={t.contact.emailPlaceholder}
                   className="w-full border-b border-border bg-transparent px-0 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:border-blue-400/60 focus-visible:outline-none"
                 />
               </div>
@@ -413,7 +449,7 @@ export function SecondPageContactSection({
                   htmlFor="contato-mensagem"
                   className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
                 >
-                  Mensagem
+                  {t.contact.messageLabel}
                 </label>
                 <textarea
                   id="contato-mensagem"
@@ -421,7 +457,7 @@ export function SecondPageContactSection({
                   rows={3}
                   value={mensagem}
                   onChange={(e) => setMensagem(e.target.value)}
-                  placeholder="Em poucas linhas: o que você precisa ou como posso ajudar."
+                  placeholder={t.contact.messagePlaceholder}
                   className="w-full resize-none rounded-lg bg-foreground/[0.04] px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:bg-foreground/[0.07] focus-visible:outline-none"
                 />
               </div>
@@ -430,7 +466,7 @@ export function SecondPageContactSection({
             {/* prévia da mensagem (atualiza em tempo real) */}
             <div className="relative z-30 rounded-xl">
               <p className="mb-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300/90">
-                Prévia da mensagem
+                {t.contact.previewHeading}
               </p>
               <div className="flex min-w-0 gap-2.5">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/15">
@@ -459,7 +495,7 @@ export function SecondPageContactSection({
               )}
               onClick={handleSendWhatsApp}
             >
-              Enviar mensagem no WhatsApp
+              {t.contact.submit}
             </Button>
           </div>
         </div>
@@ -469,11 +505,8 @@ export function SecondPageContactSection({
 
       <footer className="relative z-10  border-transparent bg-gradient-to-b from-transparent to-background px-4 pt-6 pb-6 text-sm text-muted-foreground dark:border-border/60 sm:px-6">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} Luiz Henrique. Todos os direitos
-            reservados.
-          </p>
-          <p className="text-xs">Feito com Next.js, Tailwind, shadcn/ui e Three.js.</p>
+          <p>{t.contact.footerRights(new Date().getFullYear())}</p>
+          <p className="text-xs">{t.contact.footerBuilt}</p>
         </div>
       </footer>
     </>

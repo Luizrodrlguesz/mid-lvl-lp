@@ -1,4 +1,4 @@
-import type { Locale } from "@/components/language-switcher"
+import type { Locale } from "@/lib/i18n/locale-context"
 import type { ShowcaseSkill } from "./skill-showcase-items"
 import { skillShowcase } from "./skill-showcase-items"
 
@@ -23,7 +23,15 @@ export type Project = {
    level: number
  }
 
+export type QualificationId =
+  | "front"
+  | "back"
+  | "mobile"
+  | "vcs"
+  | "communication"
+
 export type Qualification = {
+  id: QualificationId
   title: Record<Locale, string>
   description: Record<Locale, string>
 }
@@ -79,12 +87,13 @@ export type Experience = {
    { name: "Node.js / APIs", level: 50 },
    { name: "UI / UX Systems", level: 75 },
   { name: "Flutter / Dart", level: 35 },
-   { name: "Testes e Qualidade", level: 70 },
-   { name: "DevOps básico", level: 75 },
+   { name: "Testing & Quality", level: 70 },
+   { name: "Basic DevOps", level: 75 },
  ]
 
 export const qualifications: Qualification[] = [
   {
+    id: "front",
     title: { "pt-br": "Front-end", "en-us": "Front-end", "fr-fr": "Front-end" },
     description: {
       "pt-br":
@@ -96,6 +105,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
+    id: "back",
     title: { "pt-br": "Back-end", "en-us": "Back-end", "fr-fr": "Back-end" },
     description: {
       "pt-br":
@@ -107,6 +117,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
+    id: "mobile",
     title: { "pt-br": "Mobile", "en-us": "Mobile", "fr-fr": "Mobile" },
     description: {
       "pt-br":
@@ -118,6 +129,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
+    id: "vcs",
     title: {
       "pt-br": "Controle de versão e colaboração",
       "en-us": "Version control & collaboration",
@@ -133,6 +145,7 @@ export const qualifications: Qualification[] = [
     },
   },
   {
+    id: "communication",
     title: {
       "pt-br": "Comunicação global",
       "en-us": "Global communication",

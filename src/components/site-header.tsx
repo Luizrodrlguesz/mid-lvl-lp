@@ -6,9 +6,9 @@ import { useMemo, type MouseEvent } from "react"
 import { ThemeToggle } from "./theme-toggle"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import type { Locale } from "./language-switcher"
+import { useT } from "@/lib/i18n"
 
-const defaultSections = [
+export const defaultSections = [
   "inicio",
   "sobre",
   "habilidades",
@@ -16,59 +16,27 @@ const defaultSections = [
   "contato",
 ] as const
 
-export const defaultSiteHeaderLabels: Record<
-  Locale,
-  Record<(typeof defaultSections)[number], string>
-> = {
-  "pt-br": {
-    inicio: "Início",
-    sobre: "Sobre",
-    habilidades: "Habilidades",
-    projetos: "Projetos",
-    contato: "Contato",
-  },
-  "en-us": {
-    inicio: "Home",
-    sobre: "About",
-    habilidades: "Skills",
-    projetos: "Projects",
-    contato: "Contact",
-  },
-  "fr-fr": {
-    inicio: "Accueil",
-    sobre: "À propos",
-    habilidades: "Compétences",
-    projetos: "Projets",
-    contato: "Contact",
-  },
-}
-
 export type SiteHeaderItem = {
   id: string
   label: string
 }
 
 type SiteHeaderProps = {
-  locale: Locale
   items?: SiteHeaderItem[]
   activeId?: string
   onNavigateToSection?: (sectionId: string) => void
 }
 
 export function SiteHeader({
-  locale,
   items,
   activeId,
   onNavigateToSection,
 }: SiteHeaderProps) {
+  const t = useT()
   const navItems = useMemo(
     () =>
-      items ??
-      defaultSections.map((id) => ({
-        id,
-        label: defaultSiteHeaderLabels[locale][id],
-      })),
-    [items, locale],
+      items ?? defaultSections.map((id) => ({ id, label: t.nav[id] })),
+    [items, t],
   )
   const currentActiveId = activeId ?? navItems[0]?.id ?? "inicio"
 

@@ -1,21 +1,24 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useT } from "@/lib/i18n"
 
 /**
  * Tabs com indicador animado (layoutId) e hover suave.
  */
 export function ProjectsTabs({ items, activeId, onSelect }) {
+  const t = useT()
+
   if (!items.length) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
-        Nenhum projeto nesta categoria.
+        {t.projects.tabs.empty}
       </p>
     )
   }
 
   return (
-    <nav aria-label="Projetos nesta categoria" className="w-full overflow-x-auto">
+    <nav aria-label={t.projects.tabs.aria} className="w-full overflow-x-auto">
       <ul
         role="tablist"
         className="flex min-w-0 flex-wrap gap-1 border-b border-border/80 pb-0.5"

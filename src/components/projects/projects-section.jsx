@@ -3,7 +3,8 @@
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { MOCK_PROJECTS } from "@/data/projects"
-import { projetosPorTipo } from "@/lib/project-helpers"
+import { localizeProject, projetosPorTipo } from "@/lib/project-helpers"
+import { useLocale, useT } from "@/lib/i18n"
 import { PROJECTS_EASE } from "@/lib/projects-motion"
 import { cn } from "@/lib/utils"
 import { ProjectsFilter } from "./projects-filter"
@@ -18,6 +19,8 @@ import { ProjectsTimeline } from "./projects-timeline"
  * @param {{ className?: string }} [props]
  */
 export function ProjectsSection({ className } = {}) {
+  const { locale } = useLocale()
+  const t = useT()
   const scrollRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: scrollRef,
@@ -33,7 +36,15 @@ export function ProjectsSection({ className } = {}) {
   const [activeId, setActiveId] = useState(null)
   const [viewMode, setViewMode] = useState("visual")
 
-  const filtrados = useMemo(() => projetosPorTipo(MOCK_PROJECTS, tipo), [tipo])
+  const traduzidos = useMemo(
+    () => MOCK_PROJECTS.map((p) => localizeProject(p, locale)),
+    [locale],
+  )
+
+  const filtrados = useMemo(
+    () => projetosPorTipo(traduzidos, tipo),
+    [traduzidos, tipo],
+  )
 
   useEffect(() => {
     if (!filtrados.length) {
@@ -67,9 +78,9 @@ export function ProjectsSection({ className } = {}) {
       transition={{ duration: 0.42, ease: PROJECTS_EASE }}
     >
       <ProjectsHeader
-        eyebrow="Projetos"
-        title="Minha jornada"
-        description="Percorra a constelação da linha do tempo — do mais recente ao mais antigo. Use o modo Visual para uma leitura rápida ou Técnico para aprofundar decisões e stack."
+        eyebrow={t.projects.eyebrow}
+        title={t.projects.title}
+        description={t.projects.description}
       />
 
       <div className="flex flex-col gap-0">

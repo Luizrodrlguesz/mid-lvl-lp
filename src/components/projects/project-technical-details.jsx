@@ -1,7 +1,13 @@
+"use client"
+
+import { useT } from "@/lib/i18n"
+
 /**
  * Bloco só no modo técnico: stack expandida, decisões e desafios extra.
  */
 export function ProjectTechnicalDetails({ projectId, conteudo }) {
+  const t = useT()
+
   if (!conteudo) return null
 
   const {
@@ -27,7 +33,7 @@ export function ProjectTechnicalDetails({ projectId, conteudo }) {
             id={`${baseId}-stack`}
             className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/90"
           >
-            Stack detalhada
+            {t.projects.technical.stack}
           </h4>
           <ul className="flex flex-wrap gap-1.5">
             {stackDetalhada.map((item) => (
@@ -48,7 +54,7 @@ export function ProjectTechnicalDetails({ projectId, conteudo }) {
             id={`${baseId}-dec`}
             className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/90"
           >
-            Decisões técnicas
+            {t.projects.technical.decisions}
           </h4>
           <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
             {decisoesTecnicas.map((t, i) => (
@@ -66,7 +72,7 @@ export function ProjectTechnicalDetails({ projectId, conteudo }) {
             id={`${baseId}-des`}
             className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/90"
           >
-            Desafios adicionais
+            {t.projects.technical.challenges}
           </h4>
           <ul className="list-inside list-disc space-y-1.5 text-sm text-muted-foreground marker:text-primary/50">
             {desafiosExtras.map((t, i) => (
