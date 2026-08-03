@@ -222,6 +222,26 @@ function FormBorderGlow() {
   )
 }
 
+/**
+ * O glow da borda roda num `requestAnimationFrame` contínuo — em telas pequenas
+ * o custo não compensa, por isso nem é montado abaixo deste breakpoint.
+ */
+const FORM_GLOW_MIN_WIDTH = "(min-width: 768px)"
+
+function useFormGlowEnabled() {
+  const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia(FORM_GLOW_MIN_WIDTH)
+    const sync = () => setEnabled(mql.matches)
+    sync()
+    mql.addEventListener("change", sync)
+    return () => mql.removeEventListener("change", sync)
+  }, [])
+
+  return enabled
+}
+
 function buildWhatsAppHref(
   t: Dictionary,
   nome: string,
@@ -239,6 +259,7 @@ export function SecondPageContactSection({
   className?: string
 }) {
   const t = useT()
+  const glowEnabled = useFormGlowEnabled()
   const [nome, setNome] = useState("")
   const [email, setEmail] = useState("")
   const [mensagem, setMensagem] = useState("")
@@ -379,7 +400,7 @@ export function SecondPageContactSection({
 
           {/* ── Formulário no tema + prévia da mensagem ──────────────── */}
           <div className="relative min-w-0 overflow-hidden rounded-tl-[40px] border border-border/60 bg-white/40 p-5 shadow-[0_30px_90px_-45px_rgba(56,189,248,0.55)] backdrop-blur-xl dark:border-sky-300/10 dark:bg-foreground/5 sm:rounded-tl-[55px] sm:p-8 lg:p-10">
-            <FormBorderGlow />
+            {glowEnabled ? <FormBorderGlow /> : null}
             <span
               className="pointer-events-none absolute inset-x-6 top-0 z-40 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent sm:inset-x-8"
               aria-hidden
