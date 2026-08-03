@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
@@ -8,16 +9,9 @@ import { useT } from "@/lib/i18n"
 import { TooltipContent } from "@/components/ui/tooltip"
 
 /**
- * Nó da constelação: ponto clicável com brilho no ativo e preview no hover.
+ * Nó da constelação: ponto clicável com brilho no ativo (foguete) e preview no hover.
  */
-export function TimelineItem({
-  id,
-  nome,
-  active,
-  tipo,
-  index,
-  onSelect,
-}) {
+export function TimelineItem({ id, nome, active, tipo, index, onSelect }) {
   const t = useT()
   const isProf = tipo === "profissional"
 
@@ -48,16 +42,31 @@ export function TimelineItem({
                 ),
           )}
         >
-          {/* “estrela” minimalista — 4 pontos */}
-          <span
-            className={cn(
-              "block size-2 rotate-45 rounded-[1px] md:size-2.5",
-              active
-                ? "bg-primary shadow-[0_0_8px_rgba(129,140,248,0.9)]"
-                : "bg-muted-foreground/50",
-            )}
-            aria-hidden
-          />
+          {active ? (
+            <motion.span
+              key="rocket"
+              initial={{ scale: 0.6, opacity: 0, y: 3 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              transition={springTransition}
+              className="flex items-center justify-center"
+            >
+              <Image
+                src="/assets/rocket.png"
+                alt=""
+                width={28}
+                height={28}
+                priority
+                className="size-6 [image-rendering:pixelated] drop-shadow-[0_0_6px_rgba(129,140,248,0.85)] md:size-7"
+                aria-hidden
+              />
+            </motion.span>
+          ) : (
+            /* “estrela” minimalista — 4 pontos, para os nós inativos */
+            <span
+              className="block size-2 rotate-45 rounded-[1px] bg-muted-foreground/50 md:size-2.5"
+              aria-hidden
+            />
+          )}
           {active ? (
             <span
               className="pointer-events-none absolute inset-0 rounded-full bg-primary/10 blur-md"

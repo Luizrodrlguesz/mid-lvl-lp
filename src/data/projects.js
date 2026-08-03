@@ -376,7 +376,10 @@ export const MOCK_PROJECTS = [
     logoEmpresa: "/assets/projects/levita-icon.png",
     logoEmpresaBackground: "#2a4937",
     plataformas: {
-      web: { imagem: "/assets/projects/levita-1.png", link: "" },
+      web: {
+        imagem: "/assets/projects/levita-1.png",
+        link: "https://levitamassagem.pt/",
+      },
       mobile: { imagem: "", link: "" },
     },
     previewImages: ["/assets/projects/levita-1.png"],

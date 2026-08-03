@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { CardBorderGlow } from "@/components/card-border-glow"
 import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
@@ -57,10 +58,11 @@ export function HorizontalGalleryCategoryPanel({
       <article
         ref={cardRef}
         className={cn(
-          "flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 p-7 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 dark:bg-foreground/5 dark:shadow-none dark:ring-white/5 md:p-8",
+          "relative flex w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 p-7 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 dark:bg-foreground/5 dark:shadow-none dark:ring-white/5 md:p-8",
           hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
         )}
       >
+        <CardBorderGlow radius={32} active={hasEntered} />
         <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
           {Icon ? <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden /> : null}
           {title}
@@ -80,10 +82,11 @@ export function HorizontalGalleryCategoryPanel({
     <article
       ref={cardRef}
       className={cn(
-        "flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 p-7 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 dark:bg-foreground/5 dark:shadow-none dark:ring-white/5 md:p-8",
+        "relative flex min-h-[min(52vh,520px)] w-full max-w-5xl flex-col overflow-hidden rounded-[32px] border border-border bg-white/10 p-7 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[25px] transition-[opacity,transform] duration-500 ease-out dark:border-border/60 dark:bg-foreground/5 dark:shadow-none dark:ring-white/5 md:p-8",
         hasEntered ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
       )}
     >
+      <CardBorderGlow radius={32} active={hasEntered} />
       <header
         className={cn(
           "shrink-0 border-b border-border/60 pb-4 transition-[opacity,transform] duration-500 ease-out md:pb-5",
