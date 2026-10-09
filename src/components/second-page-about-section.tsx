@@ -17,6 +17,7 @@ import {
   Smartphone,
   Sparkles,
 } from "lucide-react"
+import { AboutOrbital } from "@/components/about-orbital"
 import SplitText from "@/components/split-text"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { pick, useLocale, useT } from "@/lib/i18n"
@@ -109,57 +110,69 @@ export function SecondPageAboutSection() {
       />
 
       <div className="relative mx-auto w-full max-w-[92vw] space-y-14">
-        <div className="space-y-5">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
+          <div className="space-y-5">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                {t.about.eyebrow}
+              </p>
+              <SplitText
+                key={t.about.title}
+                id="heading-sobre"
+                className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-slate-800 dark:text-foreground"
+                text={t.about.title}
+                tag="h2"
+                delay={50}
+                duration={1.25}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="left"
+              />
+            </motion.div>
+
+            <motion.p
+              className="max-w-3xl text-pretty text-lg leading-relaxed text-muted-foreground"
+              style={{ opacity: introOpacity, y: introY }}
+            >
+              {pick(aboutCopy, locale)}
+            </motion.p>
+
+            <motion.ul
+              className="flex flex-wrap gap-3"
+              variants={listParent}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+            >
+              {highlights.map(({ label, icon: Icon }) => (
+                <motion.li key={label} variants={listItem}>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-foreground/5 px-4 py-2 text-sm text-foreground/80 backdrop-blur-sm">
+                    <Icon className="h-4 w-4 shrink-0 text-blue-600" aria-hidden />
+                    {label}
+                  </span>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            className="hidden md:block"
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              {t.about.eyebrow}
-            </p>
-            <SplitText
-              key={t.about.title}
-              id="heading-sobre"
-              className="font-orbitron-italic mt-2 text-3xl font-bold tracking-tight text-slate-800 dark:text-foreground"
-              text={t.about.title}
-              tag="h2"
-              delay={50}
-              duration={1.25}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.1}
-              rootMargin="-100px"
-              textAlign="left"
-            />
+            <AboutOrbital className="max-w-[480px] lg:mr-0" />
           </motion.div>
-
-          <motion.p
-            className="max-w-3xl text-pretty text-lg leading-relaxed text-muted-foreground"
-            style={{ opacity: introOpacity, y: introY }}
-          >
-            {pick(aboutCopy, locale)}
-          </motion.p>
-
-          <motion.ul
-            className="flex flex-wrap gap-3"
-            variants={listParent}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-40px" }}
-          >
-            {highlights.map(({ label, icon: Icon }) => (
-              <motion.li key={label} variants={listItem}>
-                <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-foreground/5 px-4 py-2 text-sm text-foreground/80 backdrop-blur-sm">
-                  <Icon className="h-4 w-4 shrink-0 text-blue-600" aria-hidden />
-                  {label}
-                </span>
-              </motion.li>
-            ))}
-          </motion.ul>
         </div>
 
         <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">

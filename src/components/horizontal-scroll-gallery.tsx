@@ -1,14 +1,24 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useMotionValue } from "framer-motion"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Bolt, Code, Computer, PaintbrushVertical } from "lucide-react"
+import { CometTrail } from "@/components/comet-trail"
 import SplitText from "@/components/split-text"
 import { skillShowcase } from "@/lib/content"
 import { HorizontalGalleryCategoryPanel } from "@/components/horizontal-gallery-category-panel"
 import { useLocale, useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
+
+/**
+ * Continuação do traço do hero (unidades 0–1000 da tela fixada): entra pela esquerda no
+ * topo, atravessa enquanto os painéis passam, desce pela direita e sai da tela pelo canto
+ * inferior direito no fim do scroll lateral. Fica longe do topo direito (menu flutuante).
+ */
+const SKILLS_COMET_PATH =
+  "M -30 150 C 120 90 240 210 380 150 C 520 90 620 70 740 130 C 830 175 880 230 895 340 C 910 480 880 640 900 760 C 915 860 960 925 1080 945"
 
 /** Categorias na ordem de exibição; títulos e subtítulos vêm do dicionário. */
 const GALLERY_CATEGORIES = [
@@ -25,6 +35,7 @@ export function HorizontalScrollGallery() {
   const { locale } = useLocale()
   const t = useT()
   const panelCount = GALLERY_CATEGORIES.length
+  const cometProgress = useMotionValue(0)
 
   const panelsData = useMemo(
     () =>
@@ -46,6 +57,8 @@ export function HorizontalScrollGallery() {
       const tween = gsap.to(panels, {
         xPercent: -100 * (panels.length - 1),
         ease: "none",
+        // Progresso já suavizado pelo scrub, para o traço andar junto com os painéis.
+        onUpdate: () => cometProgress.set(tween.progress()),
         scrollTrigger: {
           trigger: containerRef.current,
           pin: true,
@@ -64,7 +77,7 @@ export function HorizontalScrollGallery() {
       scrollTriggerRef.current = null
       ctx.revert()
     }
-  }, [])
+  }, [cometProgress])
 
   const navigateToPanel = useCallback(
     (index: number) => {
@@ -123,8 +136,15 @@ export function HorizontalScrollGallery() {
           overflow: "hidden",
           height: "100vh",
           width: `${panelCount * 100}vw`,
+          position: "relative",
         }}
       >
+        {/* O container não se move (só os painéis), então esta camada fica do tamanho da tela. */}
+        <CometTrail
+          d={SKILLS_COMET_PATH}
+          progress={cometProgress}
+          className="absolute left-0 top-0 z-10 hidden h-screen w-screen lg:block"
+        />
         {panelsData.map(({ category, title, subtitle, skills, icon: Icon, iconClassName }) => (
           <div
             key={category}

@@ -21,23 +21,36 @@ const enUS = {
     backToTop: "Back to top",
     toggleTheme: "Toggle theme",
     languageMenu: "Choose language",
+    sectionsNav: "Page sections",
   },
 
   hero: {
-    titleLine1: "Front-end",
-    titleLine2: "Developer focused on",
-    titleGradient1: "modern interfaces",
-    titleConnector: "and",
-    titleGradient2: "fluid experiences",
+    greeting: "Hey, I'm Luiz,",
+    titleBefore: "",
+    titleAccent: "Front-end",
+    titleAfter: "Developer",
     paragraph:
-      "I'm Luiz Rodrigues, a front-end developer with experience in React, Laravel and building modern web interfaces.",
+      "Focused on modern interfaces and fluid experiences — React, TypeScript and Laravel, from layout to shipped product.",
     ctaProjects: "View projects",
     ctaContact: "Get in touch",
-    scrollHint: "Continue",
+    stats: {
+      years: "Years of experience",
+      projects: "Portfolio projects",
+      companies: "Companies",
+    },
+    stackTitle: "Tech stack",
+    scrollCue: "Scroll to discover more",
+    features: [
+      { title: "Front-end", description: "Responsive, interactive UIs with a focus on UX and performance." },
+      { title: "Back-end", description: "Node.js and Laravel: integrations, forms and security." },
+      { title: "Mobile", description: "Exploring Flutter and Dart for mobile experiences." },
+      { title: "Collaboration", description: "Git and agile workflows for effective teamwork." },
+    ],
   },
 
   about: {
     eyebrow: "About",
+    slogan: "Interfaces that feel fast — because they are.",
     title: "Who am I?",
     highlights: [
       "Software Engineering — Unicesumar",
@@ -50,9 +63,9 @@ const enUS = {
 
   skills: {
     eyebrow: "Skills",
-    title: "Horizontal gallery",
+    title: "Tech stack",
     intro:
-      "Vertical scrolling moves the cards horizontally. Once you reach the last one, vertical scrolling goes back to normal.",
+      "Scroll to stack each area: what I use, how I apply it day to day and how comfortable I am with each tool.",
     categories: {
       linguagens: {
         title: "Languages",
@@ -90,7 +103,7 @@ const enUS = {
     eyebrow: "Projects",
     title: "My journey",
     description:
-      "Walk through the timeline constellation — from the most recent to the oldest. Use Visual mode for a quick read or Technical to dig into decisions and stack.",
+      "Drag or scroll through the carousel and click the centered project to open its details. Use Visual mode for a quick read or Technical to dig into decisions and stack.",
     filter: {
       aria: "Filter projects by type",
       profissional: "Professional projects",
@@ -175,6 +188,8 @@ const enUS = {
     messagePlaceholder: "In a few lines: what you need or how I can help.",
     previewHeading: "Message preview",
     submit: "Send message on WhatsApp",
+    openForm: "Write a message",
+    closeForm: "Close message form",
     messageTemplate: (name: string, message: string, email: string) =>
       `Hi, I'm ${name}, and ${message}. You can reach me at ${email}.`,
     templatePlaceholders: {
@@ -203,23 +218,36 @@ const ptBR: Dictionary = {
     backToTop: "Voltar ao topo",
     toggleTheme: "Alternar tema",
     languageMenu: "Escolher idioma",
+    sectionsNav: "Seções da página",
   },
 
   hero: {
-    titleLine1: "Desenvolvedor",
-    titleLine2: "Front-end focado em",
-    titleGradient1: "interfaces modernas",
-    titleConnector: "e",
-    titleGradient2: "experiências fluidas",
+    greeting: "Olá, eu sou o Luiz,",
+    titleBefore: "Desenvolvedor",
+    titleAccent: "Front-end",
+    titleAfter: "",
     paragraph:
-      "Eu sou o Luiz Rodrigues, desenvolvedor Front-end com experiência em React, Laravel e construção de interfaces modernas para web.",
+      "Focado em interfaces modernas e experiências fluidas — React, TypeScript e Laravel, do layout ao produto no ar.",
     ctaProjects: "Ver projetos",
     ctaContact: "Falar comigo",
-    scrollHint: "Continuar",
+    stats: {
+      years: "Anos de experiência",
+      projects: "Projetos no portfólio",
+      companies: "Empresas",
+    },
+    stackTitle: "Stack",
+    scrollCue: "Role para descobrir mais",
+    features: [
+      { title: "Front-end", description: "Interfaces responsivas e interativas com foco em UX e performance." },
+      { title: "Back-end", description: "Node.js e Laravel: integrações, formulários e segurança." },
+      { title: "Mobile", description: "Explorando Flutter e Dart em experiências mobile." },
+      { title: "Colaboração", description: "Git e metodologias ágeis para trabalhar bem em equipe." },
+    ],
   },
 
   about: {
     eyebrow: "Sobre",
+    slogan: "Interfaces que parecem rápidas — porque são.",
     title: "Quem sou eu?",
     highlights: [
       "Eng. de Software — Unicesumar",
@@ -232,9 +260,9 @@ const ptBR: Dictionary = {
 
   skills: {
     eyebrow: "Habilidades",
-    title: "Galeria horizontal",
+    title: "Stack técnica",
     intro:
-      "Scroll vertical percorre os cards horizontalmente. Ao chegar no último, o scroll vertical volta ao normal.",
+      "Role para empilhar cada área: o que eu uso, como aplico no dia a dia e meu nível em cada ferramenta.",
     categories: {
       linguagens: {
         title: "Linguagens",
@@ -272,7 +300,7 @@ const ptBR: Dictionary = {
     eyebrow: "Projetos",
     title: "Minha jornada",
     description:
-      "Percorra a constelação da linha do tempo — do mais recente ao mais antigo. Use o modo Visual para uma leitura rápida ou Técnico para aprofundar decisões e stack.",
+      "Arraste ou role pelo carrossel e clique no projeto em destaque para abrir os detalhes. Use o modo Visual para uma leitura rápida ou Técnico para aprofundar decisões e stack.",
     filter: {
       aria: "Filtrar projetos por tipo",
       profissional: "Projetos profissionais",
@@ -357,6 +385,8 @@ const ptBR: Dictionary = {
     messagePlaceholder: "Em poucas linhas: o que você precisa ou como posso ajudar.",
     previewHeading: "Prévia da mensagem",
     submit: "Enviar mensagem no WhatsApp",
+    openForm: "Escrever mensagem",
+    closeForm: "Fechar formulário de mensagem",
     messageTemplate: (name: string, message: string, email: string) =>
       `Olá, sou ${name}, e ${message}. Entre em contato através do e-mail ${email}.`,
     templatePlaceholders: {
@@ -383,23 +413,36 @@ const frFR: Dictionary = {
     backToTop: "Retour en haut",
     toggleTheme: "Changer de thème",
     languageMenu: "Choisir la langue",
+    sectionsNav: "Sections de la page",
   },
 
   hero: {
-    titleLine1: "Développeur",
-    titleLine2: "Front-end axé sur les",
-    titleGradient1: "interfaces modernes",
-    titleConnector: "et les",
-    titleGradient2: "expériences fluides",
+    greeting: "Salut, je suis Luiz,",
+    titleBefore: "Développeur",
+    titleAccent: "Front-end",
+    titleAfter: "",
     paragraph:
-      "Je suis Luiz Rodrigues, développeur front-end avec de l'expérience en React, Laravel et la création d'interfaces web modernes.",
+      "Axé sur les interfaces modernes et les expériences fluides — React, TypeScript et Laravel, de la maquette au produit en ligne.",
     ctaProjects: "Voir les projets",
     ctaContact: "Me contacter",
-    scrollHint: "Continuer",
+    stats: {
+      years: "Années d'expérience",
+      projects: "Projets du portfolio",
+      companies: "Entreprises",
+    },
+    stackTitle: "Stack technique",
+    scrollCue: "Faites défiler pour en découvrir plus",
+    features: [
+      { title: "Front-end", description: "Interfaces responsives et interactives axées UX et performance." },
+      { title: "Back-end", description: "Node.js et Laravel : intégrations, formulaires et sécurité." },
+      { title: "Mobile", description: "Exploration de Flutter et Dart pour le mobile." },
+      { title: "Collaboration", description: "Git et méthodes agiles pour un travail d'équipe efficace." },
+    ],
   },
 
   about: {
     eyebrow: "À propos",
+    slogan: "Des interfaces qui semblent rapides — parce qu’elles le sont.",
     title: "Qui suis-je ?",
     highlights: [
       "Génie logiciel — Unicesumar",
@@ -412,9 +455,9 @@ const frFR: Dictionary = {
 
   skills: {
     eyebrow: "Compétences",
-    title: "Galerie horizontale",
+    title: "Stack technique",
     intro:
-      "Le défilement vertical fait défiler les cartes horizontalement. Arrivé à la dernière, le défilement vertical redevient normal.",
+      "Faites défiler pour empiler chaque domaine : ce que j'utilise, comment je l'applique au quotidien et mon niveau sur chaque outil.",
     categories: {
       linguagens: {
         title: "Langages",
@@ -452,7 +495,7 @@ const frFR: Dictionary = {
     eyebrow: "Projets",
     title: "Mon parcours",
     description:
-      "Parcourez la constellation chronologique — du plus récent au plus ancien. Utilisez le mode Visuel pour une lecture rapide ou Technique pour approfondir décisions et stack.",
+      "Faites glisser ou défiler le carrousel et cliquez sur le projet au centre pour ouvrir ses détails. Utilisez le mode Visuel pour une lecture rapide ou Technique pour approfondir décisions et stack.",
     filter: {
       aria: "Filtrer les projets par type",
       profissional: "Projets professionnels",
@@ -536,6 +579,8 @@ const frFR: Dictionary = {
     messagePlaceholder: "En quelques lignes : ce dont vous avez besoin ou comment je peux aider.",
     previewHeading: "Aperçu du message",
     submit: "Envoyer le message sur WhatsApp",
+    openForm: "Écrire un message",
+    closeForm: "Fermer le formulaire de message",
     messageTemplate: (name: string, message: string, email: string) =>
       `Bonjour, je suis ${name}, et ${message}. Vous pouvez me contacter à l'adresse ${email}.`,
     templatePlaceholders: {

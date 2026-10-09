@@ -1,7 +1,7 @@
 "use client"
 
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { useMemo, useRef, useState } from "react"
 import { MOCK_PROJECTS } from "@/data/projects"
 import { localizeProject, projetosPorTipo } from "@/lib/project-helpers"
 import { useLocale, useT } from "@/lib/i18n"
@@ -11,26 +11,29 @@ import { ProjectsFilter } from "./projects-filter"
 import { ProjectsHeader } from "./projects-header"
 import { ProjectCard } from "./project-card"
 import { ProjectModeToggle } from "./project-mode-toggle"
-import { ProjectsTimeline } from "./projects-timeline"
+import FlexCarousel from "./flex-carousel"
+
+/** Imagem do projeto no carrossel: tela web, depois preview, mobile e logo. */
+function carouselImage(projeto) {
+  const preview = Array.isArray(projeto.previewImages) ? projeto.previewImages[0] : projeto.previewImages?.web?.[0]
+  return (
+    projeto.plataformas?.web?.imagem?.trim() ||
+    preview ||
+    projeto.plataformas?.mobile?.imagem?.trim() ||
+    projeto.logoEmpresa ||
+    "/assets/lr-logo.png"
+  )
+}
 
 /**
- * Orquestra timeline, modo visual/técnico e animação de entrada da secção.
- * O brilho da linha da constelação segue discretamente o scroll na viewport.
+ * Orquestra o carrossel de projetos, o modo visual/técnico e a animação de entrada da secção.
+ * Clicar no projeto em destaque no carrossel abre o card dele logo abaixo.
  * @param {{ className?: string }} [props]
  */
 export function ProjectsSection({ className } = {}) {
   const { locale } = useLocale()
   const t = useT()
-  const scrollRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start 0.92", "end 0.2"],
-  })
-  const lineGlow = useTransform(
-    scrollYProgress,
-    [0, 0.32, 0.68, 1],
-    [0.32, 1, 0.52, 0.28],
-  )
+  const cardRef = useRef(null)
 
   const [tipo, setTipo] = useState("profissional")
   const [activeId, setActiveId] = useState(null)
@@ -46,31 +49,34 @@ export function ProjectsSection({ className } = {}) {
     [traduzidos, tipo],
   )
 
-  useEffect(() => {
-    if (!filtrados.length) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setActiveId(null)
-      return
-    }
-    const stillVisible = filtrados.some((p) => p.id === activeId)
-    if (!stillVisible) {
-      setActiveId(filtrados[0].id)
-    }
-  }, [filtrados, activeId])
-
   const ativo = useMemo(
-    () => filtrados.find((p) => p.id === activeId) ?? filtrados[0] ?? null,
+    () => filtrados.find((p) => p.id === activeId) ?? null,
     [filtrados, activeId],
   )
 
-  const timelineItems = useMemo(
-    () => filtrados.map((p) => ({ id: p.id, nome: p.nome })),
+  const carouselItems = useMemo(
+    () =>
+      filtrados.map((p) => ({
+        src: carouselImage(p),
+        alt: p.nome,
+        title: p.nome,
+        subtitle: p.status,
+      })),
     [filtrados],
   )
 
+  const openProject = (index) => {
+    const projeto = filtrados[index]
+    if (!projeto) return
+    setActiveId(projeto.id)
+    // Espera o card montar antes de rolar até ele.
+    window.setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 120)
+  }
+
   return (
     <motion.div
-      ref={scrollRef}
       className={cn("mx-auto max-w-6xl flex flex-col gap-8", className)}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -91,27 +97,53 @@ export function ProjectsSection({ className } = {}) {
           transition={{ duration: 0.28, ease: PROJECTS_EASE }}
           className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
-          <ProjectsFilter value={tipo} onChange={setTipo} />
+          <ProjectsFilter
+            value={tipo}
+            onChange={(nextTipo) => {
+              setTipo(nextTipo)
+              // O projeto aberto pode não existir na nova lista.
+              setActiveId(null)
+            }}
+          />
           <ProjectModeToggle value={viewMode} onChange={setViewMode} />
         </motion.div>
 
-        <ProjectsTimeline
-          items={timelineItems}
-          activeId={ativo?.id ?? ""}
-          onSelect={setActiveId}
-          tipo={tipo}
-          scrollLineGlow={lineGlow}
-        />
+        <div className="relative mt-6 h-[560px] w-full">
+          <FlexCarousel
+            key={tipo}
+            items={carouselItems}
+            preset="liquid"
+            intro="rise"
+            cardHeight={0.5}
+            gap={12}
+            squeeze={0.2}
+            focusOnClick={false}
+            captions
+            fit="natural"
+            radius={0}
+            lensWidth={0.74}
+            lensHeight={1.18}
+            tilt={62}
+            roundness={1}
+            bend={0.34}
+            reach={0.38}
+            curl="twist"
+            dispersion={0.45}
+            liquid={0}
+            followCursor={false}
+            autoplay={false}
+            interval={4}
+            captureWheel
+            onSelect={openProject}
+          />
+        </div>
       </div>
 
       <AnimatePresence mode="wait">
         {ativo ? (
-          <ProjectCard
-            key={ativo.id}
-            projeto={ativo}
-            tipo={tipo}
-            viewMode={viewMode}
-          />
+          <div ref={cardRef} key={ativo.id} className="scroll-mt-24">
+            <ProjectCard projeto={ativo} tipo={tipo} viewMode={viewMode} />
+          </div>
         ) : null}
       </AnimatePresence>
     </motion.div>
