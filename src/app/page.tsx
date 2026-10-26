@@ -89,8 +89,8 @@ export default function Home() {
       {/* Acima do fundo fixo (partículas ou nuvens). */}
       <main className="relative z-10">
         {/* INÍCIO */}
-        {/* Fundo sólido igual ao da cortina do About (off-white / preto). */}
-        <div ref={heroRef} className="relative bg-[var(--stage)] text-[var(--stage-foreground)]">
+        {/* Fundo sólido igual ao da cortina do About (off-white / preto). overflow-x-clip: o sol girando no parallax passava da borda direita. */}
+        <div ref={heroRef} className="relative overflow-x-clip bg-[var(--stage)] text-[var(--stage-foreground)]">
           {/*
             Imagem do hero: encostada na lateral direita e no rodapé, com 90% da
             altura (58% no mobile, onde ela e a lua ficam mais baixas, abaixo do texto);

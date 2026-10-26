@@ -369,10 +369,16 @@ html.lenis body {
   font-style: italic;
 }
 
-/* Sem o "elástico" (rubber band) ao passar do topo ou do fim da página. */
+/*
+ * Sem o "elástico" (rubber band) ao passar do topo ou do fim da página, e sem
+ * rolagem lateral: algo que escape pela direita (como o sol do hero girando no
+ * parallax) é cortado em vez de alargar a página. `clip`, e não `hidden`, para
+ * não criar contêiner de rolagem e manter o position: sticky funcionando.
+ */
 html,
 body {
   overscroll-behavior-y: none;
+  overflow-x: clip;
 }
 
 /* Cor da skill ativa nos cards de habilidades. Registrada para poder animar
