@@ -47,7 +47,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "pt-br":
         "Base de landing pages, painéis e fluxos em ERP: marco inicial antes de React ou templates PHP.",
       "en-us":
-        "Foundation for landing pages, dashboards, and ERP flows—often before React or PHP templates.",
+        "Foundation for landing pages, dashboards, and ERP flows, often before React or PHP templates.",
       "fr-fr":
         "Base des landing pages, tableaux de bord et flux ERP, souvent avant React ou les templates PHP.",
     },
@@ -132,7 +132,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "pt-br":
         "Presente em projetos Next/React e landing pages: entrega rápida sem perder legibilidade do código.",
       "en-us":
-        "Used across Next/React projects and landing pages—fast delivery without sacrificing readable markup.",
+        "Used across Next/React projects and landing pages, for fast delivery without sacrificing readable markup.",
       "fr-fr":
         "Présent sur Next/React et landing pages : livraison rapide avec un code lisible.",
     },
@@ -706,7 +706,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "pt-br":
         "Fluxo diário em todos os projetos: do protótipo ao deploy, com rastreabilidade de mudanças.",
       "en-us":
-        "Daily workflow across projects—from prototype to deploy—with traceable changes.",
+        "Daily workflow across projects, from prototype to deploy, with traceable changes.",
       "fr-fr":
         "Flux quotidien sur tous les projets, du prototype au déploiement, avec traçabilité.",
     },
@@ -786,7 +786,7 @@ export const skillShowcase: ShowcaseSkill[] = [
       "pt-br":
         "Rotina em integrações Laravel/Node: validar payload antes de ligar botões e formulários na UI.",
       "en-us":
-        "Routine on Laravel/Node integrations—validate payloads before wiring buttons and forms in the UI.",
+        "Routine on Laravel/Node integrations: validate payloads before wiring buttons and forms in the UI.",
       "fr-fr":
         "Routine sur intégrations Laravel/Node : valider les payloads avant de brancher l’UI.",
     },

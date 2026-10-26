@@ -34,6 +34,7 @@ export function LanguageMenu() {
         iconScale={0.84}
         openLabel={t.common.languageMenu}
         closeLabel={t.common.languageMenu}
+        triggerTooltip={t.common.languageMenu}
         triggerIcon={<CurrentFlag className="size-[78%]" />}
         items={LOCALES.map((option) => {
           const Flag = ROUND_FLAGS[option]

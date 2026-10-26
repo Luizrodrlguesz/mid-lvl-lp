@@ -10,16 +10,18 @@ import { useEffect, useRef } from "react"
  * O que deixa mais leve:
  * - rotação e projeção calculadas na GPU (o buffer de pontos é enviado uma vez);
  * - resolução limitada a MAX_DPR — os pontos são borrados, não precisam de retina;
- * - 30 fps em vez de 60 (a rotação é lenta, a diferença não aparece);
+ * - parado, desenha a 30 fps (a rotação é lenta, a diferença não aparece); com o
+ *   scroll em movimento, desenha todo quadro, para as estrelas acompanharem a
+ *   rolagem sem degraus;
  * - o loop para quando a aba fica oculta (o rAF não roda) ou o canvas sai da tela;
  * - o scroll é lido dentro do frame, sem setState no React;
  * - com `prefers-reduced-motion`, desenha um quadro só.
  */
 
-const COUNT = 5000
+const COUNT = 3500
 const SPREAD = 12
-const MAX_DPR = 1.5
-const FRAME_MS = 1000 / 30
+const MAX_DPR = 1.25
+const IDLE_FRAME_MS = 1000 / 30
 
 // Mesma câmera do Canvas original: posição z = 6, fov 75°.
 const CAMERA_Z = 6
@@ -135,16 +137,22 @@ function Stars() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const start = performance.now()
 
+    // Altura rolável medida no resize, não a cada quadro.
+    let maxScroll = 1
+    const measure = () => {
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+    }
+
     const draw = (now: number) => {
       const t = reduceMotion ? 0 : (now - start) / 1000
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      const scroll = max > 0 ? window.scrollY / max : 0
+      const scroll = window.scrollY / maxScroll
       gl.uniform2f(uRotation, scroll * 1.2 + t * 0.02, scroll * 0.9 + t * 0.015)
       gl.clear(gl.COLOR_BUFFER_BIT)
       gl.drawArrays(gl.POINTS, 0, COUNT)
     }
 
     const resize = () => {
+      measure()
       const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
       const width = Math.max(1, Math.round(canvas.clientWidth * dpr))
       const height = Math.max(1, Math.round(canvas.clientHeight * dpr))
@@ -159,11 +167,15 @@ function Stars() {
 
     let frame = 0
     let last = 0
+    let lastScroll = -1
     let visible = false
 
     const loop = (now: number) => {
       frame = requestAnimationFrame(loop)
-      if (now - last < FRAME_MS) return
+      // Com o scroll mudando (o Lenis anima o scrollY), desenha no ritmo da tela.
+      const scrolling = window.scrollY !== lastScroll
+      if (!scrolling && now - last < IDLE_FRAME_MS) return
+      lastScroll = window.scrollY
       last = now
       draw(now)
     }
@@ -179,6 +191,9 @@ function Stars() {
 
     const resizeObserver = new ResizeObserver(resize)
     resizeObserver.observe(canvas)
+    // A página cresce depois de montar (imagens, seções): remede a altura rolável.
+    const pageObserver = new ResizeObserver(measure)
+    pageObserver.observe(document.body)
 
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting
@@ -190,6 +205,7 @@ function Stars() {
     return () => {
       pause()
       resizeObserver.disconnect()
+      pageObserver.disconnect()
       visibilityObserver.disconnect()
       gl.deleteBuffer(buffer)
       gl.deleteProgram(program)

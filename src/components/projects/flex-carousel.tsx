@@ -44,8 +44,13 @@ export interface FlexCarouselProps extends Partial<PresetValues> {
   interval?: number;
   captions?: boolean;
   captureWheel?: boolean;
+  /**
+   * Cards de vidro: respeita a transparência da imagem e desenha uma borda
+   * clara com brilho interno no próprio shader (acompanha cantos e curvatura).
+   */
+  glass?: boolean;
   onChange?: (index: number, item: FlexCarouselItem) => void;
-  onSelect?: (index: number, item: FlexCarouselItem) => void;
+  onSelect?: (index: number, item: FlexCarouselItem, rect?: DOMRect) => void;
   className?: string;
   style?: CSSProperties;
 }
@@ -61,6 +66,7 @@ interface Settings extends PresetValues {
   autoplay: boolean;
   interval: number;
   captureWheel: boolean;
+  glass: boolean;
 }
 
 interface Slot {
@@ -122,7 +128,7 @@ interface Engine {
 
 interface Callbacks {
   onChange?: (index: number, item: FlexCarouselItem) => void;
-  onSelect?: (index: number, item: FlexCarouselItem) => void;
+  onSelect?: (index: number, item: FlexCarouselItem, rect?: DOMRect) => void;
 }
 
 const photo = (id: string) => `https://images.unsplash.com/${id}?w=1200&q=80&auto=format&fit=max`;
@@ -258,6 +264,7 @@ uniform float uReady;
 uniform float uShift;
 uniform float uDpr;
 uniform vec3 uPlaceholder;
+uniform float uGlass;
 in vec2 vUv;
 in vec2 vLocal;
 out vec4 fragColor;
@@ -278,10 +285,17 @@ void main() {
   vec2 uv = vec2(local.x, 1.0 - local.y);
   uv = (uv - 0.5) * scale + 0.5;
   uv.x += uShift * (1.0 - scale.x) * 0.5;
-  vec3 image = texture(tMap, uv).rgb;
-  vec3 color = mix(uPlaceholder, image, uReady);
+  vec4 tex = texture(tMap, uv);
+  vec3 color = mix(uPlaceholder, tex.rgb, uReady);
+  // Sem vidro a imagem é opaca, como no original; com vidro, vale a transparência dela.
+  float body = mix(1.0, mix(1.0, tex.a, uReady), uGlass);
+  // Vidro: borda clara fina + brilho interno suave, por cima da imagem.
+  float inner = -sd;
+  float rim = ((1.0 - smoothstep(0.0, 1.5, inner)) * 0.55 + (1.0 - smoothstep(0.0, 22.0, inner)) * 0.08) * uGlass;
+  vec3 premul = vec3(rim) + color * body * (1.0 - rim);
+  float coverage = rim + body * (1.0 - rim);
   float alpha = mask * uAlpha;
-  fragColor = vec4(color * alpha, alpha);
+  fragColor = vec4(premul * alpha, coverage * alpha);
 }
 `;
 
@@ -410,6 +424,7 @@ const FlexCarousel = ({
   interval = 4,
   captions = true,
   captureWheel = true,
+  glass = false,
   onChange,
   onSelect,
   className = '',
@@ -454,7 +469,8 @@ const FlexCarousel = ({
       focusOnClick,
       autoplay,
       interval,
-      captureWheel
+      captureWheel,
+      glass
     };
     engineRef.current?.wake();
   });
@@ -504,7 +520,8 @@ const FlexCarousel = ({
         uReady: { value: 0 },
         uShift: { value: 0 },
         uDpr: { value: 1 },
-        uPlaceholder: { value: [0.5, 0.5, 0.5] }
+        uPlaceholder: { value: [0.5, 0.5, 0.5] },
+        uGlass: { value: 0 }
       }
     });
     cardProgram.setBlendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -556,6 +573,11 @@ const FlexCarousel = ({
     let goal = 0;
     let mode = 'spring';
     let wheelAt = 0;
+    // Eixo do gesto atual da roda/trackpad, decidido no começo e mantido até
+    // uma pausa: no trackpad um gesto vertical traz pequenos desvios laterais,
+    // e decidir evento a evento fazia o carrossel "roubar" parte do scroll da página.
+    let wheelAxis: 'x' | 'y' | null = null;
+    let wheelAxisAt = 0;
     let raf = 0;
     let last = performance.now();
     let visible = true;
@@ -1019,6 +1041,7 @@ const FlexCarousel = ({
         cardProgram.uniforms.uResolution.value = [width, height];
         cardProgram.uniforms.uDpr.value = dpr;
         cardProgram.uniforms.uRadius.value = s.radius;
+        cardProgram.uniforms.uGlass.value = s.glass ? 1 : 0;
         const shrink = 1 - clamp01(s.squeeze) * energy;
         const draws: Draw[] = [];
         for (let i = 0; i < n; i++) {
@@ -1119,6 +1142,21 @@ const FlexCarousel = ({
       raf = requestAnimationFrame(frame);
     };
 
+    /**
+     * Retângulo do card na tela (coordenadas da janela). Cada item pode aparecer
+     * em várias voltas do loop; vale a cópia mais perto do centro.
+     */
+    const cardRect = (index: number, inst?: Instance) => {
+      const pick =
+        inst ??
+        instances
+          .filter(i => i.index === index)
+          .sort((a, b) => Math.abs((a.x0 + a.x1) / 2 - width / 2) - Math.abs((b.x0 + b.x1) / 2 - width / 2))[0];
+      if (!pick) return undefined;
+      const box = container.getBoundingClientRect();
+      return new DOMRect(box.left + pick.x0, box.top + pick.y0, pick.x1 - pick.x0, pick.y1 - pick.y0);
+    };
+
     const localPoint = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
       return [e.clientX - rect.left, e.clientY - rect.top];
@@ -1217,7 +1255,7 @@ const FlexCarousel = ({
       const hit = instances.find(inst => x >= inst.x0 && x <= inst.x1 && y >= inst.y0 && y <= inst.y1);
       if (!hit) return;
       if (hit.index === activeIndex && Math.abs(goal - pos) < 2) {
-        callbacksRef.current.onSelect?.(hit.index, itemsRef.current[hit.index]);
+        callbacksRef.current.onSelect?.(hit.index, itemsRef.current[hit.index], cardRect(hit.index, hit));
         if (s.focusOnClick) openFocus(hit.index);
       } else {
         const rel = (hit.x0 + hit.x1) / 2 - width / 2;
@@ -1255,7 +1293,14 @@ const FlexCarousel = ({
         dy = 0;
       }
       const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? height : 1;
-      const horizontal = Math.abs(dx) > Math.abs(dy);
+      const now = performance.now();
+      if (now - wheelAxisAt > 180) wheelAxis = null;
+      wheelAxisAt = now;
+      if (!wheelAxis) {
+        // Só vira horizontal com predominância clara do lado; na dúvida, é da página.
+        wheelAxis = Math.abs(dx) > Math.abs(dy) * 1.5 ? 'x' : 'y';
+      }
+      const horizontal = wheelAxis === 'x';
       if (!horizontal && !s.captureWheel) return;
       e.preventDefault();
       skipIntro();
@@ -1297,7 +1342,7 @@ const FlexCarousel = ({
       } else if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         if (closeFocus() || activeIndex < 0) return;
-        callbacksRef.current.onSelect?.(activeIndex, itemsRef.current[activeIndex]);
+        callbacksRef.current.onSelect?.(activeIndex, itemsRef.current[activeIndex], cardRect(activeIndex));
         if (s.focusOnClick) openFocus(activeIndex);
       }
     };
@@ -1372,7 +1417,10 @@ const FlexCarousel = ({
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full cursor-grab touch-pan-y select-none overflow-hidden overscroll-contain outline-none [-webkit-tap-highlight-color:transparent] focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] data-[hover=open]:cursor-zoom-in data-[hover=close]:cursor-zoom-out data-[dragging]:cursor-grabbing ${className}`.trim()}
+      // overscroll-contain só quando o carrossel captura a roda toda: com ele, a
+      // rolagem vertical não "vaza" para a página (overflow-hidden conta como
+      // contêiner de rolagem) e o scroll da página trava em cima do carrossel.
+      className={`relative h-full w-full cursor-grab touch-pan-y select-none overflow-hidden ${captureWheel ? 'overscroll-contain' : ''} outline-none [-webkit-tap-highlight-color:transparent] focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] data-[hover=open]:cursor-zoom-in data-[hover=close]:cursor-zoom-out data-[dragging]:cursor-grabbing ${className}`.trim()}
       style={{ ...style, '--flex-carousel-half': `${Math.min(Math.max(cardHeight, 0.05), 1) * 50}%` } as CSSProperties}
       role="region"
       aria-roledescription="carousel"

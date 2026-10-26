@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="105 102 290 290" width="512" height="512">
+  <!-- Logo novo do IArthquake (src/app/icon.svg do projeto), sem fundo. -->
+  <g fill="none" stroke="#c08158" stroke-width="15" stroke-linecap="round">
+    <path d="M163 168A128 128 0 0 1 337 168"/>
+    <path d="M190 192A92 92 0 0 1 310 192"/>
+    <path d="M216 216A56 56 0 0 1 284 216"/>
+    <path d="M116 269.5H178L228 239"/>
+    <path d="M384 269.5H320L268 238"/>
+    <path d="M268 238L245 268L270 291L238 319L259 341" stroke-linecap="butt"/>
+  </g>
+  <path d="M244 332 270 340 242 370Z" fill="#c08158"/>
+</svg>

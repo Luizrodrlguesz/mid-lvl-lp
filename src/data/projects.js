@@ -8,7 +8,7 @@
  */
 
 /** @typedef {'profissional' | 'pessoal'} TipoProjeto */
-/** @typedef {'web' | 'app' | 'sistema'} CategoriaProjeto */
+/** @typedef {'web' | 'app' | 'sistema' | 'lp'} CategoriaProjeto */
 /** @typedef {'en-us' | 'pt-br' | 'fr-fr'} Locale */
 
 /**
@@ -59,6 +59,7 @@
  * @property {string} nome
  * @property {string} [logoEmpresa] Logo exibida antes do título do projeto
  * @property {string} [logoEmpresaBackground] Cor de fundo aplicada ao invólucro da logo
+ * @property {string | { light: string, dark: string }} [logoEmpresaTint] Cor do vidro do card no carrossel (uma ou uma por tema), quando deve ser outra que não o fundo da logo
  * @property {boolean} [logoEmpresaSemPadding] Remove respiro interno quando o arquivo da logo já tem fundo
  * @property {PlataformasProjeto} plataformas
  * @property {string[]} tecnologias
@@ -70,6 +71,646 @@
 
 /** @type {Projeto[]} */
 export const MOCK_PROJECTS = [
+  // ── Landing pages (Haber Solutions, out/2026). Esboço a partir dos repositórios
+  // nauta-lp e pmax-lp: textos e números para revisar; links vazios até os domínios irem ao ar.
+  {
+    id: "nauta",
+    tipo: "profissional",
+    categoria: "lp",
+    nome: "Nauta Marketing",
+    logoEmpresa: "/assets/projects/nauta-icon.svg",
+    logoEmpresaBackground: "#0d2b45",
+    plataformas: {
+      web: { imagem: "/assets/projects/nauta-web.jpg", link: "" },
+    },
+    tecnologias: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Motion"],
+    stackDetalhada: ["Next.js 16 (App Router)", "React 19", "TypeScript", "Tailwind CSS v4", "Motion", "Lenis", "Number Flow"],
+    i18n: {
+      "en-us": {
+        destaque: "Landing page",
+        status: "In development",
+        resumo: "Landing page for a marketing agency serving businesses on the Paraná coast.",
+        descricao: "Static landing page for Nauta Marketing, an agency focused on businesses on the Paraná coast (inns, restaurants, tours, beach clubs). The copy is built around seasonality: be found, remembered and chosen in high season. The lead form opens WhatsApp with the message already written, with no back-end.",
+        descricaoResumida: "Marketing agency LP for the Paraná coast: seasonal copy, case studies and a lead form that opens WhatsApp with the message ready.",
+        metricas: [
+          { label: "Type", valor: "Landing page" },
+          { label: "Lead capture", valor: "Form → WhatsApp" },
+          { label: "Back-end", valor: "None (static)" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Layout and front-end of every section, from hero to FAQ",
+          "Lead form with goal and budget that builds the WhatsApp message",
+          "Vector logo that adapts to light and dark backgrounds",
+          "All copy centralized in one file, with the reasoning behind each block documented",
+        ],
+        insights: {
+          desafio: "Convince coastal businesses to invest in marketing in the low season, not only in January.",
+          solucao: "Copy organized around the season cycle, real-world case blocks (inn, restaurant, tours) and a one-minute form that continues on WhatsApp.",
+          resultado: "A fast, static page that turns visits into qualified WhatsApp conversations.",
+        },
+        evolucao: ["Conversion-oriented copywriting", "Static lead capture without a back-end", "Motion and smooth scrolling with performance in mind"],
+      },
+      "pt-br": {
+        destaque: "Landing page",
+        status: "Em desenvolvimento",
+        resumo: "Landing page de uma agência de marketing para empresas do litoral do Paraná.",
+        descricao: "Landing page estática da Nauta Marketing, agência focada em empresas do litoral do Paraná (pousadas, restaurantes, passeios, beach clubs). A copy gira em torno da sazonalidade: ser encontrada, lembrada e escolhida na alta temporada. O formulário de lead abre o WhatsApp com a mensagem pronta, sem back-end.",
+        descricaoResumida: "LP de agência de marketing do litoral do Paraná: copy sazonal, cases e um formulário que abre o WhatsApp com a mensagem pronta.",
+        metricas: [
+          { label: "Tipo", valor: "Landing page" },
+          { label: "Captação", valor: "Formulário → WhatsApp" },
+          { label: "Back-end", valor: "Nenhum (estática)" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Layout e front-end de todas as seções, do hero ao FAQ",
+          "Formulário de lead com objetivo e verba que monta a mensagem do WhatsApp",
+          "Logo vetorial que se adapta a fundo claro e escuro",
+          "Toda a copy centralizada num arquivo, com a lógica de cada bloco documentada",
+        ],
+        insights: {
+          desafio: "Convencer empresas do litoral a investir em marketing na baixa temporada, e não só em janeiro.",
+          solucao: "Copy organizada pelo ciclo da temporada, blocos de cases reais (pousada, restaurante, passeios) e um formulário de um minuto que continua no WhatsApp.",
+          resultado: "Uma página rápida e estática que transforma visita em conversa qualificada no WhatsApp.",
+        },
+        evolucao: ["Copywriting orientado a conversão", "Captação de leads sem back-end", "Animação e scroll suave sem perder performance"],
+      },
+      "fr-fr": {
+        destaque: "Landing page",
+        status: "En développement",
+        resumo: "Landing page d’une agence marketing pour les entreprises du littoral du Paraná.",
+        descricao: "Landing page statique de Nauta Marketing, agence tournée vers les entreprises du littoral du Paraná (pousadas, restaurants, excursions, beach clubs). Le texte s’articule autour de la saisonnalité : être trouvé, mémorisé et choisi en haute saison. Le formulaire ouvre WhatsApp avec le message déjà rédigé, sans back-end.",
+        descricaoResumida: "LP d’agence marketing du littoral du Paraná : texte saisonnier, études de cas et formulaire qui ouvre WhatsApp avec le message prêt.",
+        metricas: [
+          { label: "Type", valor: "Landing page" },
+          { label: "Captation", valor: "Formulaire → WhatsApp" },
+          { label: "Back-end", valor: "Aucun (statique)" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Mise en page et front-end de toutes les sections, du hero à la FAQ",
+          "Formulaire de lead avec objectif et budget qui compose le message WhatsApp",
+          "Logo vectoriel adapté aux fonds clairs et sombres",
+          "Tout le texte centralisé dans un fichier, avec la logique de chaque bloc documentée",
+        ],
+        insights: {
+          desafio: "Convaincre les entreprises du littoral d’investir dans le marketing en basse saison, pas seulement en janvier.",
+          solucao: "Un texte organisé selon le cycle de la saison, des blocs de cas réels (pousada, restaurant, excursions) et un formulaire d’une minute qui continue sur WhatsApp.",
+          resultado: "Une page rapide et statique qui transforme les visites en conversations qualifiées sur WhatsApp.",
+        },
+        evolucao: ["Copywriting orienté conversion", "Captation de leads sans back-end", "Animations et défilement fluide sans perdre en performance"],
+      },
+    },
+  },
+  {
+    id: "pmax",
+    tipo: "profissional",
+    categoria: "lp",
+    nome: "Pmax Digital",
+    logoEmpresa: "/assets/projects/pmax-icon.svg",
+    logoEmpresaBackground: "#12172a",
+    logoEmpresaTint: { light: "#c51617", dark: "#5c1312" },
+    plataformas: {
+      web: { imagem: "/assets/projects/pmax-web.jpg", link: "" },
+    },
+    tecnologias: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Motion"],
+    stackDetalhada: ["Next.js 16 (App Router)", "React 19", "TypeScript", "Tailwind CSS v4", "Motion", "Lenis", "Number Flow"],
+    i18n: {
+      "en-us": {
+        destaque: "Landing page",
+        status: "In development",
+        resumo: "Landing page for a paid-traffic agency in Curitiba.",
+        descricao: "Landing page for Pmax Digital, a paid-traffic agency in Curitiba (Google, Instagram and TikTok ads). The visual identity comes straight from the client's brandbook: the stylized red P, hashtags and broken words of the stickers. The page is built to sell a diagnosis: a short form that continues on WhatsApp.",
+        descricaoResumida: "Paid-traffic agency LP in Curitiba: brandbook identity, segments served, the process week by week and a diagnosis form that opens WhatsApp.",
+        metricas: [
+          { label: "Type", valor: "Landing page" },
+          { label: "Lead capture", valor: "Diagnosis → WhatsApp" },
+          { label: "Identity", valor: "Client brandbook" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Layout and front-end of every section, from the hero to the FAQ",
+          "Logo, seal and hashtags rebuilt as vectors from the brandbook",
+          "Diagnosis form with segment and ad budget that builds the WhatsApp message",
+          "All copy centralized in one file, with the reasoning behind each block documented",
+        ],
+        insights: {
+          desafio: "Translate a printed brandbook into a page that sells paid traffic to local businesses without jargon.",
+          solucao: "Brand elements turned into reusable components, copy focused on clients instead of likes, and a step-by-step view of how the work goes.",
+          resultado: "A page faithful to the brand that leads straight to a diagnosis conversation on WhatsApp.",
+        },
+        evolucao: ["Turning a brandbook into components", "Conversion-oriented copywriting", "Motion and smooth scrolling with performance in mind"],
+      },
+      "pt-br": {
+        destaque: "Landing page",
+        status: "Em desenvolvimento",
+        resumo: "Landing page de uma agência de tráfego pago de Curitiba.",
+        descricao: "Landing page da Pmax Digital, agência de tráfego pago de Curitiba (anúncios no Google, Instagram e TikTok). A identidade visual vem direto do brandbook do cliente: o P estilizado em vermelho, as hashtags e as palavras quebradas dos adesivos. A página é pensada para vender um diagnóstico: um formulário curto que continua no WhatsApp.",
+        descricaoResumida: "LP de agência de tráfego pago de Curitiba: identidade do brandbook, segmentos atendidos, o processo semana a semana e um formulário de diagnóstico que abre o WhatsApp.",
+        metricas: [
+          { label: "Tipo", valor: "Landing page" },
+          { label: "Captação", valor: "Diagnóstico → WhatsApp" },
+          { label: "Identidade", valor: "Brandbook do cliente" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Layout e front-end de todas as seções, do hero ao FAQ",
+          "Logo, selo e hashtags refeitos em vetor a partir do brandbook",
+          "Formulário de diagnóstico com segmento e verba que monta a mensagem do WhatsApp",
+          "Toda a copy centralizada num arquivo, com a lógica de cada bloco documentada",
+        ],
+        insights: {
+          desafio: "Levar um brandbook impresso para uma página que vende tráfego pago para negócios locais, sem jargão.",
+          solucao: "Elementos da marca virando componentes reutilizáveis, copy focada em cliente e não em curtida, e o passo a passo de como o trabalho acontece.",
+          resultado: "Uma página fiel à marca que leva direto para uma conversa de diagnóstico no WhatsApp.",
+        },
+        evolucao: ["Brandbook transformado em componentes", "Copywriting orientado a conversão", "Animação e scroll suave sem perder performance"],
+      },
+      "fr-fr": {
+        destaque: "Landing page",
+        status: "En développement",
+        resumo: "Landing page d’une agence de publicité payante à Curitiba.",
+        descricao: "Landing page de Pmax Digital, agence de publicité payante à Curitiba (annonces Google, Instagram et TikTok). L’identité visuelle vient directement du brandbook du client : le P stylisé en rouge, les hashtags et les mots coupés des autocollants. La page est pensée pour vendre un diagnostic : un formulaire court qui continue sur WhatsApp.",
+        descricaoResumida: "LP d’agence de publicité payante à Curitiba : identité du brandbook, secteurs servis, le processus semaine par semaine et un formulaire de diagnostic qui ouvre WhatsApp.",
+        metricas: [
+          { label: "Type", valor: "Landing page" },
+          { label: "Captation", valor: "Diagnostic → WhatsApp" },
+          { label: "Identité", valor: "Brandbook du client" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Mise en page et front-end de toutes les sections, du hero à la FAQ",
+          "Logo, sceau et hashtags redessinés en vectoriel à partir du brandbook",
+          "Formulaire de diagnostic avec secteur et budget qui compose le message WhatsApp",
+          "Tout le texte centralisé dans un fichier, avec la logique de chaque bloc documentée",
+        ],
+        insights: {
+          desafio: "Transposer un brandbook imprimé en une page qui vend de la publicité payante aux commerces locaux, sans jargon.",
+          solucao: "Des éléments de marque devenus composants réutilisables, un texte centré sur les clients plutôt que sur les likes, et le déroulé du travail étape par étape.",
+          resultado: "Une page fidèle à la marque qui mène directement à une conversation de diagnostic sur WhatsApp.",
+        },
+        evolucao: ["Brandbook transformé en composants", "Copywriting orienté conversion", "Animations et défilement fluide sans perdre en performance"],
+      },
+    },
+  },
+  // ── Projetos adicionados a partir dos repositórios em ~/desenvolvimento/trabalho.
+  // Esboço: textos tirados da documentação de cada projeto; sem prints ainda (imagem vazia).
+  {
+    id: "iarthquake",
+    tipo: "profissional",
+    categoria: "sistema",
+    nome: "IArthquake",
+    logoEmpresa: "/assets/projects/iarthquake-icon.svg",
+    logoEmpresaBackground: "#131211",
+    plataformas: {
+      web: { imagem: "", link: "https://coderevive.shop/" },
+      mobile: { imagem: "", link: "" },
+    },
+    tecnologias: ["Next.js", "React", "TypeScript", "Tailwind CSS", "shadcn/ui"],
+    stackDetalhada: ["Next.js 16 (App Router)", "React 19", "TypeScript", "Tailwind CSS v4", "shadcn/ui", "Docker"],
+    i18n: {
+      "en-us": {
+        destaque: "AI SaaS",
+        status: "In development",
+        resumo: "Multi-tenant platform to create, train and publish AI agents.",
+        descricao: "SaaS for building, training, testing and publishing AI agents that serve customers and integrate with companies' internal systems (ERP, CRM, scheduling, e-commerce), without the user having to understand LLMs, prompts or APIs. It is also the single AI brain behind Zapflow.",
+        descricaoResumida: "AI agent studio: create, train, test and publish agents integrated with ERP, CRM and other systems, and the AI brain behind Zapflow.",
+        metricas: [
+          { label: "Model", valor: "Multi-tenant SaaS" },
+          { label: "Role", valor: "AI brain of Zapflow" },
+          { label: "Channels", valor: "API · webhook · widget" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end of the agent studio: agents, knowledge base, rules, connectors and playground",
+          "Onboarding and tenant flows",
+          "Shared vocabulary with Zapflow so both products read and write the same AI configuration",
+          "Coordination with the back-end through written API requests",
+        ],
+        insights: {
+          desafio: "Let non-technical teams configure AI agents connected to their own systems, with one source of truth shared with another product.",
+          solucao: "Concepts the customer understands (profile, creativity, reply length in messages, how strictly to follow the knowledge base) instead of model, temperature and tokens.",
+          resultado: "A single AI platform that serves both direct customers and Zapflow's WhatsApp customers.",
+        },
+        evolucao: ["AI product design for non-technical users", "Multi-tenant SaaS architecture", "Integration contracts between products"],
+      },
+      "pt-br": {
+        destaque: "SaaS de IA",
+        status: "Em desenvolvimento",
+        resumo: "Plataforma multi-tenant para criar, treinar e publicar agentes de IA.",
+        descricao: "SaaS para criar, treinar, testar e publicar agentes de IA que atendem clientes e se integram aos sistemas internos das empresas (ERP, CRM, agenda, e-commerce), sem que o usuário precise entender de LLM, prompt ou API. Também é o cérebro único de IA do Zapflow.",
+        descricaoResumida: "Estúdio de agentes de IA: criar, treinar, testar e publicar agentes integrados a ERP, CRM e outros sistemas, e o cérebro de IA do Zapflow.",
+        metricas: [
+          { label: "Modelo", valor: "SaaS multi-tenant" },
+          { label: "Papel", valor: "IA do Zapflow" },
+          { label: "Canais", valor: "API · webhook · widget" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end do estúdio de agentes: agentes, base de conhecimento, regras, conectores e playground",
+          "Fluxos de onboarding e de tenant",
+          "Vocabulário compartilhado com o Zapflow, para os dois produtos lerem e gravarem a mesma configuração de IA",
+          "Alinhamento com o back-end por meio de pedidos de API documentados",
+        ],
+        insights: {
+          desafio: "Permitir que equipes sem conhecimento técnico configurem agentes de IA ligados aos próprios sistemas, com uma fonte da verdade compartilhada com outro produto.",
+          solucao: "Conceitos que o cliente entende (perfil, criatividade, tamanho da resposta em mensagens, quão presa à base) no lugar de modelo, temperature e tokens.",
+          resultado: "Uma plataforma de IA única, que atende tanto clientes diretos quanto os clientes de WhatsApp do Zapflow.",
+        },
+        evolucao: ["Produto de IA para usuários não técnicos", "Arquitetura SaaS multi-tenant", "Contratos de integração entre produtos"],
+      },
+      "fr-fr": {
+        destaque: "SaaS d’IA",
+        status: "En développement",
+        resumo: "Plateforme multi-tenant pour créer, entraîner et publier des agents d’IA.",
+        descricao: "SaaS pour créer, entraîner, tester et publier des agents d’IA qui servent les clients et s’intègrent aux systèmes internes des entreprises (ERP, CRM, agenda, e-commerce), sans que l’utilisateur ait besoin de comprendre les LLM, les prompts ou les API. C’est aussi le cerveau d’IA unique de Zapflow.",
+        descricaoResumida: "Studio d’agents d’IA : créer, entraîner, tester et publier des agents intégrés à l’ERP, au CRM et à d’autres systèmes, et le cerveau d’IA de Zapflow.",
+        metricas: [
+          { label: "Modèle", valor: "SaaS multi-tenant" },
+          { label: "Rôle", valor: "IA de Zapflow" },
+          { label: "Canaux", valor: "API · webhook · widget" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end du studio d’agents : agents, base de connaissances, règles, connecteurs et playground",
+          "Parcours d’onboarding et de tenant",
+          "Vocabulaire partagé avec Zapflow, pour que les deux produits lisent et écrivent la même configuration d’IA",
+          "Coordination avec le back-end via des demandes d’API documentées",
+        ],
+        insights: {
+          desafio: "Permettre à des équipes non techniques de configurer des agents d’IA reliés à leurs systèmes, avec une source de vérité partagée avec un autre produit.",
+          solucao: "Des concepts compréhensibles (profil, créativité, longueur de réponse en messages, fidélité à la base) au lieu de modèle, temperature et tokens.",
+          resultado: "Une plateforme d’IA unique, au service des clients directs comme des clients WhatsApp de Zapflow.",
+        },
+        evolucao: ["Produit d’IA pour utilisateurs non techniques", "Architecture SaaS multi-tenant", "Contrats d’intégration entre produits"],
+      },
+    },
+  },
+  {
+    id: "zapflow",
+    tipo: "profissional",
+    categoria: "sistema",
+    nome: "Zapflow",
+    logoEmpresa: "/assets/projects/zapflow-icon.png",
+    logoEmpresaBackground: "#064e3b",
+    plataformas: {
+      web: { imagem: "/assets/projects/zapflow-web.jpg", link: "" },
+      mobile: { imagem: "", link: "" },
+    },
+    tecnologias: ["Next.js", "React", "TypeScript", "Tailwind CSS", "shadcn/ui", "TanStack Query"],
+    stackDetalhada: ["Next.js 16 (App Router)", "React 19", "TypeScript", "Tailwind CSS v4", "shadcn/ui", "TanStack Query", "React Hook Form + Zod", "Zustand", "Recharts", "Docker"],
+    i18n: {
+      "en-us": {
+        destaque: "WhatsApp SaaS",
+        status: "In production",
+        resumo: "Multi-tenant SaaS for WhatsApp customer service and automation.",
+        descricao: "Companies connect their own WhatsApp Business number (official Meta Cloud API), set up service bots with AI and automate recurring messages such as billing, plan renewals and campaigns. A dashboard for the SaaS admin, for each company (tenant) and for their service teams.",
+        descricaoResumida: "WhatsApp service and automation SaaS: official Meta API, bots with AI, inbox and recurring campaigns per company.",
+        metricas: [
+          { label: "Model", valor: "Multi-tenant SaaS" },
+          { label: "WhatsApp", valor: "Official Meta API" },
+          { label: "Users", valor: "Admin · tenant · team" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end of the dashboard: channels, bot flows, inbox, campaigns and admin area",
+          "Visual bot flow builder with branching steps",
+          "Inbox with media, avatars and AI copilot",
+          "Integration with the back-end services and written API requests for new capabilities",
+        ],
+        insights: {
+          desafio: "Give each company its own WhatsApp operation (bot, team inbox and campaigns) inside one multi-tenant product.",
+          solucao: "A dashboard organized by the three user layers, with typed data fetching and forms, on top of the official WhatsApp API.",
+          resultado: "The bot is live in production; the AI layer now runs on IArthquake.",
+        },
+        evolucao: ["Multi-tenant product UX", "Bot and flow builders", "Integration with the official WhatsApp API"],
+      },
+      "pt-br": {
+        destaque: "SaaS de WhatsApp",
+        status: "Em produção",
+        resumo: "SaaS multi-tenant de atendimento e automação no WhatsApp.",
+        descricao: "Empresas conectam o próprio número de WhatsApp Business (API oficial da Meta), configuram bots de atendimento com IA e automatizam mensagens recorrentes, como cobranças, renovação de planos e campanhas. Painel para o admin do SaaS, para cada empresa (tenant) e para as equipes de atendimento.",
+        descricaoResumida: "SaaS de atendimento e automação no WhatsApp: API oficial da Meta, bots com IA, inbox e campanhas recorrentes por empresa.",
+        metricas: [
+          { label: "Modelo", valor: "SaaS multi-tenant" },
+          { label: "WhatsApp", valor: "API oficial da Meta" },
+          { label: "Usuários", valor: "Admin · tenant · equipe" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end do painel: canais, fluxos de bot, inbox, campanhas e área administrativa",
+          "Construtor visual de fluxos do bot, com ramificações",
+          "Inbox com mídia, avatares e copiloto de IA",
+          "Integração com os serviços do back-end e pedidos de API documentados para novas funcionalidades",
+        ],
+        insights: {
+          desafio: "Dar a cada empresa a própria operação de WhatsApp (bot, inbox da equipe e campanhas) dentro de um único produto multi-tenant.",
+          solucao: "Painel organizado pelas três camadas de usuário, com busca de dados e formulários tipados, sobre a API oficial do WhatsApp.",
+          resultado: "O bot está no ar em produção; a camada de IA passou a rodar no IArthquake.",
+        },
+        evolucao: ["UX de produto multi-tenant", "Construtores de bot e de fluxo", "Integração com a API oficial do WhatsApp"],
+      },
+      "fr-fr": {
+        destaque: "SaaS WhatsApp",
+        status: "En production",
+        resumo: "SaaS multi-tenant de service client et d’automatisation sur WhatsApp.",
+        descricao: "Les entreprises connectent leur propre numéro WhatsApp Business (API officielle de Meta), configurent des bots de service avec IA et automatisent les messages récurrents comme les relances de paiement, les renouvellements et les campagnes. Un tableau de bord pour l’admin du SaaS, pour chaque entreprise (tenant) et pour ses équipes.",
+        descricaoResumida: "SaaS de service client et d’automatisation WhatsApp : API officielle de Meta, bots avec IA, inbox et campagnes récurrentes par entreprise.",
+        metricas: [
+          { label: "Modèle", valor: "SaaS multi-tenant" },
+          { label: "WhatsApp", valor: "API officielle Meta" },
+          { label: "Utilisateurs", valor: "Admin · tenant · équipe" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end du tableau de bord : canaux, flux de bot, inbox, campagnes et espace d’administration",
+          "Constructeur visuel de flux de bot, avec embranchements",
+          "Inbox avec médias, avatars et copilote d’IA",
+          "Intégration aux services du back-end et demandes d’API documentées pour les nouvelles fonctionnalités",
+        ],
+        insights: {
+          desafio: "Donner à chaque entreprise sa propre opération WhatsApp (bot, inbox d’équipe et campagnes) dans un seul produit multi-tenant.",
+          solucao: "Un tableau de bord organisé selon les trois niveaux d’utilisateurs, avec requêtes et formulaires typés, sur l’API officielle de WhatsApp.",
+          resultado: "Le bot est en production ; la couche d’IA tourne désormais sur IArthquake.",
+        },
+        evolucao: ["UX de produit multi-tenant", "Constructeurs de bot et de flux", "Intégration à l’API officielle de WhatsApp"],
+      },
+    },
+  },
+  {
+    id: "votre",
+    tipo: "profissional",
+    categoria: "sistema",
+    nome: "Votre CRM",
+    logoEmpresa: "/assets/projects/votre-icon.png",
+    logoEmpresaBackground: "#7d6119",
+    plataformas: {
+      web: { imagem: "/assets/projects/votre-web.jpg", link: "https://votreconsorcios.online/" },
+      mobile: { imagem: "", link: "" },
+    },
+    tecnologias: ["Next.js", "React", "TypeScript", "Ant Design", "SCSS Modules", "TanStack Query"],
+    stackDetalhada: ["Next.js 16 (App Router)", "TypeScript", "Ant Design v6", "SCSS Modules", "TanStack Query v5", "Zustand", "React Hook Form + Zod", "ApexCharts", "Motion", "Docker"],
+    i18n: {
+      "en-us": {
+        destaque: "CRM",
+        status: "In production",
+        resumo: "Sales CRM for a consortium consultancy.",
+        descricao: "Votre sells real estate, vehicle and investment consortium quotas as a representative of partner administrators. The CRM is its commercial operating system: lead origin, service, the sale, the post-sale portfolio and the commission, in one place, owned by the company and not by the consultant's phone.",
+        descricaoResumida: "The commercial operating system of a consortium consultancy: sales funnel, quota portfolio, commissions and goals.",
+        metricas: [
+          { label: "Domain", valor: "Consortiums" },
+          { label: "Scope", valor: "Funnel · portfolio · commission" },
+          { label: "UI", valor: "Ant Design v6" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end of the CRM: sales funnel, contact card, quota portfolio, commissions and goals",
+          "Design system on top of Ant Design, with wrappers instead of raw components in the features",
+          "Money handled as integer cents across the front-end",
+          "Compliance rule: no generated material can promise a contemplation date",
+        ],
+        insights: {
+          desafio: "The sale doesn't end at signing: commission is paid in installments and can be reversed if the customer cancels early.",
+          solucao: "Portfolio and post-sale as part of the product, with provisioned, realized and reversal risk visible before the fact.",
+          resultado: "Customer history and commission forecasts owned by the company in a single system.",
+        },
+        evolucao: ["Complex domain modeling in the front-end", "Design system over a component library", "Compliance as a product requirement"],
+      },
+      "pt-br": {
+        destaque: "CRM",
+        status: "Em produção",
+        resumo: "CRM comercial de uma consultoria de consórcios.",
+        descricao: "A Votre vende cotas de consórcio de imóvel, veículo e investimento como representante de administradoras parceiras. O CRM é o sistema operacional comercial dela: a origem do lead, o atendimento, a venda, a carteira no pós-venda e a comissão, num só lugar, pertencendo à empresa e não ao celular do consultor.",
+        descricaoResumida: "O sistema operacional comercial de uma consultoria de consórcios: funil de vendas, carteira de cotas, comissionamento e metas.",
+        metricas: [
+          { label: "Domínio", valor: "Consórcios" },
+          { label: "Escopo", valor: "Funil · carteira · comissão" },
+          { label: "UI", valor: "Ant Design v6" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end do CRM: funil de vendas, cartão do contato, carteira de cotas, comissionamento e metas",
+          "Design system sobre o Ant Design, com wrappers no lugar dos componentes crus nas features",
+          "Dinheiro tratado como inteiro em centavos em todo o front",
+          "Regra de compliance: nenhum material gerado pode prometer data de contemplação",
+        ],
+        insights: {
+          desafio: "A venda não termina na assinatura: a comissão é paga em parcelas e pode ser estornada se o cliente cancelar cedo.",
+          solucao: "Carteira e pós-venda como parte do produto, com provisionado, realizado e risco de estorno visíveis antes do fato.",
+          resultado: "Histórico do cliente e previsão de comissão pertencendo à empresa, num sistema único.",
+        },
+        evolucao: ["Modelagem de domínio complexo no front-end", "Design system sobre biblioteca de componentes", "Compliance como requisito de produto"],
+      },
+      "fr-fr": {
+        destaque: "CRM",
+        status: "En production",
+        resumo: "CRM commercial d’un cabinet de conseil en consortiums.",
+        descricao: "Votre vend des parts de consortium immobilier, automobile et d’investissement en tant que représentant d’administrateurs partenaires. Le CRM est son système d’exploitation commercial : l’origine du lead, l’accompagnement, la vente, le portefeuille après-vente et la commission, en un seul endroit, appartenant à l’entreprise et non au téléphone du consultant.",
+        descricaoResumida: "Le système d’exploitation commercial d’un cabinet de consortiums : entonnoir de vente, portefeuille de parts, commissions et objectifs.",
+        metricas: [
+          { label: "Domaine", valor: "Consortiums" },
+          { label: "Périmètre", valor: "Entonnoir · portefeuille · commission" },
+          { label: "UI", valor: "Ant Design v6" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end du CRM : entonnoir de vente, fiche contact, portefeuille de parts, commissions et objectifs",
+          "Design system sur Ant Design, avec des wrappers au lieu des composants bruts dans les features",
+          "Montants traités en centimes entiers dans tout le front",
+          "Règle de conformité : aucun document généré ne peut promettre de date de contemplation",
+        ],
+        insights: {
+          desafio: "La vente ne s’arrête pas à la signature : la commission est payée en plusieurs fois et peut être annulée si le client résilie tôt.",
+          solucao: "Portefeuille et après-vente intégrés au produit, avec provisionné, réalisé et risque d’annulation visibles à l’avance.",
+          resultado: "Historique client et prévision de commission appartenant à l’entreprise, dans un seul système.",
+        },
+        evolucao: ["Modélisation d’un domaine complexe côté front", "Design system sur une bibliothèque de composants", "La conformité comme exigence produit"],
+      },
+    },
+  },
+  {
+    id: "haber-contabilidade",
+    tipo: "profissional",
+    categoria: "sistema",
+    nome: "Haber Contabilidade",
+    logoEmpresa: "/assets/projects/haber-contabil-icon.png",
+    logoEmpresaBackground: "#ffffff",
+    plataformas: {
+      web: { imagem: "/assets/projects/haber-contabilidade-web.jpg", link: "https://habercontabilidade.com.br/" },
+      mobile: { imagem: "", link: "" },
+    },
+    tecnologias: ["Next.js", "React", "TypeScript", "CSS Modules", "TanStack Query", "Laravel (PHP)"],
+    stackDetalhada: ["Next.js 15 (App Router)", "React 19", "TypeScript", "CSS Modules", "TanStack Query", "Laravel 12 (API REST, JWT)", "Banco Inter (boletos)"],
+    i18n: {
+      "en-us": {
+        destaque: "Platform",
+        status: "In production",
+        resumo: "Website, client portal and admin panel for an accounting firm.",
+        descricao: "Platform for the Haber accounting firm: an institutional website with a contact form, a logged-in portal for client companies (profile, address, partners, payments) and an admin panel for the internal team: clients, payments, bank slips integrated with Banco Inter, debt collection, company documents, income tax and areas per role (HR, tax, finance).",
+        descricaoResumida: "Accounting firm platform: website, client portal and admin panel with bank slips, collections and documents.",
+        metricas: [
+          { label: "Apps", valor: "Site · portal · admin" },
+          { label: "Back-end", valor: "Laravel 12 API" },
+          { label: "Bank", valor: "Banco Inter slips" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end of the website, the client portal and the admin panel",
+          "Admin flows for payments, bank slips, collections and company documents",
+          "Integration with the Laravel REST API with JWT authentication",
+          "Design system with themes and CSS rules for the front-end",
+        ],
+        insights: {
+          desafio: "Bring the firm's website, its clients and its internal team into the same platform, with financial flows tied to a bank.",
+          solucao: "A monorepo with an independent Laravel API and Next.js front-end, layered domain and bank-slip integration with Banco Inter.",
+          resultado: "Clients, payments and documents managed in one place by the firm.",
+        },
+        evolucao: ["Financial flows integrated with a bank", "Role-based admin areas", "Monorepo with independent apps"],
+      },
+      "pt-br": {
+        destaque: "Plataforma",
+        status: "Em produção",
+        resumo: "Site, portal do cliente e painel administrativo de um escritório contábil.",
+        descricao: "Plataforma do escritório contábil Haber: site institucional com formulário de contato, portal logado para as empresas clientes (perfil, endereço, sócios, pagamentos) e painel administrativo para a equipe interna: clientes, pagamentos, boletos integrados ao Banco Inter, cobrança, documentos por empresa, imposto de renda e áreas por perfil (RH, fiscal, financeiro).",
+        descricaoResumida: "Plataforma de escritório contábil: site, portal do cliente e painel administrativo com boletos, cobrança e documentos.",
+        metricas: [
+          { label: "Apps", valor: "Site · portal · admin" },
+          { label: "Back-end", valor: "API Laravel 12" },
+          { label: "Banco", valor: "Boletos Banco Inter" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end do site, do portal do cliente e do painel administrativo",
+          "Fluxos administrativos de pagamentos, boletos, cobrança e documentos por empresa",
+          "Integração com a API REST em Laravel, com autenticação JWT",
+          "Design system com temas e regras de CSS do front-end",
+        ],
+        insights: {
+          desafio: "Reunir o site do escritório, os clientes e a equipe interna na mesma plataforma, com fluxos financeiros ligados a um banco.",
+          solucao: "Monorepo com API Laravel e front-end Next.js independentes, domínio em camadas e boletos integrados ao Banco Inter.",
+          resultado: "Clientes, pagamentos e documentos geridos pelo escritório num só lugar.",
+        },
+        evolucao: ["Fluxos financeiros integrados a banco", "Áreas administrativas por perfil", "Monorepo com aplicações independentes"],
+      },
+      "fr-fr": {
+        destaque: "Plateforme",
+        status: "En production",
+        resumo: "Site, portail client et back-office d’un cabinet comptable.",
+        descricao: "Plateforme du cabinet comptable Haber : un site institutionnel avec formulaire de contact, un portail connecté pour les entreprises clientes (profil, adresse, associés, paiements) et un back-office pour l’équipe interne : clients, paiements, boletos intégrés à la Banco Inter, recouvrement, documents par entreprise, impôt sur le revenu et espaces par profil (RH, fiscal, finance).",
+        descricaoResumida: "Plateforme de cabinet comptable : site, portail client et back-office avec boletos, recouvrement et documents.",
+        metricas: [
+          { label: "Apps", valor: "Site · portail · admin" },
+          { label: "Back-end", valor: "API Laravel 12" },
+          { label: "Banque", valor: "Boletos Banco Inter" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Front-end du site, du portail client et du back-office",
+          "Parcours d’administration des paiements, boletos, recouvrement et documents",
+          "Intégration à l’API REST Laravel avec authentification JWT",
+          "Design system avec thèmes et règles CSS du front-end",
+        ],
+        insights: {
+          desafio: "Réunir le site du cabinet, ses clients et son équipe interne sur une même plateforme, avec des flux financiers liés à une banque.",
+          solucao: "Un monorepo avec API Laravel et front-end Next.js indépendants, domaine en couches et boletos intégrés à la Banco Inter.",
+          resultado: "Clients, paiements et documents gérés au même endroit par le cabinet.",
+        },
+        evolucao: ["Flux financiers intégrés à une banque", "Espaces d’administration par profil", "Monorepo avec applications indépendantes"],
+      },
+    },
+  },
+  {
+    id: "habersolutions",
+    tipo: "profissional",
+    categoria: "sistema",
+    nome: "Haber Solutions",
+    logoEmpresa: "/assets/projects/habersolutions-icon.png",
+    logoEmpresaBackground: "#064e3b",
+    plataformas: {
+      web: { imagem: "/assets/projects/habersolutions-web.jpg", link: "https://habersolutions.com.br/" },
+      mobile: { imagem: "", link: "" },
+    },
+    tecnologias: ["React", "React Router", "TypeScript", "Tailwind CSS", "Vite", "Laravel (PHP)"],
+    stackDetalhada: ["React Router 7 (framework, SSR)", "React 19", "TypeScript", "Tailwind CSS v4", "Vite", "Laravel API", "Docker"],
+    i18n: {
+      "en-us": {
+        destaque: "Website + panel",
+        status: "In production",
+        resumo: "Website and internal panel for a custom software house.",
+        descricao: "Haber Solutions builds custom software for companies. The project has a server-rendered landing page (full HTML for Google, with meta tags, Open Graph and structured data) and a login-only internal panel for the team: projects, leads, tasks, schedule, credentials, links and history, consuming a Laravel API.",
+        descricaoResumida: "Server-rendered landing page for a software house and an internal panel for projects, leads, tasks and schedule.",
+        metricas: [
+          { label: "Apps", valor: "Landing · panel" },
+          { label: "Rendering", valor: "SSR for SEO" },
+          { label: "Back-end", valor: "Laravel API" },
+          { label: "Platform", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Landing page rendered on the server, with SEO metadata and structured data",
+          "Internal panel: projects, leads, tasks, schedule, credentials and users",
+          "Mock mode with a fake back-end for developing the panel without the API",
+          "Integration with the Laravel API and the landing page's tracking scripts",
+        ],
+        insights: {
+          desafio: "A landing page that ranks on Google and an internal tool for the team, in the same app.",
+          solucao: "React Router 7 in framework mode: SSR for the landing page and a client-side panel behind login, with a documented API contract.",
+          resultado: "The company's site and the team's day-to-day tool in one codebase.",
+        },
+        evolucao: ["Server-side rendering for SEO", "Internal tools for a small team", "API contracts kept in sync with Postman"],
+      },
+      "pt-br": {
+        destaque: "Site + painel",
+        status: "Em produção",
+        resumo: "Site e painel interno de uma software house de software sob medida.",
+        descricao: "A Haber Solutions desenvolve software sob medida para empresas. O projeto tem uma landing page renderizada no servidor (HTML completo para o Google, com meta tags, Open Graph e dados estruturados) e um painel interno só com login, para a equipe: projetos, leads, tarefas, agenda, credenciais, links e histórico, consumindo uma API Laravel.",
+        descricaoResumida: "Landing page com SSR de uma software house e painel interno de projetos, leads, tarefas e agenda.",
+        metricas: [
+          { label: "Apps", valor: "Landing · painel" },
+          { label: "Renderização", valor: "SSR para SEO" },
+          { label: "Back-end", valor: "API Laravel" },
+          { label: "Plataforma", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Landing page renderizada no servidor, com metadados de SEO e dados estruturados",
+          "Painel interno: projetos, leads, tarefas, agenda, credenciais e usuários",
+          "Modo mock com back-end falso para desenvolver o painel sem a API",
+          "Integração com a API Laravel e com os scripts de tracking da landing",
+        ],
+        insights: {
+          desafio: "Uma landing que aparece no Google e uma ferramenta interna para a equipe, no mesmo app.",
+          solucao: "React Router 7 no modo framework: SSR para a landing e painel no cliente atrás de login, com o contrato da API documentado.",
+          resultado: "O site da empresa e a ferramenta do dia a dia da equipe numa base de código só.",
+        },
+        evolucao: ["Renderização no servidor para SEO", "Ferramentas internas para equipe pequena", "Contrato de API sincronizado com o Postman"],
+      },
+      "fr-fr": {
+        destaque: "Site + panneau",
+        status: "En production",
+        resumo: "Site et panneau interne d’une société de logiciels sur mesure.",
+        descricao: "Haber Solutions développe des logiciels sur mesure pour les entreprises. Le projet comprend une landing page rendue côté serveur (HTML complet pour Google, avec balises meta, Open Graph et données structurées) et un panneau interne accessible uniquement par connexion, pour l’équipe : projets, leads, tâches, agenda, identifiants, liens et historique, via une API Laravel.",
+        descricaoResumida: "Landing page en SSR d’une société de logiciels et panneau interne de projets, leads, tâches et agenda.",
+        metricas: [
+          { label: "Apps", valor: "Landing · panneau" },
+          { label: "Rendu", valor: "SSR pour le SEO" },
+          { label: "Back-end", valor: "API Laravel" },
+          { label: "Plateforme", valor: "Web" },
+        ],
+        responsabilidade: [
+          "Landing page rendue côté serveur, avec métadonnées SEO et données structurées",
+          "Panneau interne : projets, leads, tâches, agenda, identifiants et utilisateurs",
+          "Mode mock avec un faux back-end pour développer le panneau sans l’API",
+          "Intégration à l’API Laravel et aux scripts de tracking de la landing",
+        ],
+        insights: {
+          desafio: "Une landing qui se positionne sur Google et un outil interne pour l’équipe, dans la même application.",
+          solucao: "React Router 7 en mode framework : SSR pour la landing et panneau côté client derrière une connexion, avec un contrat d’API documenté.",
+          resultado: "Le site de l’entreprise et l’outil quotidien de l’équipe dans une seule base de code.",
+        },
+        evolucao: ["Rendu côté serveur pour le SEO", "Outils internes pour une petite équipe", "Contrat d’API synchronisé avec Postman"],
+      },
+    },
+  },
   {
     id: "chaves-e-chaves",
     tipo: "profissional",
@@ -92,7 +733,7 @@ export const MOCK_PROJECTS = [
     stackDetalhada: ["TypeScript", "React", "Next.js", "Node.js", "REST API", "Postman", "Tailwind CSS", "shadcn/ui"],
     i18n: {
       "en-us": {
-        destaque: "Featured project — enterprise system",
+        destaque: "Featured project: enterprise system",
         status: "Delivered · in production",
         resumo: "System for real estate management, client service and internal processes.",
         descricao:
@@ -106,14 +747,14 @@ export const MOCK_PROJECTS = [
           { label: "Platform", valor: "Web" },
         ],
         responsabilidade: [
-          "Project run by me and two partners, with no external staff — from signing the contract to production delivery",
-          "Architecture and full front-end development — component structure, routing and navigation flows",
+          "Project run by me and two partners, with no external staff, from signing the contract to production delivery",
+          "Architecture and full front-end development: component structure, routing and navigation flows",
           "Integration with the REST API built by the back-end devs, including authentication and state handling",
-          "UI/UX decisions — prototyping the main screens and validating them with the client during development",
+          "UI/UX decisions: prototyping the main screens and validating them with the client during development",
           "Modules delivered: property registration, service dashboard, operational tracking and customer history",
         ],
         insights: {
-          desafio: "A real estate agency with no visibility into its sales funnel — client service and customer history scattered across spreadsheets and WhatsApp.",
+          desafio: "A real estate agency with no visibility into its sales funnel: client service and customer history scattered across spreadsheets and WhatsApp.",
           solucao: "Complete front-end with modules split by domain (properties, client service, operations), integrated with the back-end REST API with authentication and consistent states.",
           resultado: "The system replaced manual control via spreadsheets and WhatsApp, centralizing customer history and the service funnel on a single platform. It is in daily use by the agency's team.",
         },
@@ -133,7 +774,7 @@ export const MOCK_PROJECTS = [
         ],
       },
       "pt-br": {
-        destaque: "Projeto destaque — sistema empresarial",
+        destaque: "Projeto destaque: sistema empresarial",
         status: "Entregue · em produção",
         resumo: "Sistema para gestão imobiliária, atendimentos e processos internos.",
         descricao:
@@ -147,14 +788,14 @@ export const MOCK_PROJECTS = [
           { label: "Plataforma", valor: "Web" },
         ],
         responsabilidade: [
-          "Projeto conduzido por mim e mais dois sócios, sem staff externo — do acerto de contrato à entrega em produção",
-          "Arquitetura e desenvolvimento completo do front-end — estrutura de componentes, roteamento e fluxos de navegação",
+          "Projeto conduzido por mim e mais dois sócios, sem staff externo, do acerto de contrato à entrega em produção",
+          "Arquitetura e desenvolvimento completo do front-end: estrutura de componentes, roteamento e fluxos de navegação",
           "Integração com API REST construída pelos devs back-end, incluindo autenticação e tratamento de estados",
-          "Decisões de UI/UX — prototipagem das telas principais e validação com o cliente durante o desenvolvimento",
+          "Decisões de UI/UX: prototipagem das telas principais e validação com o cliente durante o desenvolvimento",
           "Módulos entregues: cadastro de imóveis, painel de atendimentos, acompanhamento operacional e histórico de clientes",
         ],
         insights: {
-          desafio: "Imobiliária sem visibilidade do funil de vendas — atendimentos e histórico de clientes espalhados em planilhas e WhatsApp.",
+          desafio: "Imobiliária sem visibilidade do funil de vendas: atendimentos e histórico de clientes espalhados em planilhas e WhatsApp.",
           solucao: "Front-end completo com módulos separados por domínio (imóveis, atendimentos, operacional), integrado a API REST do back-end com autenticação e estados consistentes.",
           resultado: "Sistema substituiu o controle manual por planilha e WhatsApp, centralizando histórico de clientes e funil de atendimentos em uma plataforma única. Hoje em uso pela equipe da imobiliária.",
         },
@@ -174,7 +815,7 @@ export const MOCK_PROJECTS = [
         ],
       },
       "fr-fr": {
-        destaque: "Projet phare — système d'entreprise",
+        destaque: "Projet phare : système d'entreprise",
         status: "Livré · en production",
         resumo: "Système de gestion immobilière, de suivi client et de processus internes.",
         descricao:
@@ -188,14 +829,14 @@ export const MOCK_PROJECTS = [
           { label: "Plateforme", valor: "Web" },
         ],
         responsabilidade: [
-          "Projet mené par moi et deux associés, sans équipe externe — du contrat à la mise en production",
-          "Architecture et développement complet du front-end — structure des composants, routage et flux de navigation",
+          "Projet mené par moi et deux associés, sans équipe externe, du contrat à la mise en production",
+          "Architecture et développement complet du front-end : structure des composants, routage et flux de navigation",
           "Intégration de l'API REST construite par les devs back-end, avec authentification et gestion des états",
-          "Décisions UI/UX — prototypage des écrans principaux et validation avec le client pendant le développement",
+          "Décisions UI/UX : prototypage des écrans principaux et validation avec le client pendant le développement",
           "Modules livrés : enregistrement des biens, tableau de suivi client, suivi opérationnel et historique client",
         ],
         insights: {
-          desafio: "Agence immobilière sans visibilité sur son tunnel de vente — suivi client et historique dispersés entre tableurs et WhatsApp.",
+          desafio: "Agence immobilière sans visibilité sur son tunnel de vente : suivi client et historique dispersés entre tableurs et WhatsApp.",
           solucao: "Front-end complet avec des modules séparés par domaine (biens, suivi client, opérations), intégré à l'API REST du back-end avec authentification et états cohérents.",
           resultado: "Le système a remplacé le contrôle manuel par tableurs et WhatsApp, centralisant l'historique client et le tunnel de suivi sur une plateforme unique. Il est aujourd'hui utilisé au quotidien par l'équipe de l'agence.",
         },
@@ -222,7 +863,7 @@ export const MOCK_PROJECTS = [
     categoria: "sistema",
     nome: "360erp",
     logoEmpresa: "/assets/projects/erp-icon.png",
-    logoEmpresaSemPadding: true,
+    logoEmpresaBackground: "#0141ac",
     plataformas: {
       web: { imagem: "/assets/projects/360.png", link: "https://app.360erp.com.br/" },
       mobile: { imagem: "/assets/projects/erp-app-1.PNG", link: "" },
@@ -247,11 +888,11 @@ export const MOCK_PROJECTS = [
     stackDetalhada: ["TypeScript", "Next.js", "Tailwind CSS", "Vercel", "React", "Flutter", "Dart", "MUI", "REST API"],
     i18n: {
       "en-us": {
-        destaque: "Legacy ERP — web + mobile",
+        destaque: "Legacy ERP, web + mobile",
         status: "In production · active client base",
         resumo: "Full ERP with POS, service orders, e-commerce, tax, finance and logistics modules.",
         descricao:
-          "Full ERP with POS, service orders, e-commerce, tax, finance and logistics modules — a legacy system in production with an active client base. I joined the front-end team, responsible for the evolutionary maintenance of the web interface and for the mobile app.",
+          "Full ERP with POS, service orders, e-commerce, tax, finance and logistics modules, a legacy system in production with an active client base. I joined the front-end team, responsible for the evolutionary maintenance of the web interface and for the mobile app.",
         descricaoResumida:
           "I worked on the web front-end and was the main maintainer of the Flutter mobile app, evolving critical modules of a legacy ERP in production.",
         metricas: [
@@ -261,9 +902,9 @@ export const MOCK_PROJECTS = [
           { label: "System", valor: "Legacy ERP" },
         ],
         responsabilidade: [
-          "Visual modernization of the web interface — reviewing existing pages and components for a more consistent, up-to-date UI",
+          "Visual modernization of the web interface: reviewing existing pages and components for a more consistent, up-to-date UI",
           "Development of new modules: recurring plans, consignment, production module and sales flow",
-          "Main maintainer of the Flutter mobile app — bug fixes, flow adjustments and production stability",
+          "Main maintainer of the Flutter mobile app: bug fixes, flow adjustments and production stability",
           "Working on a highly complex legacy system, shipping continuously without impacting existing features",
         ],
         insights: {
@@ -287,11 +928,11 @@ export const MOCK_PROJECTS = [
         ],
       },
       "pt-br": {
-        destaque: "ERP legado — web + mobile",
+        destaque: "ERP legado, web + mobile",
         status: "Em produção · base ativa",
         resumo: "ERP completo com módulos de PDV, OS, e-commerce, fiscal, financeiro e logística.",
         descricao:
-          "ERP completo com módulos de PDV, OS, e-commerce, fiscal, financeiro e logística — sistema legado em produção com base ativa de clientes. Entrei para compor o time de front-end, responsável pela manutenção evolutiva da interface web e pelo app mobile.",
+          "ERP completo com módulos de PDV, OS, e-commerce, fiscal, financeiro e logística, sistema legado em produção com base ativa de clientes. Entrei para compor o time de front-end, responsável pela manutenção evolutiva da interface web e pelo app mobile.",
         descricaoResumida:
           "Atuei no front-end web e na manutenção principal do app mobile em Flutter, evoluindo módulos críticos de um ERP legado em produção.",
         metricas: [
@@ -301,9 +942,9 @@ export const MOCK_PROJECTS = [
           { label: "Sistema", valor: "ERP legado" },
         ],
         responsabilidade: [
-          "Modernização visual da interface web — revisão de páginas e componentes existentes com foco em UI mais consistente e atual",
+          "Modernização visual da interface web: revisão de páginas e componentes existentes com foco em UI mais consistente e atual",
           "Desenvolvimento de novos módulos: plano de recorrência, consignado, módulo de produção e fluxo de venda",
-          "Manutenção principal do app mobile em Flutter — correção de bugs, ajustes de fluxo e estabilidade em produção",
+          "Manutenção principal do app mobile em Flutter: correção de bugs, ajustes de fluxo e estabilidade em produção",
           "Atuação em sistema legado de alta complexidade, com entrega contínua sem impacto nas funcionalidades existentes",
         ],
         insights: {
@@ -327,11 +968,11 @@ export const MOCK_PROJECTS = [
         ],
       },
       "fr-fr": {
-        destaque: "ERP legacy — web + mobile",
+        destaque: "ERP legacy, web + mobile",
         status: "En production · base client active",
         resumo: "ERP complet avec modules PDV, ordres de service, e-commerce, fiscal, finance et logistique.",
         descricao:
-          "ERP complet avec modules PDV, ordres de service, e-commerce, fiscal, finance et logistique — système legacy en production avec une base client active. J'ai rejoint l'équipe front-end, en charge de la maintenance évolutive de l'interface web et de l'app mobile.",
+          "ERP complet avec modules PDV, ordres de service, e-commerce, fiscal, finance et logistique, système legacy en production avec une base client active. J'ai rejoint l'équipe front-end, en charge de la maintenance évolutive de l'interface web et de l'app mobile.",
         descricaoResumida:
           "J'ai travaillé sur le front-end web et assuré la maintenance principale de l'app mobile en Flutter, en faisant évoluer des modules critiques d'un ERP legacy en production.",
         metricas: [
@@ -341,9 +982,9 @@ export const MOCK_PROJECTS = [
           { label: "Système", valor: "ERP legacy" },
         ],
         responsabilidade: [
-          "Modernisation visuelle de l'interface web — révision des pages et composants existants pour une UI plus cohérente et actuelle",
+          "Modernisation visuelle de l'interface web : révision des pages et composants existants pour une UI plus cohérente et actuelle",
           "Développement de nouveaux modules : plan de récurrence, consignation, module de production et flux de vente",
-          "Maintenance principale de l'app mobile en Flutter — correction de bugs, ajustements de flux et stabilité en production",
+          "Maintenance principale de l'app mobile en Flutter : correction de bugs, ajustements de flux et stabilité en production",
           "Intervention sur un système legacy très complexe, avec livraison continue et sans impact sur les fonctionnalités existantes",
         ],
         insights: {
@@ -371,7 +1012,7 @@ export const MOCK_PROJECTS = [
   {
     id: "levita-massagens",
     tipo: "profissional",
-    categoria: "web",
+    categoria: "lp",
     nome: "Levita Massagens",
     logoEmpresa: "/assets/projects/levita-icon.png",
     logoEmpresaBackground: "#2a4937",
@@ -387,11 +1028,11 @@ export const MOCK_PROJECTS = [
     stackDetalhada: ["TypeScript", "React", "Vite", "Tailwind CSS"],
     i18n: {
       "en-us": {
-        destaque: "First international engagement — Lisbon",
+        destaque: "First international engagement: Lisbon",
         status: "Delivered · 7 business days",
         resumo: "Landing page to present services and capture contacts.",
         descricao:
-          "A client in Lisbon was running on a website built in Canva — visually limited and with no structure to grow. I built a professional landing page with an architecture ready to scale, allowing future pages and modules such as booking and CRM to be added without refactoring.",
+          "A client in Lisbon was running on a website built in Canva, visually limited and with no structure to grow. I built a professional landing page with an architecture ready to scale, allowing future pages and modules such as booking and CRM to be added without refactoring.",
         descricaoResumida:
           "A client in Lisbon was running on a Canva-built website. I built a professional landing page with an architecture ready to scale, allowing future pages and modules without refactoring.",
         metricas: [
@@ -401,10 +1042,10 @@ export const MOCK_PROJECTS = [
           { label: "Platform", valor: "Web" },
         ],
         responsabilidade: [
-          "Complete project — from requirements gathering to delivery, including contract, client communication and deadline management",
+          "Complete project, from requirements gathering to delivery, including contract, client communication and deadline management",
           "Responsive layout for mobile and desktop, faithful to the brand's visual identity",
-          "Project architecture structured to scale — new pages and modules such as booking and CRM without refactoring",
-          "First international engagement — client in Lisbon, contract in euros, communication in European Portuguese",
+          "Project architecture structured to scale: new pages and modules such as booking and CRM without refactoring",
+          "First international engagement: client in Lisbon, contract in euros, communication in European Portuguese",
         ],
         insights: {
           desafio: "Replace a Canva-built website with a professional digital presence, with a more consistent look and a structure ready to grow.",
@@ -423,11 +1064,11 @@ export const MOCK_PROJECTS = [
         ],
       },
       "pt-br": {
-        destaque: "Primeiro serviço internacional — Lisboa",
+        destaque: "Primeiro serviço internacional: Lisboa",
         status: "Entregue · 7 dias úteis",
         resumo: "Landing page para apresentação de serviços e captação de contatos.",
         descricao:
-          "Cliente em Lisboa operava com site feito no Canva — limitado visualmente e sem estrutura para crescer. Desenvolvi uma landing page profissional com arquitetura preparada para escalar, permitindo adicionar páginas e módulos futuros como agendamento e CRM sem necessidade de refatoração.",
+          "Cliente em Lisboa operava com site feito no Canva, limitado visualmente e sem estrutura para crescer. Desenvolvi uma landing page profissional com arquitetura preparada para escalar, permitindo adicionar páginas e módulos futuros como agendamento e CRM sem necessidade de refatoração.",
         descricaoResumida:
           "Cliente em Lisboa operava com site feito no Canva. Desenvolvi uma landing page profissional com arquitetura preparada para escalar, permitindo adicionar páginas e módulos futuros sem refatoração.",
         metricas: [
@@ -437,10 +1078,10 @@ export const MOCK_PROJECTS = [
           { label: "Plataforma", valor: "Web" },
         ],
         responsabilidade: [
-          "Projeto completo — do levantamento de requisitos à entrega, incluindo contrato, comunicação com o cliente e gestão de prazo",
+          "Projeto completo, do levantamento de requisitos à entrega, incluindo contrato, comunicação com o cliente e gestão de prazo",
           "Layout responsivo para mobile e desktop, fiel à identidade visual do negócio",
-          "Arquitetura do projeto estruturada para escalar — novas páginas e módulos como agendamento e CRM sem refatoração",
-          "Primeiro serviço internacional — cliente em Lisboa, contrato em euros, comunicação em português europeu",
+          "Arquitetura do projeto estruturada para escalar: novas páginas e módulos como agendamento e CRM sem refatoração",
+          "Primeiro serviço internacional: cliente em Lisboa, contrato em euros, comunicação em português europeu",
         ],
         insights: {
           desafio: "Substituir um site feito no Canva por uma presença digital profissional, com visual mais consistente e estrutura pronta para crescimento.",
@@ -459,11 +1100,11 @@ export const MOCK_PROJECTS = [
         ],
       },
       "fr-fr": {
-        destaque: "Première mission internationale — Lisbonne",
+        destaque: "Première mission internationale : Lisbonne",
         status: "Livré · 7 jours ouvrés",
         resumo: "Landing page de présentation des services et de captation de contacts.",
         descricao:
-          "Un client à Lisbonne fonctionnait avec un site fait sur Canva — visuellement limité et sans structure pour évoluer. J'ai développé une landing page professionnelle avec une architecture prête à évoluer, permettant d'ajouter des pages et modules futurs comme la réservation et le CRM sans refonte.",
+          "Un client à Lisbonne fonctionnait avec un site fait sur Canva, visuellement limité et sans structure pour évoluer. J'ai développé une landing page professionnelle avec une architecture prête à évoluer, permettant d'ajouter des pages et modules futurs comme la réservation et le CRM sans refonte.",
         descricaoResumida:
           "Un client à Lisbonne fonctionnait avec un site fait sur Canva. J'ai développé une landing page professionnelle avec une architecture prête à évoluer, permettant d'ajouter des pages et modules futurs sans refonte.",
         metricas: [
@@ -473,10 +1114,10 @@ export const MOCK_PROJECTS = [
           { label: "Plateforme", valor: "Web" },
         ],
         responsabilidade: [
-          "Projet complet — du recueil des besoins à la livraison, contrat, communication client et gestion des délais inclus",
+          "Projet complet, du recueil des besoins à la livraison, contrat, communication client et gestion des délais inclus",
           "Mise en page responsive mobile et desktop, fidèle à l'identité visuelle de l'activité",
-          "Architecture du projet structurée pour évoluer — nouvelles pages et modules comme la réservation et le CRM sans refonte",
-          "Première mission internationale — client à Lisbonne, contrat en euros, communication en portugais européen",
+          "Architecture du projet structurée pour évoluer : nouvelles pages et modules comme la réservation et le CRM sans refonte",
+          "Première mission internationale : client à Lisbonne, contrat en euros, communication en portugais européen",
         ],
         insights: {
           desafio: "Remplacer un site fait sur Canva par une présence numérique professionnelle, au visuel plus cohérent et à la structure prête pour la croissance.",
@@ -499,7 +1140,7 @@ export const MOCK_PROJECTS = [
   {
     id: "newline-persianas",
     tipo: "profissional",
-    categoria: "web",
+    categoria: "lp",
     nome: "NewLine Persianas",
     logoEmpresa: "/assets/projects/newline-icon.png",
     logoEmpresaSemPadding: true,
@@ -516,7 +1157,7 @@ export const MOCK_PROJECTS = [
     stackDetalhada: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "React"],
     i18n: {
       "en-us": {
-        destaque: "Commercial landing page — digital presence",
+        destaque: "Commercial landing page: digital presence",
         status: "Delivered · from scratch",
         resumo: "Landing page for catalog, materials and quote requests.",
         descricao:
@@ -530,7 +1171,7 @@ export const MOCK_PROJECTS = [
           { label: "Platform", valor: "Web" },
         ],
         responsabilidade: [
-          "Complete landing page development — structure, layout, responsiveness and publishing the site",
+          "Complete landing page development: structure, layout, responsiveness and publishing the site",
           "Organizing institutional content to present products, maintenance, applications, differentiators and quotes in a single journey",
           "Creating a concrete digital presence for a company that had no structured website yet",
           "Focus on widening reach and easing first commercial contact through the form, WhatsApp and direct channels",
@@ -552,7 +1193,7 @@ export const MOCK_PROJECTS = [
         ],
       },
       "pt-br": {
-        destaque: "Landing page comercial — presença digital",
+        destaque: "Landing page comercial: presença digital",
         status: "Entregue · do zero",
         resumo: "Landing page para catálogo, materiais e pedido de orçamento.",
         descricao:
@@ -566,7 +1207,7 @@ export const MOCK_PROJECTS = [
           { label: "Plataforma", valor: "Web" },
         ],
         responsabilidade: [
-          "Desenvolvimento completo da landing page — estrutura, layout, responsividade e publicação do site",
+          "Desenvolvimento completo da landing page: estrutura, layout, responsividade e publicação do site",
           "Organização do conteúdo institucional para apresentar produtos, manutenção, aplicações, diferenciais e orçamento em uma jornada única",
           "Criação de uma presença digital concreta para uma empresa que ainda não tinha site estruturado",
           "Foco em ampliar alcance e facilitar o primeiro contato comercial por formulário, WhatsApp e canais diretos",
@@ -588,7 +1229,7 @@ export const MOCK_PROJECTS = [
         ],
       },
       "fr-fr": {
-        destaque: "Landing page commerciale — présence numérique",
+        destaque: "Landing page commerciale : présence numérique",
         status: "Livré · depuis zéro",
         resumo: "Landing page pour catalogue, matériaux et demande de devis.",
         descricao:
@@ -602,7 +1243,7 @@ export const MOCK_PROJECTS = [
           { label: "Plateforme", valor: "Web" },
         ],
         responsabilidade: [
-          "Développement complet de la landing page — structure, mise en page, responsive et mise en ligne du site",
+          "Développement complet de la landing page : structure, mise en page, responsive et mise en ligne du site",
           "Organisation du contenu institutionnel pour présenter produits, maintenance, applications, atouts et devis en un parcours unique",
           "Création d'une présence numérique concrète pour une entreprise qui n'avait pas encore de site structuré",
           "Objectif : élargir la portée et faciliter le premier contact commercial par formulaire, WhatsApp et canaux directs",
@@ -633,128 +1274,144 @@ export const MOCK_PROJECTS = [
     logoEmpresa: "/assets/projects/aprova-icon.png",
     logoEmpresaBackground: "#123d2a",
     plataformas: {
-      web: { imagem: "/assets/projects/aprova-0.png", link: "https://aprovalegal.com/" },
+      web: { imagem: "/assets/projects/aprova-web.jpg", link: "https://aprovalegal.com/" },
       mobile: { imagem: "", link: "" },
     },
     previewImages: {
       web: [
-        "/assets/projects/aprova-0.png",
-        "/assets/projects/aprova-1.png",
-        "/assets/projects/aprova-2.png",
+        "/assets/projects/aprova-web.jpg",
+        "/assets/projects/aprova-numeros.jpg",
+        "/assets/projects/aprova-coberturas.jpg",
+        "/assets/projects/aprova-planos.jpg",
+        "/assets/projects/aprova-login.jpg",
       ],
     },
-    tecnologias: ["HTML5 & CSS3", "Bootstrap", "JavaScript", "Laravel (PHP)", "Figma"],
-    stackDetalhada: ["HTML5", "CSS3", "Bootstrap", "JavaScript", "PHP/Laravel"],
+    tecnologias: ["Next.js", "React", "TypeScript", "MUI", "Tailwind CSS", "TanStack Query", "Motion", "Laravel (PHP)"],
+    stackDetalhada: [
+      "Next.js 15 (App Router)",
+      "React 19",
+      "TypeScript",
+      "MUI",
+      "Tailwind CSS v4",
+      "TanStack Query",
+      "Motion",
+      "Sonner",
+      "REST API (Laravel)",
+      "Docker",
+    ],
     i18n: {
       "en-us": {
-        destaque: "Project — enterprise system",
+        destaque: "Featured project: enterprise system",
         status: "Delivered · in production",
-        resumo: "System for managing rental guarantees, contracts and tenant analysis.",
+        resumo: "Rental guarantee platform: landing page, agency portal and admin back office.",
         descricao:
-          "Aprova Legal ran its rental guarantee processes manually and in a fragmented way. I built the front-end of the internal system that digitized and centralized the whole flow — from tenant analysis to managing active contracts.",
+          "Aprova Legal is a rental guarantee company: it covers rent, charges and termination costs for partner real estate agencies. The first version was a Laravel monolith with Blade screens. I rebuilt the front-end as a decoupled Next.js app consuming the REST API, with three areas: a new landing page, the agency portal and the admin back office.",
         descricaoResumida:
-          "I built the front-end of the internal system that centralized rental guarantees, tenant analysis and active contract management.",
+          "I rebuilt the rental guarantee platform as a decoupled Next.js front-end: landing page, agency portal and admin back office over a REST API.",
         metricas: [
-          { label: "Team", valor: "3 partners" },
-          { label: "Scope", valor: "End to end" },
-          { label: "Build", valor: "From scratch" },
+          { label: "Pages", valor: "115+" },
+          { label: "Portals", valor: "Agency + admin" },
+          { label: "Architecture", valor: "Decoupled" },
           { label: "Platform", valor: "Web" },
         ],
         responsabilidade: [
-          "Project run by me and two partners, with no external staff — from signing the contract to production delivery",
-          "Front-end development integrated with the Laravel back-end — registration screens, analysis flow and operations dashboard",
-          "Building navigation flows and component structure inside the PHP/Laravel architecture",
-          "Screens delivered: contract management, partner agency dashboard, tenant analysis flow and active guarantee tracking",
-          "The project that preceded my move to decoupled architecture — a lesson that drove the use of REST APIs and TypeScript in later projects",
+          "Migration from the Laravel monolith (Blade) to a decoupled Next.js front-end, keeping fields, rules and messages as the API contract",
+          "Agency portal: proposal wizard, credit analysis, facial biometrics, contracts with version history, claims, evictions, renewals and readjustments",
+          "Admin back office: proposals, guarantees, indemnities, settlements, billing forecast, reports, plans and permission-based roles",
+          "Landing page redesigned with its own identity, inspired by certificates and stamps, plus a coverage simulator per plan",
+          "Internal chat for the admin team and an AI assistant inside the claim chat",
         ],
         insights: {
-          desafio: "Rental guarantee processes still manual and fragmented, with tenant analysis, contracts and partner agencies lacking operational centralization.",
-          solucao: "Front-end integrated with Laravel, with registration screens, analysis flow, contract management, agency dashboard and active guarantee tracking.",
-          resultado: "System in production with more than 1,000 active contracts and 95+ partner real estate agencies, managing R$45 million in guaranteed capital. It digitized a formerly manual process, with 100% digital analysis and anti-fraud facial recognition.",
+          desafio: "A Laravel monolith with server-rendered screens and no formal API, which made each new flow slow to build and hard to evolve.",
+          solucao: "A Next.js front-end split into two portals, data hooks per domain with TanStack Query and a proxy route that keeps the tokens in httpOnly cookies.",
+          resultado: "Platform in production with more than 1,000 active contracts and 95+ partner agencies, managing R$45 million in guaranteed capital, now on an architecture that grows one screen at a time.",
         },
-        evolucao: ["Enterprise system flows", "Laravel in real applications", "Moving toward decoupled architecture"],
+        evolucao: ["From monolith to decoupled architecture", "Large-scale TypeScript", "Back offices with granular permissions"],
         decisoesTecnicas: [
-          "Component and navigation structure built inside the existing PHP/Laravel architecture.",
-          "Screens segmented by operational flow: tenant analysis, contracts, partner agencies and active guarantees.",
-          "An experience that exposed the limits of a front-end coupled to Laravel and drove the adoption of REST APIs and TypeScript in later projects.",
+          "Two portals in the same app (agency and admin), each with its own layout, session and permissions.",
+          "A Next.js proxy route to the Laravel API: tokens live in httpOnly cookies, never in localStorage.",
+          "One data hook per domain with TanStack Query, and an admin UI kit (tables, filters, pagination, status badges) shared by every screen.",
+          "Admin can open an agency session (impersonation), with a warning banner in the panel.",
         ],
         desafiosExtras: [
-          "Centralizing rental guarantee processes that previously relied on manual steps.",
-          "Keeping consistency across registration, analysis, tracking and operations screens.",
+          "Migrating screen by screen without stopping an operation already in production.",
+          "Showing each proposal's real stage, derived from credit, biometrics and contract, in both portals.",
         ],
       },
       "pt-br": {
-        destaque: "Projeto — sistema empresarial",
+        destaque: "Projeto destaque: sistema empresarial",
         status: "Entregue · em produção",
-        resumo: "Sistema para gestão de garantias locatícias, contratos e análise de inquilinos.",
+        resumo: "Plataforma de garantia locatícia: landing page, portal da imobiliária e backoffice administrativo.",
         descricao:
-          "A Aprova Legal operava processos de garantia locatícia de forma manual e fragmentada. Desenvolvi o front-end do sistema interno que digitalizou e centralizou o fluxo completo — da análise de inquilino à gestão de contratos ativos.",
+          "A Aprova Legal é uma garantidora locatícia: cobre aluguel, encargos e verbas rescisórias para imobiliárias parceiras. A primeira versão era um monólito Laravel com telas em Blade. Reconstruí o front-end como uma aplicação Next.js desacoplada, consumindo a API REST, com três frentes: a nova landing page, o portal da imobiliária e o backoffice administrativo.",
         descricaoResumida:
-          "Desenvolvi o front-end do sistema interno que centralizou garantias locatícias, análise de inquilinos e gestão de contratos ativos.",
+          "Reconstruí a plataforma de garantia locatícia em um front-end Next.js desacoplado: landing page, portal da imobiliária e backoffice sobre uma API REST.",
         metricas: [
-          { label: "Equipe", valor: "3 sócios" },
-          { label: "Escopo", valor: "Ponta a ponta" },
-          { label: "Construção", valor: "Do zero" },
+          { label: "Páginas", valor: "115+" },
+          { label: "Portais", valor: "Imobiliária + admin" },
+          { label: "Arquitetura", valor: "Desacoplada" },
           { label: "Plataforma", valor: "Web" },
         ],
         responsabilidade: [
-          "Projeto conduzido por mim e mais dois sócios, sem staff externo — do acerto de contrato à entrega em produção",
-          "Desenvolvimento do front-end integrado ao back-end Laravel — interfaces de cadastro, fluxo de análise e painel operacional",
-          "Construção dos fluxos de navegação e estrutura de componentes dentro da arquitetura PHP/Laravel",
-          "Telas entregues: gestão de contratos, painel de imobiliárias parceiras, fluxo de análise de inquilino e acompanhamento de garantias ativas",
-          "Projeto que antecedeu minha especialização em arquitetura desacoplada — aprendizado que direcionou o uso de API REST e TypeScript nos projetos seguintes",
+          "Migração do monólito Laravel (Blade) para um front-end Next.js desacoplado, preservando campos, regras e mensagens como contrato da API",
+          "Portal da imobiliária: wizard de proposta, análise de crédito, biometria facial, contratos com histórico de versões, ocorrências, desocupações, renovações e reajustes",
+          "Backoffice: propostas, garantias, indenizações, acordos, previsão de faturamento, relatórios, planos e perfis com permissões",
+          "Landing page redesenhada com identidade própria, inspirada em certificado e carimbo, e simulador de cobertura por plano",
+          "Chat interno da equipe admin e assistente de IA dentro do chat de ocorrências",
         ],
         insights: {
-          desafio: "Processos de garantia locatícia ainda manuais e fragmentados, com análise de inquilinos, contratos e imobiliárias parceiras sem centralização operacional.",
-          solucao: "Front-end integrado ao Laravel, com telas de cadastro, fluxo de análise, gestão de contratos, painel de imobiliárias e acompanhamento de garantias ativas.",
-          resultado: "Sistema em produção com mais de 1.000 contratos ativos e 95+ imobiliárias parceiras, gerenciando R$45 milhões em capital garantido. Digitalizou um processo antes manual, com análise 100% digital e reconhecimento facial antifraude.",
+          desafio: "Um monólito Laravel com telas renderizadas no servidor e sem API formal, o que deixava cada fluxo novo lento de construir e difícil de evoluir.",
+          solucao: "Front-end em Next.js dividido em dois portais, hooks de dados por domínio com TanStack Query e uma rota de proxy que mantém os tokens em cookies httpOnly.",
+          resultado: "Plataforma em produção com mais de 1.000 contratos ativos e 95+ imobiliárias parceiras, gerenciando R$45 milhões em capital garantido, agora numa arquitetura que cresce tela a tela.",
         },
-        evolucao: ["Fluxos de sistema empresarial", "Laravel em aplicações reais", "Evolução para arquitetura desacoplada"],
+        evolucao: ["Do monólito à arquitetura desacoplada", "TypeScript em larga escala", "Backoffices com permissões granulares"],
         decisoesTecnicas: [
-          "Estrutura de componentes e navegação construída dentro da arquitetura PHP/Laravel existente.",
-          "Telas segmentadas por fluxo operacional: análise de inquilino, contratos, imobiliárias parceiras e garantias ativas.",
-          "Experiência que evidenciou os limites do front-end acoplado ao Laravel e direcionou a adoção de API REST e TypeScript nos projetos seguintes.",
+          "Dois portais no mesmo app (imobiliária e admin), cada um com layout, sessão e permissões próprios.",
+          "Rota de proxy do Next para a API Laravel: os tokens ficam em cookies httpOnly, nunca no localStorage.",
+          "Um hook de dados por domínio com TanStack Query e um kit de UI do admin (tabelas, filtros, paginação, status) usado por todas as telas.",
+          "O admin pode abrir a sessão de uma imobiliária (impersonação), com faixa de aviso no painel.",
         ],
         desafiosExtras: [
-          "Centralizar processos de garantia locatícia que antes dependiam de etapas manuais.",
-          "Manter consistência em telas de cadastro, análise, acompanhamento e painel operacional.",
+          "Migrar tela a tela sem parar uma operação que já estava em produção.",
+          "Mostrar a etapa real de cada proposta, derivada de crédito, biometria e contrato, nos dois portais.",
         ],
       },
       "fr-fr": {
-        destaque: "Projet — système d'entreprise",
+        destaque: "Projet phare : système d'entreprise",
         status: "Livré · en production",
-        resumo: "Système de gestion des garanties locatives, des contrats et de l'analyse des locataires.",
+        resumo: "Plateforme de garantie locative : landing page, portail des agences et back-office.",
         descricao:
-          "Aprova Legal gérait ses processus de garantie locative de façon manuelle et fragmentée. J'ai développé le front-end du système interne qui a numérisé et centralisé tout le flux — de l'analyse du locataire à la gestion des contrats actifs.",
+          "Aprova Legal est une société de garantie locative : elle couvre loyers, charges et frais de résiliation pour des agences immobilières partenaires. La première version était un monolithe Laravel avec des écrans Blade. J'ai reconstruit le front-end en application Next.js découplée, consommant l'API REST, en trois volets : la nouvelle landing page, le portail des agences et le back-office.",
         descricaoResumida:
-          "J'ai développé le front-end du système interne qui a centralisé les garanties locatives, l'analyse des locataires et la gestion des contrats actifs.",
+          "J'ai reconstruit la plateforme de garantie locative en front-end Next.js découplé : landing page, portail des agences et back-office sur une API REST.",
         metricas: [
-          { label: "Équipe", valor: "3 associés" },
-          { label: "Périmètre", valor: "De bout en bout" },
-          { label: "Construction", valor: "Depuis zéro" },
+          { label: "Pages", valor: "115+" },
+          { label: "Portails", valor: "Agence + admin" },
+          { label: "Architecture", valor: "Découplée" },
           { label: "Plateforme", valor: "Web" },
         ],
         responsabilidade: [
-          "Projet mené par moi et deux associés, sans équipe externe — du contrat à la mise en production",
-          "Développement du front-end intégré au back-end Laravel — interfaces d'enregistrement, flux d'analyse et tableau de bord opérationnel",
-          "Construction des flux de navigation et de la structure de composants au sein de l'architecture PHP/Laravel",
-          "Écrans livrés : gestion des contrats, tableau des agences partenaires, flux d'analyse des locataires et suivi des garanties actives",
-          "Projet qui a précédé ma spécialisation en architecture découplée — un apprentissage qui a orienté l'usage d'API REST et de TypeScript sur les projets suivants",
+          "Migration du monolithe Laravel (Blade) vers un front-end Next.js découplé, en gardant champs, règles et messages comme contrat d'API",
+          "Portail des agences : assistant de proposition, analyse de crédit, biométrie faciale, contrats avec historique des versions, sinistres, expulsions, renouvellements et révisions de loyer",
+          "Back-office : propositions, garanties, indemnisations, accords, prévision de facturation, rapports, plans et rôles avec permissions",
+          "Landing page repensée avec une identité propre, inspirée des certificats et des tampons, et un simulateur de couverture par plan",
+          "Chat interne pour l'équipe admin et assistant d'IA dans le chat des sinistres",
         ],
         insights: {
-          desafio: "Des processus de garantie locative encore manuels et fragmentés, avec analyse des locataires, contrats et agences partenaires sans centralisation opérationnelle.",
-          solucao: "Front-end intégré à Laravel, avec écrans d'enregistrement, flux d'analyse, gestion des contrats, tableau des agences et suivi des garanties actives.",
-          resultado: "Système en production avec plus de 1 000 contrats actifs et 95+ agences immobilières partenaires, gérant 45 millions R$ de capital garanti. Il a numérisé un processus auparavant manuel, avec une analyse 100 % digitale et une reconnaissance faciale antifraude.",
+          desafio: "Un monolithe Laravel aux écrans rendus côté serveur et sans API formelle, ce qui rendait chaque nouveau flux lent à construire et difficile à faire évoluer.",
+          solucao: "Un front-end Next.js en deux portails, des hooks de données par domaine avec TanStack Query et une route proxy qui garde les jetons dans des cookies httpOnly.",
+          resultado: "Plateforme en production avec plus de 1 000 contrats actifs et 95+ agences partenaires, gérant 45 millions R$ de capital garanti, désormais sur une architecture qui évolue écran par écran.",
         },
-        evolucao: ["Flux de systèmes d'entreprise", "Laravel sur des applications réelles", "Évolution vers une architecture découplée"],
+        evolucao: ["Du monolithe à l'architecture découplée", "TypeScript à grande échelle", "Back-offices aux permissions fines"],
         decisoesTecnicas: [
-          "Structure de composants et navigation construites au sein de l'architecture PHP/Laravel existante.",
-          "Écrans segmentés par flux opérationnel : analyse du locataire, contrats, agences partenaires et garanties actives.",
-          "Une expérience qui a révélé les limites d'un front-end couplé à Laravel et orienté l'adoption d'API REST et de TypeScript ensuite.",
+          "Deux portails dans la même app (agence et admin), chacun avec sa mise en page, sa session et ses permissions.",
+          "Une route proxy Next vers l'API Laravel : les jetons restent dans des cookies httpOnly, jamais dans le localStorage.",
+          "Un hook de données par domaine avec TanStack Query et un kit d'UI admin (tableaux, filtres, pagination, statuts) partagé par tous les écrans.",
+          "L'admin peut ouvrir la session d'une agence (impersonation), avec un bandeau d'avertissement dans le panneau.",
         ],
         desafiosExtras: [
-          "Centraliser des processus de garantie locative qui dépendaient d'étapes manuelles.",
-          "Maintenir la cohérence entre écrans d'enregistrement, d'analyse, de suivi et tableau opérationnel.",
+          "Migrer écran par écran sans arrêter une activité déjà en production.",
+          "Afficher l'étape réelle de chaque proposition, déduite du crédit, de la biométrie et du contrat, dans les deux portails.",
         ],
       },
     },
@@ -779,7 +1436,7 @@ export const MOCK_PROJECTS = [
         status: "First year in the field",
         resumo: "Admin system for a Telegram-based sales platform.",
         descricao:
-          "A Telegram sales startup needed an admin dashboard to manage bots, users, groups, commands and operational metrics. The first dashboard system I built — delivered within the stack limitations of my first year as a front-end dev.",
+          "A Telegram sales startup needed an admin dashboard to manage bots, users, groups, commands and operational metrics. The first dashboard system I built, delivered within the stack limitations of my first year as a front-end dev.",
         descricaoResumida:
           "The first admin dashboard I built: a panel for bots, users, groups, commands and operational metrics of a Telegram sales startup.",
         metricas: [
@@ -789,7 +1446,7 @@ export const MOCK_PROJECTS = [
           { label: "Platform", valor: "Web" },
         ],
         responsabilidade: [
-          "Complete front-end development of the admin panel — no modern framework, with plain HTML, CSS and JavaScript",
+          "Complete front-end development of the admin panel: no modern framework, with plain HTML, CSS and JavaScript",
           "Building reusable components with manual state handling, without React or an equivalent library",
           "Admin sections split by responsibility: users, groups, commands, logs, statistics and settings",
           "Integration with the Laravel back-end and UTM tracking scripts to follow campaigns between sales pages and the bot",
@@ -797,7 +1454,7 @@ export const MOCK_PROJECTS = [
         insights: {
           desafio: "A Telegram sales startup needed to centralize bots, users, groups, commands and metrics in an admin panel built on a limited stack.",
           solucao: "Complete front-end in plain HTML, CSS and JavaScript, with reusable components, manual state handling and integration with the Laravel back-end.",
-          resultado: "A working system shipped to production for a live startup. Building a dashboard without a modern framework demanded real command of plain CSS and JS — the technical base that solidified my understanding of state, components and interaction before moving to React.",
+          resultado: "A working system shipped to production for a live startup. Building a dashboard without a modern framework demanded real command of plain CSS and JS, the technical base that solidified my understanding of state, components and interaction before moving to React.",
         },
         evolucao: ["Dashboard without a modern framework", "Integration with a Laravel back-end", "Fundamentals of state and components"],
         decisoesTecnicas: [
@@ -815,7 +1472,7 @@ export const MOCK_PROJECTS = [
         status: "Primeiro ano de carreira",
         resumo: "Sistema administrativo para plataforma de vendas via Telegram.",
         descricao:
-          "Startup de vendas via Telegram precisava de um painel administrativo para gerenciar bots, usuários, grupos, comandos e métricas operacionais. Primeiro sistema com dashboard que desenvolvi — entregue dentro das limitações de stack do meu primeiro ano como dev front-end.",
+          "Startup de vendas via Telegram precisava de um painel administrativo para gerenciar bots, usuários, grupos, comandos e métricas operacionais. Primeiro sistema com dashboard que desenvolvi, entregue dentro das limitações de stack do meu primeiro ano como dev front-end.",
         descricaoResumida:
           "Primeiro dashboard administrativo que desenvolvi: painel para bots, usuários, grupos, comandos e métricas operacionais de uma startup de vendas via Telegram.",
         metricas: [
@@ -825,7 +1482,7 @@ export const MOCK_PROJECTS = [
           { label: "Plataforma", valor: "Web" },
         ],
         responsabilidade: [
-          "Desenvolvimento do front-end completo do painel administrativo — sem framework moderno, com HTML, CSS e JavaScript puros",
+          "Desenvolvimento do front-end completo do painel administrativo: sem framework moderno, com HTML, CSS e JavaScript puros",
           "Construção de componentes reutilizáveis com controle de estados manual, sem React ou biblioteca equivalente",
           "Seções administrativas separadas por responsabilidade: usuários, grupos, comandos, logs, estatísticas e configurações",
           "Integração com back-end Laravel e implementação de scripts de tracking UTM para rastreamento de campanhas entre páginas de venda e o bot",
@@ -833,7 +1490,7 @@ export const MOCK_PROJECTS = [
         insights: {
           desafio: "Startup de vendas via Telegram precisava centralizar bots, usuários, grupos, comandos e métricas em um painel administrativo construído com uma stack limitada.",
           solucao: "Front-end completo em HTML, CSS e JavaScript puros, com componentes reutilizáveis, controle de estados manual e integração ao back-end Laravel.",
-          resultado: "Sistema funcional entregue em produção para uma startup em operação. Construir dashboard sem framework moderno exigiu domínio real de CSS e JS puros — base técnica que consolidou meu entendimento de estado, componentes e interação antes de migrar para React.",
+          resultado: "Sistema funcional entregue em produção para uma startup em operação. Construir dashboard sem framework moderno exigiu domínio real de CSS e JS puros, base técnica que consolidou meu entendimento de estado, componentes e interação antes de migrar para React.",
         },
         evolucao: ["Dashboard sem framework moderno", "Integração com back-end Laravel", "Fundamentos de estado e componentes"],
         decisoesTecnicas: [
@@ -851,7 +1508,7 @@ export const MOCK_PROJECTS = [
         status: "Première année de carrière",
         resumo: "Système administratif pour une plateforme de vente via Telegram.",
         descricao:
-          "Une startup de vente via Telegram avait besoin d'un panneau d'administration pour gérer bots, utilisateurs, groupes, commandes et métriques opérationnelles. Premier système avec tableau de bord que j'ai développé — livré avec les limites de stack de ma première année en tant que dev front-end.",
+          "Une startup de vente via Telegram avait besoin d'un panneau d'administration pour gérer bots, utilisateurs, groupes, commandes et métriques opérationnelles. Premier système avec tableau de bord que j'ai développé, livré avec les limites de stack de ma première année en tant que dev front-end.",
         descricaoResumida:
           "Premier tableau de bord administratif que j'ai développé : panneau pour bots, utilisateurs, groupes, commandes et métriques opérationnelles d'une startup de vente via Telegram.",
         metricas: [
@@ -861,7 +1518,7 @@ export const MOCK_PROJECTS = [
           { label: "Plateforme", valor: "Web" },
         ],
         responsabilidade: [
-          "Développement complet du front-end du panneau d'administration — sans framework moderne, en HTML, CSS et JavaScript purs",
+          "Développement complet du front-end du panneau d'administration : sans framework moderne, en HTML, CSS et JavaScript purs",
           "Construction de composants réutilisables avec gestion manuelle des états, sans React ni bibliothèque équivalente",
           "Sections d'administration séparées par responsabilité : utilisateurs, groupes, commandes, logs, statistiques et configurations",
           "Intégration au back-end Laravel et scripts de tracking UTM pour suivre les campagnes entre pages de vente et bot",
@@ -869,7 +1526,7 @@ export const MOCK_PROJECTS = [
         insights: {
           desafio: "Une startup de vente via Telegram devait centraliser bots, utilisateurs, groupes, commandes et métriques dans un panneau d'administration construit avec une stack limitée.",
           solucao: "Front-end complet en HTML, CSS et JavaScript purs, avec composants réutilisables, gestion manuelle des états et intégration au back-end Laravel.",
-          resultado: "Système fonctionnel livré en production pour une startup en activité. Construire un tableau de bord sans framework moderne a exigé une vraie maîtrise du CSS et du JS purs — la base technique qui a consolidé ma compréhension de l'état, des composants et de l'interaction avant de passer à React.",
+          resultado: "Système fonctionnel livré en production pour une startup en activité. Construire un tableau de bord sans framework moderne a exigé une vraie maîtrise du CSS et du JS purs, la base technique qui a consolidé ma compréhension de l'état, des composants et de l'interaction avant de passer à React.",
         },
         evolucao: ["Tableau de bord sans framework moderne", "Intégration avec un back-end Laravel", "Fondamentaux de l'état et des composants"],
         decisoesTecnicas: [
@@ -881,74 +1538,6 @@ export const MOCK_PROJECTS = [
           "Construire un tableau de bord fonctionnel avec les limites techniques de la première année de carrière.",
           "Relier l'information opérationnelle de la startup à une interface simple pour l'administration quotidienne.",
         ],
-      },
-    },
-  },
-  {
-    id: "salon",
-    tipo: "pessoal",
-    categoria: "sistema",
-    nome: "Salon",
-    plataformas: {
-      web: { imagem: "", link: "" },
-      mobile: { imagem: "", link: "" },
-    },
-    tecnologias: ["React", "React Native", "TypeScript", "Node.js", "Tailwind CSS"],
-    stackDetalhada: ["React", "React Native", "TypeScript", "Node.js", "Tailwind CSS"],
-    i18n: {
-      "en-us": {
-        resumo: "System and app for managing appointments, schedule and clients.",
-        descricao:
-          "Personal project for salon management, focused on schedule, clients, services, appointments and an experience that can grow between a web dashboard and a mobile app.",
-        descricaoResumida:
-          "System and app for a salon's schedule, clients, services and appointments.",
-        insights: {
-          desafio: "Model schedule and appointments simply enough for daily use.",
-          solucao: "Lean flows to create, look up and follow appointment slots.",
-          resultado: "A personal product base ready to evolve on web and mobile.",
-        },
-        evolucao: ["Product modeling", "Web and mobile flows", "Initial full-stack architecture"],
-        decisoesTecnicas: [
-          "A model designed to share rules between dashboard and app.",
-          "Initial separation between schedule, clients and services.",
-        ],
-        desafiosExtras: ["Planning growth without adding complexity before the product is validated."],
-      },
-      "pt-br": {
-        resumo: "Sistema e app para gestão de atendimentos, agenda e clientes.",
-        descricao:
-          "Projeto pessoal para gestão de salão, com foco em agenda, clientes, serviços, atendimentos e uma experiência que pode evoluir entre painel web e app mobile.",
-        descricaoResumida:
-          "Sistema e app para agenda, clientes, serviços e atendimentos de salão.",
-        insights: {
-          desafio: "Modelar agenda e atendimentos de forma simples para uso diário.",
-          solucao: "Fluxos enxutos para cadastro, consulta e acompanhamento de horários.",
-          resultado: "Base de produto pessoal pronta para evoluir web e mobile.",
-        },
-        evolucao: ["Modelagem de produto", "Fluxos web e mobile", "Arquitetura inicial full-stack"],
-        decisoesTecnicas: [
-          "Modelo pensado para compartilhar regras entre painel e app.",
-          "Separação inicial entre agenda, clientes e serviços.",
-        ],
-        desafiosExtras: ["Planejar evolução sem criar complexidade antes da validação do produto."],
-      },
-      "fr-fr": {
-        resumo: "Système et app de gestion des rendez-vous, de l'agenda et des clients.",
-        descricao:
-          "Projet personnel de gestion de salon, axé sur l'agenda, les clients, les services, les rendez-vous et une expérience pouvant évoluer entre panneau web et app mobile.",
-        descricaoResumida:
-          "Système et app pour l'agenda, les clients, les services et les rendez-vous d'un salon.",
-        insights: {
-          desafio: "Modéliser agenda et rendez-vous de façon simple pour un usage quotidien.",
-          solucao: "Flux épurés pour créer, consulter et suivre les créneaux.",
-          resultado: "Base de produit personnel prête à évoluer sur web et mobile.",
-        },
-        evolucao: ["Modélisation de produit", "Flux web et mobile", "Architecture full-stack initiale"],
-        decisoesTecnicas: [
-          "Modèle pensé pour partager les règles entre panneau et app.",
-          "Séparation initiale entre agenda, clients et services.",
-        ],
-        desafiosExtras: ["Planifier l'évolution sans créer de complexité avant la validation du produit."],
       },
     },
   },

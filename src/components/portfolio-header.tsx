@@ -8,8 +8,9 @@ import {
   SiteHeader,
   type SiteHeaderItem,
 } from "./site-header"
-import { SegmentTabs } from "@/components/segment-tabs"
+import { PillTabs } from "@/components/pill-tabs"
 import { useT } from "@/lib/i18n"
+import { smoothScrollTo } from "@/lib/smooth-scroll"
 
 type PortfolioHeaderProps = {
   items?: SiteHeaderItem[]
@@ -102,12 +103,12 @@ export function PortfolioHeader({
       if (!el) return
       const offset = 80
       const top = el.getBoundingClientRect().top + window.scrollY - offset
-      window.scrollTo({ top, behavior: "smooth" })
+      smoothScrollTo(top)
     },
     [onNavigateToSection],
   )
 
-  const segmentItems = navItems.map(({ id, label }) => ({ value: id, label }))
+  const tabs = navItems.map(({ id, label }) => ({ id, label }))
 
   return (
     <>
@@ -126,18 +127,17 @@ export function PortfolioHeader({
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
           >
-            <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/60 bg-white/10 py-1 pl-1 pr-1 shadow-md backdrop-blur-[25px] dark:bg-black/10">
-              {/* O contêiner já tem borda e vidro; o segmento entra sem trilho próprio. */}
-              <SegmentTabs
-                className="shadow-none ring-0 backdrop-blur-none"
-                trackColor="transparent"
-                inset={0}
-                aria-label={t.common.sectionsNav}
-                items={segmentItems}
+            {/* Mesma pílula das abas dos projetos; o contêiner leva a borda e o vidro. */}
+            <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-foreground/10 bg-background/40 p-1 shadow-md backdrop-blur-md">
+              <PillTabs
+                className="rounded-none border-0 bg-transparent p-0 backdrop-blur-none"
+                label={t.common.sectionsNav}
+                idPrefix="floating-nav"
+                tabs={tabs}
                 value={activeId}
                 onChange={navigate}
               />
-              <div className="h-6 w-px bg-border/70" />
+              <div className="mx-1 h-6 w-px bg-foreground/10" />
               <ThemeToggle />
             </div>
           </motion.div>

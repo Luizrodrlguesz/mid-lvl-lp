@@ -4,14 +4,16 @@ import Link from "next/link"
 import Image from "next/image"
 import { useMemo, type MouseEvent } from "react"
 import { ThemeToggle } from "./theme-toggle"
-import { SegmentTabs } from "@/components/segment-tabs"
+import { PillTabs } from "@/components/pill-tabs"
 import { useT } from "@/lib/i18n"
+import { smoothScrollTo } from "@/lib/smooth-scroll"
 
 export const defaultSections = [
   "inicio",
   "sobre",
   "habilidades",
   "projetos",
+  "processo",
   "contato",
 ] as const
 
@@ -48,7 +50,7 @@ export function SiteHeader({
     if (!el) return
     const offset = 80
     const top = el.getBoundingClientRect().top + window.scrollY - offset
-    window.scrollTo({ top, behavior: "smooth" })
+    smoothScrollTo(top)
   }
 
   const scrollToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -76,9 +78,11 @@ export function SiteHeader({
           <span className="sr-only">Luiz Rodrigues</span>
         </Link>
         <div className="hidden lg:block">
-          <SegmentTabs
-            aria-label={t.common.sectionsNav}
-            items={navItems.map(({ id, label }) => ({ value: id, label }))}
+          {/* Mesma pílula das abas dos projetos (e do menu flutuante). */}
+          <PillTabs
+            label={t.common.sectionsNav}
+            idPrefix="site-nav"
+            tabs={navItems.map(({ id, label }) => ({ id, label }))}
             value={currentActiveId}
             onChange={navigateTo}
           />

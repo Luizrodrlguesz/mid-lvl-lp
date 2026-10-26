@@ -55,7 +55,7 @@ export function PortfolioHero({ className, onNavigateToSection }: PortfolioHeroP
   })
 
   const stats = [
-    { value: "2+", label: t.hero.stats.years },
+    { value: "3+", label: t.hero.stats.years },
     { value: String(MOCK_PROJECTS.length), label: t.hero.stats.projects },
     { value: String(experiences.length), label: t.hero.stats.companies },
   ]

@@ -61,7 +61,8 @@ type SocialHighlightCardsProps = {
 
 export function SocialHighlightCards({ label, getLabel }: SocialHighlightCardsProps) {
   return (
-    <nav className="flex flex-wrap items-center gap-3.5 max-[420px]:gap-2.5" aria-label={label}>
+    // No mobile, grade de 3 colunas com os cards ocupando a coluna (quadrados).
+    <nav className="grid grid-cols-3 gap-3 md:flex md:flex-wrap md:items-center md:gap-3.5" aria-label={label}>
       {CONTACT_LINKS.map((social) => {
         const name = getLabel(social.id, social.label)
         const external = social.id !== "email"
@@ -70,10 +71,10 @@ export function SocialHighlightCards({ label, getLabel }: SocialHighlightCardsPr
             key={social.id}
             href={social.href}
             {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-            title={`${name} — ${social.detail}`}
+            title={`${name}: ${social.detail}`}
             aria-label={`${name}: ${social.detail}`}
             style={{ color: social.highlight }}
-            className="group relative isolate grid size-16 place-items-center overflow-hidden rounded-2xl border border-border/60 bg-[color-mix(in_oklab,var(--background)_72%,transparent)] text-current no-underline shadow-[inset_0_1px_0_rgba(255,255,255,.035)] transition-[border-color,box-shadow] duration-[260ms] ease-[cubic-bezier(.22,1,.36,1)] hover:border-[color-mix(in_srgb,currentColor_32%,transparent)] hover:shadow-[0_10px_24px_rgba(0,0,0,.2),0_0_22px_color-mix(in_srgb,currentColor_14%,transparent)] focus-visible:border-[color-mix(in_srgb,currentColor_32%,transparent)] focus-visible:shadow-[0_10px_24px_rgba(0,0,0,.2),0_0_22px_color-mix(in_srgb,currentColor_14%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current motion-reduce:duration-[.01ms] max-[420px]:size-14"
+            className="group relative isolate grid size-16 place-items-center overflow-hidden rounded-2xl border border-border/60 bg-[color-mix(in_oklab,var(--background)_72%,transparent)] text-current no-underline shadow-[inset_0_1px_0_rgba(255,255,255,.035)] transition-[border-color,box-shadow] duration-[260ms] ease-[cubic-bezier(.22,1,.36,1)] hover:border-[color-mix(in_srgb,currentColor_32%,transparent)] hover:shadow-[0_10px_24px_rgba(0,0,0,.2),0_0_22px_color-mix(in_srgb,currentColor_14%,transparent)] focus-visible:border-[color-mix(in_srgb,currentColor_32%,transparent)] focus-visible:shadow-[0_10px_24px_rgba(0,0,0,.2),0_0_22px_color-mix(in_srgb,currentColor_14%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current motion-reduce:duration-[.01ms] max-md:aspect-square max-md:size-auto max-md:w-full"
           >
             <span
               className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_78%_92%_at_50%_-4%,color-mix(in_srgb,currentColor_38%,transparent)_0%,color-mix(in_srgb,currentColor_16%,transparent)_38%,transparent_76%)] opacity-20 transition-opacity duration-[260ms] group-hover:opacity-100 group-focus-visible:opacity-100"

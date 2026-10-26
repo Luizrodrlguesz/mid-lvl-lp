@@ -38,9 +38,11 @@ function swapOne(visible: readonly Tech[]) {
 type HeroTechStackProps = {
   title: string
   className?: string
+  /** Classes extras dos quadrados (ex.: vidro mais escuro na /new). */
+  tileClassName?: string
 }
 
-export function HeroTechStack({ title, className }: HeroTechStackProps) {
+export function HeroTechStack({ title, className, tileClassName }: HeroTechStackProps) {
   const [visible, setVisible] = useState<readonly Tech[]>(() => STACK.slice(0, VISIBLE_COUNT))
 
   useEffect(() => {
@@ -51,8 +53,10 @@ export function HeroTechStack({ title, className }: HeroTechStackProps) {
   return (
     <div className={cn("space-y-4", className)}>
       <div className="flex items-center gap-3">
-        <span className="h-px flex-1 bg-gradient-to-l from-white/40 to-transparent" />
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">{title}</p>
+        {/* Cores relativas ao texto em volta (currentColor): branco no hero do index,
+            e acompanha o tema onde o fundo muda (ex.: o hero da /new). */}
+        <span className="h-px flex-1 bg-gradient-to-l from-current/40 to-transparent" />
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] opacity-70">{title}</p>
       </div>
       <ul className="grid grid-cols-4 gap-3">
         {visible.map((tech, slot) => (
@@ -69,6 +73,7 @@ export function HeroTechStack({ title, className }: HeroTechStackProps) {
                 "relative grid size-[3.75rem] place-items-center overflow-hidden rounded-2xl border border-border/60 bg-white/10 shadow-sm shadow-black/20 ring-1 ring-black/5 backdrop-blur-[5px]",
                 "dark:bg-foreground/5 dark:shadow-none dark:ring-white/5",
                 "transition-all duration-300 group-hover:-translate-y-1 group-hover:border-sky-400/50 group-hover:shadow-[0_0_24px_rgba(56,189,248,0.4)]",
+                tileClassName,
               )}
             >
               <AnimatePresence mode="popLayout" initial={false}>
@@ -93,7 +98,7 @@ export function HeroTechStack({ title, className }: HeroTechStackProps) {
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
                 key={tech.name}
-                className="text-[11px] font-medium tracking-wide whitespace-nowrap text-white/75 transition-colors group-hover:text-white"
+                className="text-[11px] font-medium tracking-wide whitespace-nowrap opacity-75 transition-opacity group-hover:opacity-100"
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}

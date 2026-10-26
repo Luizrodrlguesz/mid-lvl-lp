@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment, useRef, type ReactNode } from "react"
+import { Fragment, useLayoutEffect, useRef, type ReactNode } from "react"
 import {
   motion,
   useReducedMotion,
@@ -73,100 +73,129 @@ function Word({
 
 type TextScrollWordRevealProps = {
   statement: string
-  kicker: string
+  /** Rótulo pequeno acima do título (mesmo padrão dos cabeçalhos das outras seções). */
+  eyebrow: string
+  title: string
   headingId: string
   /**
    * Camada extra dentro do palco preso (ex.: a cortina do About). Recebe o
    * progresso (0→1) do trecho de introdução reservado por `introPortion`.
    */
   overlay?: (introProgress: MotionValue<number>) => ReactNode
-  /** Fração inicial do scroll reservada ao overlay; as palavras usam o restante. */
+  /** Fração inicial do trecho preso reservada ao overlay; as palavras usam o restante. */
   introPortion?: number
-  /** Altura total da área de rolagem (quanto mais alta, mais devagar a revelação). */
-  scrollLength?: string
+  /** Quanto se rola com o palco preso (quanto maior, mais devagar a revelação). */
+  pinLength?: string
   /** Coluna à direita do texto (some abaixo de lg). */
   aside?: ReactNode
+  /** Conteúdo logo abaixo do texto, na mesma coluna (alinhado a ele). */
+  belowText?: ReactNode
   /**
-   * Altura do palco preso; menor que a tela deixa o conteúdo seguinte aparecer
-   * embaixo. O texto fica alinhado à base do palco, colado no que vem depois.
+   * Conteúdo logo abaixo do texto, dentro do palco: aparece desde o início
+   * (com a parte de baixo cortada pela tela) e segue rolando quando a revelação
+   * termina.
    */
-  stageHeight?: string
+  children?: ReactNode
 }
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
 
 export function TextScrollWordReveal({
   statement,
-  kicker,
+  eyebrow,
+  title,
   headingId,
   overlay,
   aside,
-  stageHeight = "100svh",
+  belowText,
   introPortion = 0,
-  scrollLength = "220vh",
+  pinLength = "220vh",
+  children,
 }: TextScrollWordRevealProps) {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const spacerRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  })
+
+  // O palco pode ser mais alto que a tela, então o progresso vem do trecho em
+  // que ele fica preso: do topo do contêiner até a altura do espaçador.
+  const topRef = useRef(0)
+  const pinRef = useRef(1)
+  useLayoutEffect(() => {
+    const measure = () => {
+      const container = containerRef.current
+      const spacer = spacerRef.current
+      if (!container || !spacer) return
+      topRef.current = container.getBoundingClientRect().top + window.scrollY
+      pinRef.current = Math.max(1, spacer.offsetHeight)
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    if (containerRef.current) observer.observe(containerRef.current)
+    window.addEventListener("resize", measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener("resize", measure)
+    }
+  }, [])
+
+  const { scrollY } = useScroll()
+  const scrollYProgress = useTransform(scrollY, (y) => clamp01((y - topRef.current) / pinRef.current))
   const words = statement.split(" ")
   // Introdução (overlay) primeiro; as palavras só começam a acender depois dela.
   const introProgress = useTransform(scrollYProgress, [0, Math.max(introPortion, 0.0001)], [0, 1])
   const wordsProgress = useTransform(scrollYProgress, [introPortion, 1], [0, 1])
 
   return (
-    <div ref={sectionRef} className="relative w-full overflow-x-clip" style={{ minHeight: scrollLength }}>
+    <div ref={containerRef} className="relative w-full overflow-x-clip">
       <div
-        // Sem overflow-hidden: o overlay pode passar da altura do palco (a cortina
-        // ocupa a tela toda, inclusive a faixa abaixo dele). O sticky cria um
-        // contexto de empilhamento próprio, então o z-20 é o que coloca o overlay
-        // acima do conteúdo que vem depois (ex.: a "tampinha" do About, z-10).
-        className="sticky top-0 z-20 flex w-full items-end pb-6 pt-12"
-        style={{ height: stageHeight }}
+        // Palco preso com todo o conteúdo: durante a revelação aparece o topo (texto,
+        // destaques e o começo do que vem depois); no fim ele segue rolando.
+        // O sticky cria um contexto de empilhamento próprio; o z-20 deixa o overlay
+        // (a cortina, da altura da tela) acima do resto da página.
+        className="sticky top-0 z-20 w-full pb-8 pt-10"
       >
         <div
           className={cn(
-            "mx-auto grid w-[90%] items-center gap-10",
-            aside && "lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]",
+            "mx-auto grid w-[90%] items-start gap-10",
+            aside && "lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]",
           )}
         >
-          {/* Barra de progresso + texto, alinhados pelo topo. */}
-          <div className="flex items-start gap-10">
-            <div aria-hidden="true" className="relative hidden h-28 w-px shrink-0 overflow-hidden bg-border sm:block">
-              <motion.span
-                className="absolute inset-0 block origin-top bg-foreground"
-                style={{ scaleY: reducedMotion ? 1 : scrollYProgress }}
-              />
-            </div>
-
-            <div className="max-w-[40rem]">
-              <p className="mb-7 font-mono text-[11px] font-semibold uppercase leading-none tracking-[0.16em] text-muted-foreground sm:mb-10">
-                {kicker}
+          {/* Cabeçalho (rótulo + título) e, um pouco abaixo, o texto revelado. */}
+          <div className="max-w-[54rem]">
+            <header className="space-y-3">
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {eyebrow}
               </p>
-              <h2
-                id={headingId}
-                aria-label={statement}
-                // Largura fixa (não em ch): a fonte menor mantém o mesmo espaço do texto.
-                className="m-0 text-[clamp(20px,2.3vw,32px)] font-bold leading-[1.15] tracking-[-0.03em] text-pretty"
-              >
-                {words.map((word, index) => (
-                  <Fragment key={`${word}-${index}`}>
-                    <Word progress={wordsProgress} index={index} count={words.length} reducedMotion={Boolean(reducedMotion)}>
-                      {word}
-                    </Word>
-                    {index < words.length - 1 ? " " : null}
-                  </Fragment>
-                ))}
+              <h2 id={headingId} className="font-display text-3xl font-bold sm:text-4xl">
+                {title}
               </h2>
-            </div>
+            </header>
+            {/* Largura fixa (não em ch): a fonte menor mantém o mesmo espaço do texto. */}
+            <p className="font-display m-0 mt-12 text-[clamp(20px,2.3vw,32px)] font-bold leading-[1.2] text-pretty sm:mt-16">
+              <span className="sr-only">{statement}</span>
+              {words.map((word, index) => (
+                <Fragment key={`${word}-${index}`}>
+                  <Word progress={wordsProgress} index={index} count={words.length} reducedMotion={Boolean(reducedMotion)}>
+                    {word}
+                  </Word>
+                  {index < words.length - 1 ? " " : null}
+                </Fragment>
+              ))}
+            </p>
+            {belowText}
           </div>
 
-          {/* Coluna lateral: no canto direito, alinhada ao topo do palco. */}
-          {aside ? <div className="hidden self-start justify-self-end lg:block">{aside}</div> : null}
+          {/* Coluna lateral: no canto direito, alinhada ao topo. */}
+          {aside ? <div className="hidden justify-self-end lg:block">{aside}</div> : null}
         </div>
+
+        {children}
 
         {overlay?.(introProgress)}
       </div>
+
+      {/* Espaçador: é a distância rolada com o palco preso. */}
+      <div ref={spacerRef} aria-hidden style={{ height: pinLength }} />
     </div>
   )
 }

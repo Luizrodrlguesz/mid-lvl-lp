@@ -147,15 +147,20 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
           "border-violet-500/20 shadow-violet-900/10 ring-1 ring-violet-500/15 dark:shadow-violet-950/25",
       )}
     >
+      {/*
+        Abaixo de lg a coluna do texto vira `contents`: o cabeçalho (título e
+        subtítulo) vem primeiro, depois a mídia (imagem, resultado e o botão de
+        visitar) e por fim o resto do texto (plataforma em diante).
+      */}
       <div className="grid gap-8 lg:grid-cols-[minmax(0,43fr)_minmax(0,57fr)] lg:items-start lg:gap-10">
         <motion.div
           key={narrativeKey}
           variants={narrativeContainer}
           initial="hidden"
           animate="show"
-          className="order-2 flex min-w-0 flex-col gap-6 lg:order-1 lg:gap-7"
+          className="contents lg:order-1 lg:flex lg:min-w-0 lg:flex-col lg:gap-7"
         >
-          <motion.header variants={narrativeItem} className="space-y-3">
+          <motion.header variants={narrativeItem} className="order-1 space-y-3 lg:order-none">
             {projeto.destaque && (
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-xs text-muted-foreground/70">{projeto.destaque}</span>
@@ -216,6 +221,7 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             </div>
           </motion.header>
 
+          <div className="order-3 flex min-w-0 flex-col gap-6 lg:order-none lg:contents">
           <motion.div variants={narrativeItem} className="space-y-2">
             <p
               id={platformHeadingId}
@@ -315,12 +321,12 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
               ) : null}
             </motion.div>
           )}
-
+          </div>
         </motion.div>
 
         <motion.div
           key={`media-${narrativeKey}`}
-          className="order-1 flex min-w-0 flex-col gap-6 lg:order-2 lg:self-start"
+          className="order-2 flex min-w-0 flex-col gap-6 lg:self-start"
         >
           <motion.div
             variants={narrativeImageColumn}
@@ -337,10 +343,12 @@ function ProjectCardInner({ projeto, tipo = "profissional", viewMode = "visual" 
             >
               <div
                 className={cn(
-                  "relative min-h-[200px] overflow-hidden rounded-lg border border-transparent bg-muted/25 shadow-inner dark:border-border/80 sm:min-h-[220px]",
+                  "relative overflow-hidden rounded-lg border border-transparent bg-muted/25 shadow-inner dark:border-border/80",
+                  // Web em 16:10, a proporção dos prints (1440×900): a imagem aparece
+                  // inteira, sem corte, como no modal do carrossel.
                   plataformaAtiva === "mobile"
-                    ? "aspect-[8/16]"
-                    : "aspect-[4/2.88] sm:aspect-[16/9.7]",
+                    ? "aspect-[8/16] min-h-[200px] sm:min-h-[220px]"
+                    : "aspect-[16/10]",
                 )}
                 onPointerEnter={() => {
                   if (!previewImages?.length) return

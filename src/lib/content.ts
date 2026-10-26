@@ -37,9 +37,19 @@ export type Qualification = {
 }
 
 export type Experience = {
+  /** Cargo + empresa numa linha (usado no index). */
   role: Record<Locale, string>
   period: Record<Locale, string>
   description: Record<Locale, string>
+  /** Campos do painel detalhado da /new (accordion de experiência). */
+  company: string
+  position: Record<Locale, string>
+  logo?: string
+  logoBackground?: string
+  link?: string
+  summary: Record<Locale, string>
+  highlights: Record<Locale, string[]>
+  stack: string[]
 }
 
  export const heroCopy: Record<
@@ -164,30 +174,129 @@ export const qualifications: Qualification[] = [
 
 export const experiences: Experience[] = [
   {
+    company: "Haber Solutions",
+    position: {
+      "pt-br": "Co-Founder & Lead Front-End Engineer",
+      "en-us": "Co-Founder & Lead Front-End Engineer",
+      "fr-fr": "Co-Founder & Lead Front-End Engineer",
+    },
     role: {
-      "pt-br": "Desenvolvedor Web/App — 360erp",
-      "en-us": "Web/App Developer — 360erp",
-      "fr-fr": "Développeur Web/App — 360erp",
+      "pt-br": "Co-Founder & Lead Front-End Engineer, Haber Solutions",
+      "en-us": "Co-Founder & Lead Front-End Engineer, Haber Solutions",
+      "fr-fr": "Co-Founder & Lead Front-End Engineer, Haber Solutions",
     },
     period: {
-      "pt-br": "Set/2025 - Presente",
-      "en-us": "Sep/2025 - Present",
-      "fr-fr": "Sep/2025 - Présent",
+      "pt-br": "Set/2026 - Presente",
+      "en-us": "Sep/2026 - Present",
+      "fr-fr": "Sep/2026 - Présent",
+    },
+    description: {
+      "pt-br":
+        "Co-fundador de uma software house de software sob medida: lidero o front-end e desenho as soluções com os clientes, do escopo ao produto no ar.",
+      "en-us":
+        "Co-founder of a custom software house: I lead the front-end and design solutions with clients, from scoping to shipped product.",
+      "fr-fr":
+        "Cofondateur d’une société de logiciels sur mesure : je dirige le front-end et conçois les solutions avec les clients, du cadrage au produit en ligne.",
+    },
+    logo: "/assets/projects/habersolutions-icon.png",
+    logoBackground: "#064e3b",
+    link: "https://habersolutions.com.br/",
+    summary: {
+      "pt-br":
+        "A Haber Solutions desenvolve software sob medida para empresas: sistemas internos, SaaS e sites. Como co-fundador, lidero a engenharia de front-end e participo do desenho das soluções: entendimento com o cliente, arquitetura, interfaces e entrega.",
+      "en-us":
+        "Haber Solutions builds custom software for companies: internal systems, SaaS and websites. As co-founder I lead front-end engineering and take part in designing the solutions: understanding the client, architecture, interfaces and delivery.",
+      "fr-fr":
+        "Haber Solutions développe des logiciels sur mesure pour les entreprises : systèmes internes, SaaS et sites. En tant que cofondateur, je dirige l’ingénierie front-end et participe à la conception des solutions : compréhension du client, architecture, interfaces et livraison.",
+    },
+    highlights: {
+      "pt-br": [
+        "Liderança do front-end nos projetos: arquitetura, componentes e revisão de código",
+        "Desenho de soluções com os clientes: escopo, fluxos e contratos de API",
+        "Do layout à produção: SSR, SEO e deploy com Docker",
+        "Ferramentas internas: site da empresa e painel da equipe",
+      ],
+      "en-us": [
+        "Front-end leadership across projects: architecture, components and code review",
+        "Solution design with clients: scope, flows and API contracts",
+        "From layout to production: SSR, SEO and Docker deploys",
+        "Internal tools: the company site and the team panel",
+      ],
+      "fr-fr": [
+        "Direction du front-end sur les projets : architecture, composants et revue de code",
+        "Conception de solutions avec les clients : périmètre, flux et contrats d’API",
+        "De la maquette à la production : SSR, SEO et déploiement avec Docker",
+        "Outils internes : le site de l’entreprise et le panneau de l’équipe",
+      ],
+    },
+    stack: ["React", "Next.js", "React Router", "TypeScript", "Tailwind CSS", "Laravel", "Docker"],
+  },
+  {
+    company: "360erp",
+    position: {
+      "pt-br": "Desenvolvedor Web/App",
+      "en-us": "Web/App Developer",
+      "fr-fr": "Développeur Web/App",
+    },
+    role: {
+      "pt-br": "Desenvolvedor Web/App, 360erp",
+      "en-us": "Web/App Developer, 360erp",
+      "fr-fr": "Développeur Web/App, 360erp",
+    },
+    period: {
+      "pt-br": "Set/2025 - Set/2026",
+      "en-us": "Sep/2025 - Sep/2026",
+      "fr-fr": "Sep/2025 - Sep/2026",
     },
     description: {
       "pt-br":
         "Atuação em sistema interno e app da 360erp. ERP integra áreas como finanças, estoque, vendas e operações; trabalho em fluxos e telas que conectam esses módulos, garantindo consistência e usabilidade.",
       "en-us":
-        "Working on 360erp’s internal system and app. ERP ties finance, inventory, sales, and operations; I build flows and screens connecting these modules, ensuring consistency and usability.",
+        "Worked on 360erp’s internal system and app. The ERP ties finance, inventory, sales, and operations; I built flows and screens connecting these modules, ensuring consistency and usability.",
       "fr-fr":
-        "Travail sur le système interne et l’app de 360erp. L’ERP relie finance, stock, ventes et opérations ; je conçois des flux et écrans reliant ces modules avec cohérence et ergonomie.",
+        "Travail sur le système interne et l’app de 360erp. L’ERP relie finance, stock, ventes et opérations ; j’ai conçu des flux et écrans reliant ces modules avec cohérence et ergonomie.",
     },
+    logo: "/assets/projects/erp-icon.png",
+    logoBackground: "#0141ac",
+    link: "https://www.360erp.com.br/",
+    summary: {
+      "pt-br":
+        "ERP completo com módulos de PDV, OS, e-commerce, fiscal, financeiro e logística, sistema legado em produção com base ativa de clientes. Entrei no time de front-end, responsável pela evolução da interface web e pelo app mobile em Flutter.",
+      "en-us":
+        "Full ERP with POS, service orders, e-commerce, tax, finance and logistics modules, a legacy system in production with an active client base. I joined the front-end team, responsible for evolving the web interface and the Flutter mobile app.",
+      "fr-fr":
+        "ERP complet avec modules caisse, ordres de service, e-commerce, fiscal, finance et logistique, un système legacy en production avec une base de clients active. J’ai rejoint l’équipe front-end, responsable de l’évolution de l’interface web et de l’app mobile Flutter.",
+    },
+    highlights: {
+      "pt-br": [
+        "Telas e fluxos que conectam finanças, estoque, vendas e operações",
+        "Manutenção principal do app mobile em Flutter",
+        "Mudanças em produção com baixa tolerância a regressões",
+      ],
+      "en-us": [
+        "Screens and flows connecting finance, inventory, sales and operations",
+        "Main maintainer of the Flutter mobile app",
+        "Production changes with low tolerance for regressions",
+      ],
+      "fr-fr": [
+        "Écrans et flux reliant finance, stock, ventes et opérations",
+        "Mainteneur principal de l’app mobile Flutter",
+        "Changements en production avec une faible tolérance aux régressions",
+      ],
+    },
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "MUI", "Flutter", "Dart"],
   },
   {
+    company: "BuskTraffic",
+    position: {
+      "pt-br": "Desenvolvedor Front-end",
+      "en-us": "Front-end Developer",
+      "fr-fr": "Développeur Front-end",
+    },
     role: {
-      "pt-br": "Desenvolvedor Front-end — BuskTraffic",
-      "en-us": "Front-end Developer — BuskTraffic",
-      "fr-fr": "Développeur Front-end — BuskTraffic",
+      "pt-br": "Desenvolvedor Front-end, BuskTraffic",
+      "en-us": "Front-end Developer, BuskTraffic",
+      "fr-fr": "Développeur Front-end, BuskTraffic",
     },
     period: {
       "pt-br": "Fev/2025 - Set/2025",
@@ -202,8 +311,40 @@ export const experiences: Experience[] = [
       "fr-fr":
         "Front-end avec HTML, CSS, JavaScript, React. Support design et parfois back-end avec PHP/Laravel. Accent sur un code structuré et des interfaces alignées au design.",
     },
+    summary: {
+      "pt-br":
+        "Desenvolvimento front-end de interfaces web em React, com apoio ao time de design e, quando preciso, no back-end em PHP/Laravel.",
+      "en-us":
+        "Front-end development of web interfaces in React, supporting the design team and, when needed, the PHP/Laravel back-end.",
+      "fr-fr":
+        "Développement front-end d’interfaces web en React, en soutien à l’équipe design et, si besoin, au back-end PHP/Laravel.",
+    },
+    highlights: {
+      "pt-br": [
+        "Interfaces fiéis ao design, com código bem estruturado",
+        "Apoio ao design na definição de telas e componentes",
+        "Ajustes pontuais no back-end com PHP/Laravel",
+      ],
+      "en-us": [
+        "Design-faithful interfaces with well-structured code",
+        "Design support defining screens and components",
+        "Occasional back-end work with PHP/Laravel",
+      ],
+      "fr-fr": [
+        "Interfaces fidèles au design, avec un code bien structuré",
+        "Soutien au design pour définir écrans et composants",
+        "Interventions ponctuelles sur le back-end en PHP/Laravel",
+      ],
+    },
+    stack: ["React", "JavaScript", "HTML", "CSS", "PHP", "Laravel"],
   },
   {
+    company: "PallaceMakers",
+    position: {
+      "pt-br": "Desenvolvedor Front-end",
+      "en-us": "Front-end Developer",
+      "fr-fr": "Développeur Front-end",
+    },
     role: {
       "pt-br": "Desenvolvedor Front-end - PallaceMakers",
       "en-us": "Front-end Developer - PallaceMakers",
@@ -222,6 +363,32 @@ export const experiences: Experience[] = [
       "fr-fr":
         "Création de sites, LPs et maintenance et correction de bugs d’interface. Travail avec PHP/Laravel sur formulaires et validation d’utilisateurs, élargissant la vision back-end.",
     },
+    summary: {
+      "pt-br":
+        "Primeira experiência de mercado: sites e landing pages, manutenção de interfaces e os primeiros passos no back-end com PHP/Laravel.",
+      "en-us":
+        "First industry experience: websites and landing pages, interface maintenance and first steps in the back-end with PHP/Laravel.",
+      "fr-fr":
+        "Première expérience professionnelle : sites et landing pages, maintenance d’interfaces et premiers pas côté back-end avec PHP/Laravel.",
+    },
+    highlights: {
+      "pt-br": [
+        "Sites e landing pages do layout à publicação",
+        "Manutenção e correção de bugs em interfaces",
+        "Formulários e validação de usuários com PHP/Laravel",
+      ],
+      "en-us": [
+        "Websites and landing pages from layout to launch",
+        "Interface maintenance and bug fixing",
+        "Forms and user validation with PHP/Laravel",
+      ],
+      "fr-fr": [
+        "Sites et landing pages de la maquette à la mise en ligne",
+        "Maintenance d’interfaces et correction de bugs",
+        "Formulaires et validation d’utilisateurs avec PHP/Laravel",
+      ],
+    },
+    stack: ["HTML", "CSS", "JavaScript", "PHP", "Laravel"],
   },
 ]
 

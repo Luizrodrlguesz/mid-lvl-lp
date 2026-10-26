@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="262 312 556 456" width="556" height="456">
+  <!-- Marca da Nauta (vetor de src/components/brand/logo.tsx do nauta-lp), sem o fundo.
+       O traço branco ganha um contorno navy fino para aparecer em fundo claro e escuro. -->
+  <path fill="#e65b2b" d="M278 563C295 530 320 515 350 515C400 515 430 560 455 600C490 660 540 712 612 750C575 755 500 738 440 702C402 678 384 664 365 664C340 664 320 677 306 698L278 750Z"/>
+  <path fill="#00a2ac" d="M278 514C294 492 320 484 352 484C430 484 484 558 542 638C598 714 668 752 746 748L746 712C660 714 590 664 530 584C470 504 420 440 352 440C318 440 292 458 278 482Z"/>
+  <path fill="#ffffff" stroke="#0d2b45" stroke-width="10" stroke-linejoin="round" paint-order="stroke" d="M278 340C380 312 470 370 560 460C620 520 660 567 697 567C716 567 729 555 735 535L737 326L800 326L803 680C803 716 775 746 740 746C660 746 590 692 530 612C470 532 420 462 350 462C316 462 292 478 278 497Z"/>
+</svg>

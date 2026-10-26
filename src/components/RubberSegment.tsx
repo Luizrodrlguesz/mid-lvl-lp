@@ -16,6 +16,12 @@ export interface RubberSegmentProps {
   textColor?: string;
   activeTextColor?: string;
   size?: RubberSegmentSize;
+  /** Sobrescreve a altura (px) do preset de `size`. */
+  height?: number;
+  /** Sobrescreve o padding horizontal (px) dos itens do preset de `size`. */
+  pad?: number;
+  /** Espaço (px) entre os itens. */
+  gap?: number;
   radius?: number;
   inset?: number;
   equalSlots?: boolean;
@@ -90,6 +96,9 @@ const RubberSegment: React.FC<RubberSegmentProps> = ({
   textColor = '#fafafa',
   activeTextColor = '#18181b',
   size = 'md',
+  height,
+  pad,
+  gap = 0,
   radius = 10,
   inset = 3,
   equalSlots = true,
@@ -144,13 +153,17 @@ const RubberSegment: React.FC<RubberSegmentProps> = ({
     if (!track) return;
     const rect = track.getBoundingClientRect();
     box.current = rect;
+    // getBoundingClientRect inclui transforms dos ancestrais (ex.: o header
+    // flutuante entra com scale 0.98): divide pela escala para medir no tamanho
+    // de layout, senão a pílula fica deslocada do texto.
+    const scale = track.offsetWidth ? rect.width / track.offsetWidth : 1;
     slots.current = list.map((_, i) => {
       const el = itemRefs.current[i];
       if (!el) return { l: 0, r: 0 };
       const r = el.getBoundingClientRect();
-      return { l: r.left - rect.left - inset, r: r.right - rect.left - inset };
+      return { l: (r.left - rect.left) / scale - inset, r: (r.right - rect.left) / scale - inset };
     });
-    innerW.set(rect.width - inset * 2);
+    innerW.set(rect.width / scale - inset * 2);
     jumpTo(committed.current);
   };
 
@@ -162,7 +175,7 @@ const RubberSegment: React.FC<RubberSegmentProps> = ({
     if (typeof document !== 'undefined' && document.fonts) document.fonts.ready.then(measure);
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listKey, size, inset, equalSlots]);
+  }, [listKey, size, height, pad, gap, inset, equalSlots]);
 
   useEffect(() => {
     if (!drag.current && committed.current !== index) {
@@ -347,7 +360,7 @@ const RubberSegment: React.FC<RubberSegmentProps> = ({
       aria-disabled={disabled || undefined}
       data-equal={equalSlots ? '' : undefined}
       data-draggable={draggable && !disabled ? '' : undefined}
-      className={`group relative inline-grid grid-flow-col auto-cols-auto align-middle select-none touch-pan-y [font-family:inherit] [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] p-[var(--rs-inset)] rounded-[var(--rs-radius)] [background:var(--rs-track)] data-[equal]:auto-cols-[minmax(0,1fr)] data-[held]:cursor-grabbing aria-disabled:pointer-events-none aria-disabled:opacity-50${className ? ` ${className}` : ''}`}
+      className={`group relative inline-grid grid-flow-col auto-cols-auto gap-x-[var(--rs-gap)] align-middle select-none touch-pan-y [font-family:inherit] [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] p-[var(--rs-inset)] rounded-[var(--rs-radius)] [background:var(--rs-track)] data-[equal]:auto-cols-[minmax(0,1fr)] data-[held]:cursor-grabbing aria-disabled:pointer-events-none aria-disabled:opacity-50${className ? ` ${className}` : ''}`}
       style={
         {
           '--rs-track': trackColor,
@@ -357,9 +370,10 @@ const RubberSegment: React.FC<RubberSegmentProps> = ({
           '--rs-radius': `${radius}px`,
           '--rs-inset': `${inset}px`,
           '--rs-thumb-radius': `${thumbRadius}px`,
-          '--rs-h': `${preset.height}px`,
+          '--rs-h': `${height ?? preset.height}px`,
+          '--rs-gap': `${gap}px`,
           '--rs-font': `${preset.font}px`,
-          '--rs-pad': `${preset.pad}px`,
+          '--rs-pad': `${pad ?? preset.pad}px`,
           '--rs-min': `${preset.min}px`,
           '--rs-ease-out': 'cubic-bezier(0.23, 1, 0.32, 1)'
         } as CSSProperties
@@ -389,7 +403,7 @@ const RubberSegment: React.FC<RubberSegmentProps> = ({
         </button>
       ))}
       <motion.div
-        className="pointer-events-none absolute inset-[var(--rs-inset)] grid grid-flow-col auto-cols-auto group-data-[equal]:auto-cols-[minmax(0,1fr)] [background:var(--rs-thumb)] [color:var(--rs-ink-active)]"
+        className="pointer-events-none absolute inset-[var(--rs-inset)] grid grid-flow-col auto-cols-auto gap-x-[var(--rs-gap)] group-data-[equal]:auto-cols-[minmax(0,1fr)] [background:var(--rs-thumb)] [color:var(--rs-ink-active)]"
         aria-hidden="true"
         style={{ clipPath }}
       >

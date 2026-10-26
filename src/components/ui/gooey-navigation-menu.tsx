@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Plus, X } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 /*
@@ -72,6 +73,8 @@ export interface GooeyNavigationMenuProps {
   /** aria-label of the trigger while closed / open. */
   openLabel?: string;
   closeLabel?: string;
+  /** Tooltip do gatilho fechado (some enquanto o menu está aberto). */
+  triggerTooltip?: string;
   /** Classes for the blobs — the trigger and every petal. */
   blobClassName?: string;
   /** Classes for the glyphs riding on top of the blobs. */
@@ -108,11 +111,13 @@ export function GooeyNavigationMenu({
   iconScale = 0.58,
   openLabel = "Open menu",
   closeLabel = "Close menu",
+  triggerTooltip,
   blobClassName = DEFAULT_BLOB_CLASS,
   iconClassName = DEFAULT_ICON_CLASS,
   className,
 }: GooeyNavigationMenuProps) {
   const [open, setOpen] = React.useState(defaultOpen);
+  const [tipOpen, setTipOpen] = React.useState(false);
   const reduce = useReducedMotion();
   const rootRef = React.useRef<HTMLDivElement>(null);
 
@@ -279,24 +284,31 @@ export function GooeyNavigationMenu({
         </AnimatePresence>
 
         {/* Trigger button — handles input, renders its glyph crisply. */}
-        <motion.button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-label={open ? closeLabel : openLabel}
-          className={cn(
-            "pointer-events-auto relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
-            iconClassName
-          )}
-          style={{ width: size, height: size, willChange: "transform" }}
-          whileTap={{ scale: 0.92 }}
-        >
-          {open ? (
-            <X size={Math.round(size * 0.42)} strokeWidth={2.4} />
-          ) : (
-            (triggerIcon ?? <Plus size={Math.round(size * 0.42)} strokeWidth={2.4} />)
-          )}
-        </motion.button>
+        <Tooltip open={tipOpen && !open && !!triggerTooltip} onOpenChange={setTipOpen}>
+          <TooltipTrigger asChild>
+            <motion.button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-label={open ? closeLabel : openLabel}
+              className={cn(
+                "pointer-events-auto relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
+                iconClassName
+              )}
+              style={{ width: size, height: size, willChange: "transform" }}
+              whileTap={{ scale: 0.92 }}
+            >
+              {open ? (
+                <X size={Math.round(size * 0.42)} strokeWidth={2.4} />
+              ) : (
+                (triggerIcon ?? <Plus size={Math.round(size * 0.42)} strokeWidth={2.4} />)
+              )}
+            </motion.button>
+          </TooltipTrigger>
+          <TooltipContent side="left" sideOffset={10} className="z-[600]">
+            {triggerTooltip}
+          </TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );

@@ -423,7 +423,7 @@ export function SecondPageContactSection({
                 {t.contact.formNoteBefore}{" "}
                 <strong className="font-medium text-cyan-900 dark:text-cyan-50/95">
                   {t.contact.formNoteStrong}
-                </strong>{" "}
+                </strong>
                 {t.contact.formNoteAfter}
               </p>
             </div>

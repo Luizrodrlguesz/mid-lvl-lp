@@ -124,7 +124,7 @@ function SkillCard({ category, index, total, skills }: SkillCardProps) {
 
       <header className="relative flex items-start justify-between gap-6 border-b border-white/30 pb-5 dark:border-white/10">
         <div className="space-y-2">
-          <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h3>
+          <h3 className="font-display text-2xl font-bold sm:text-3xl">{title}</h3>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
         </div>
         <span className="shrink-0 font-mono text-sm text-muted-foreground">
@@ -277,7 +277,7 @@ function SkillDetail({ skill, locale }: { skill: ShowcaseSkill; locale: Locale }
   )
 }
 
-/** Card de prévia com a logo da stack (arrastável, volta ao lugar ao soltar). */
+/** Prévia com a logo da stack, sem card em volta (arrastável, volta ao lugar ao soltar). */
 function SkillPreview({ skill, locale }: { skill: ShowcaseSkill; locale: Locale }) {
   const t = useT()
 
@@ -290,7 +290,7 @@ function SkillPreview({ skill, locale }: { skill: ShowcaseSkill; locale: Locale 
         whileDrag={{ scale: 1.04, rotate: 0 }}
         initial={false}
         animate={{ rotate: -3 }}
-        className="relative aspect-square w-full cursor-grab touch-none overflow-hidden rounded-3xl border border-white/60 bg-white/70 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.45)] active:cursor-grabbing dark:border-white/15 dark:bg-white/[0.08]"
+        className="relative aspect-square w-full cursor-grab touch-none active:cursor-grabbing"
       >
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
@@ -299,10 +299,10 @@ function SkillPreview({ skill, locale }: { skill: ShowcaseSkill; locale: Locale 
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.1 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-2"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- logos pequenas de tamanhos variados */}
-            <img src={skill.image} alt="" draggable={false} className="size-[45%] object-contain" />
+            <img src={skill.image} alt="" draggable={false} className="size-[72%] object-contain drop-shadow-[0_18px_28px_rgba(0,0,0,0.25)]" />
             <div className="text-center">
               <p className="font-semibold">{skill.label[locale]}</p>
               <p className="mt-1 text-xs text-muted-foreground">

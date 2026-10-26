@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono, Orbitron } from "next/font/google"
+import { Geist, Geist_Mono, Saira, Orbitron } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LocaleProvider } from "@/lib/i18n"
@@ -12,6 +12,14 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+})
+
+// Fonte de display (títulos e textos de destaque): geometria quadrada com
+// cantos curvos e itálico, na linha do logo/favicon. Variável (100–900).
+const saira = Saira({
+  variable: "--font-saira",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 })
 
 const orbitron = Orbitron({
@@ -39,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${saira.variable} antialiased`}
       >
         <ThemeProvider>
           <LocaleProvider>{children}</LocaleProvider>

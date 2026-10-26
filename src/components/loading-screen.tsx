@@ -2,17 +2,20 @@
 
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 interface LoadingScreenProps {
   show: boolean
+  /** Classes do overlay (ex.: fundo sólido e z-index); transparente por padrão. */
+  className?: string
 }
 
-export function LoadingScreen({ show }: LoadingScreenProps) {
+export function LoadingScreen({ show, className }: LoadingScreenProps) {
   return (
     <AnimatePresence>
       {show ? (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-transparent"
+          className={cn("fixed inset-0 z-50 flex items-center justify-center bg-transparent", className)}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
         >
