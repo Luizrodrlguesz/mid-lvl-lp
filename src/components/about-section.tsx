@@ -300,7 +300,8 @@ function AboutDetails() {
           )}
         </AnimatePresence>
 
-        <div className="space-y-5">
+        {/* No mobile a experiência vem antes: abrir uma empresa mostra o detalhe logo abaixo. */}
+        <div className="order-first space-y-5 lg:order-none">
           <h3 className="font-display flex items-center gap-2 text-lg font-semibold">
             <Briefcase className="size-5 text-muted-foreground" aria-hidden />
             {t.about.experienceTitle}
