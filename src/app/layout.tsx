@@ -28,10 +28,28 @@ const orbitron = Orbitron({
   weight: ["600", "700", "800", "900"],
 })
 
+const SITE_URL = "https://mid-lvl-lp.vercel.app"
+const SITE_TITLE = "Luiz Rodrigues – Front-end Developer"
+const SITE_DESCRIPTION =
+  "Selected projects: custom systems, SaaS platforms and landing pages built with React, Next.js, TypeScript and Laravel, from layout to shipped product."
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Portfolio | Luiz Rodrigues",
-  description:
-    "Portfolio of Luiz Rodrigues, a front-end developer focused on digital experiences with performance.",
+  description: SITE_DESCRIPTION,
+  // A imagem vem de app/opengraph-image.png e app/twitter-image.png (convenção do Next).
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Luiz Rodrigues",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
   icons: {
     icon: "/assets/lr-logo.png",
     shortcut: "/assets/lr-logo.png",
